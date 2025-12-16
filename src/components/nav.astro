@@ -4,8 +4,11 @@ import NavLink from './navLink.astro';
 ---
 
 <nav class="flex h-16 items-center justify-between bg-gray-950 px-4">
-    <div>
-        <NavLink href="/" name="SkinSale" />
+    <div class="flex gap-2">
+        <a href="/" class="cursor-pointer text-xl font-bold">SkinSale</a>
+        <NavLink href="/mythic" name="Mythic Shop" />
+        <NavLink href="/sales" name="Sale Rotation" />
+        <NavLink href="/catalog" name="Catalog" />
     </div>
     <div>
         <AuthButton />
