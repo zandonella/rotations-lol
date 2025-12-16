@@ -1,16 +1,14 @@
 ---
-
+import Nav from '../layouts/layout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Nav>
+    <div class="mt-30 flex flex-1 flex-col items-center justify-start">
+        <h1 class="text-5xl font-bold">Welcome to SkinSale!</h1>
+        <p class="mt-4 max-w-xl text-center text-lg">
+            This site is built to help you find the best deals for skins in
+            league of legends! Check out the sale rotation to see this week's
+            sales, and look at the mythic shop for this today's offerings
+        </p>
+    </div>
+</Nav>

@@ -1,0 +1,18 @@
+---
+import '../styles/global.css';
+import Nav from '../components/nav.astro';
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Astro</title>
+    </head>
+
+    <body class="flex min-h-dvh flex-col bg-slate-900 text-white">
+        <Nav />
+        <slot />
+    </body>
+</html>
