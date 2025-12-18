@@ -1,9 +1,9 @@
 ---
-import AuthButton from '../components/authButton.jsx';
+import AuthWidget from '../components/authWidget.jsx';
 import NavLink from './navLink.astro';
 ---
 
-<nav class="flex h-16 items-center justify-between bg-gray-950 px-4">
+<nav class="flex h-16 items-center justify-between bg-zinc-950 px-4">
     <div class="flex gap-2">
         <a href="/" class="cursor-pointer text-xl font-bold">SkinSale</a>
         <NavLink href="/mythic" name="Mythic Shop" />
@@ -11,6 +11,6 @@ import NavLink from './navLink.astro';
         <NavLink href="/catalog" name="Catalog" />
     </div>
     <div>
-        <AuthButton />
+        <AuthWidget client:load />
     </div>
 </nav>
