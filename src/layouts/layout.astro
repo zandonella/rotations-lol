@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import Nav from '../components/nav.astro';
+
+const { showAuth = false, user = null } = Astro.props;
 ---
 
 <html lang="en">
@@ -12,7 +14,7 @@ import Nav from '../components/nav.astro';
     </head>
 
     <body class="flex min-h-dvh flex-col bg-zinc-900 text-zinc-100">
-        <Nav />
+        <Nav showAuth={showAuth} user={user} />
         <slot />
     </body>
 </html>

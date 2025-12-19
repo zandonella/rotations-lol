@@ -5,9 +5,20 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
     let [notice, setNotice] = useState('');
     let [loading, setLoading] = useState(false);
 
+    function switchFormMode() {
+        setError('');
+        setNotice('');
+        toggleMode();
+    }
+
+    // close modal when clicking outside of the form
+    function handleModalClick(e) {
+        if (e.target.classList.contains('inset-0')) {
+            onClose();
+        }
+    }
+
     const endpoint = SignIn ? '/api/auth/signin' : '/api/auth/signup';
-    console.log('SignIn mode:', SignIn);
-    console.log('AuthForm endpoint:', endpoint);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -19,6 +30,7 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
         const payload = {
             email: String(formData.get('email') ?? ''),
             password: String(formData.get('password') ?? ''),
+            confirmPassword: String(formData.get('confirmPassword') ?? ''),
         };
 
         try {
@@ -43,7 +55,6 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
                     data?.message ||
                         'Check your email to confirm your account.',
                 );
-                toggleMode();
                 form.reset();
                 return;
             }
@@ -52,7 +63,7 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
             onSuccess();
             onClose();
         } catch (err) {
-            setError(err.message);
+            setError(err.message || 'Something went wrong');
         } finally {
             setLoading(false);
         }
@@ -60,7 +71,10 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
 
     {
         return (
-            <div className="fixed inset-0 flex items-center justify-center bg-black/20 p-4">
+            <div
+                className="fixed inset-0 flex items-center justify-center bg-black/20 p-4"
+                onClick={handleModalClick}
+            >
                 <div className="flex max-w-sm min-w-sm flex-col items-center justify-center gap-2 rounded bg-zinc-200 p-8 text-black">
                     <h1 className="mb-1 w-full text-2xl font-semibold text-zinc-900">
                         {SignIn ? 'Sign In' : 'Sign Up'}
@@ -96,6 +110,22 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
                             name="password"
                             className="focus:ring-opacity-60 rounded-md border border-zinc-300 bg-zinc-50 px-3 py-1 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none"
                         />
+                        {!SignIn && (
+                            <>
+                                <label
+                                    htmlFor="confirmPassword"
+                                    className="text-sm font-medium text-zinc-900"
+                                >
+                                    Confirm Password
+                                </label>
+                                <input
+                                    id="confirmPassword"
+                                    type="password"
+                                    name="confirmPassword"
+                                    className="focus:ring-opacity-60 rounded-md border border-zinc-300 bg-zinc-50 px-3 py-1 focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                                />
+                            </>
+                        )}
                         <button
                             type="submit"
                             className="mt-2 rounded-md border border-zinc-900 bg-zinc-900 py-1.5 text-sm font-medium text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
@@ -121,12 +151,23 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
                         {!SignIn && 'Already have an account?'}
                         {SignIn && "Don't have an account?"}{' '}
                         <a
-                            onClick={toggleMode}
+                            onClick={switchFormMode}
                             className="cursor-pointer font-medium text-blue-600 underline underline-offset-2"
                         >
                             {SignIn ? 'Create an account' : 'Sign In'}
                         </a>
                     </p>
+
+                    {SignIn && (
+                        <p className="w-full text-sm text-zinc-500">
+                            <a
+                                href="/auth/password-reset"
+                                className="cursor-pointer font-medium text-blue-600 underline underline-offset-2"
+                            >
+                                Forgot Password?
+                            </a>
+                        </p>
+                    )}
                 </div>
             </div>
         );

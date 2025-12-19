@@ -1,0 +1,66 @@
+---
+export const prerender = false;
+import '/src/styles/global.css';
+---
+
+<html>
+    <body class="flex min-h-dvh flex-col gap-2 bg-zinc-900 p-12 text-zinc-100">
+        <h1 class="mb-4 text-3xl font-bold">Email confirmed</h1>
+        <p id="statusText">You will be redirected shortly, or click below</p>
+
+        <a
+            href="/"
+            class="cursor-pointer font-medium text-blue-200 underline underline-offset-2"
+            >Go home</a
+        >
+
+        <script defer>
+            const statusText = document.getElementById('statusText');
+
+            const params = new URLSearchParams(window.location.hash.slice(1));
+            const accessToken = params.get('access_token');
+            const refreshToken = params.get('refresh_token');
+            console.log('Access Token:', accessToken);
+            console.log('Refresh Token:', refreshToken);
+
+            if (!accessToken || !refreshToken) {
+                console.error(
+                    'No access token or refresh token found in URL, redirecting to home page.',
+                );
+                statusText.textContent =
+                    'Email confirmed. Please sign in to continue.';
+                setTimeout(() => {
+                    window.location.replace('/');
+                }, 5000);
+            } else {
+                // Call API to set session cookies
+                statusText.textContent =
+                    'Signing you in, you will be redirected shortly.';
+                fetch('/api/auth/setSession', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        access_token: accessToken,
+                        refresh_token: refreshToken,
+                    }),
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Failed to set session cookies');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    })
+                    .finally(() => {
+                        // Redirect to home page
+                        setTimeout(() => {
+                            window.location.replace('/');
+                        }, 5000);
+                    });
+            }
+        </script>
+    </body>
+</html>

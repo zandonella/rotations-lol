@@ -2,19 +2,31 @@ import { useState } from 'react';
 import AuthButton from './authButton';
 import AuthForm from './authForm';
 
-export default function AuthWidget() {
-    let [showForm, setShowForm] = useState(true);
-    let [isAuthenticated, setIsAuthenticated] = useState(false);
-    let [signUpMode, setSignUpMode] = useState(false);
+export default function AuthWidget({ user }) {
+    let [showForm, setShowForm] = useState(false);
+    let [signInMode, setSignInMode] = useState(false);
 
-    function toggleShowForm() {
-        setShowForm((prev) => !prev);
+    let authenticated = false;
+    if (user != null) {
+        authenticated = true;
     }
 
-    function toggleSignUpMode() {
-        console.log('Toggling sign up mode');
-        setSignUpMode((prev) => !prev);
-        console.log('signUpMode is now:', signUpMode);
+    console.log(authenticated);
+
+    function toggleSignInMode() {
+        console.log('Toggling sign in mode');
+        setSignInMode((prev) => !prev);
+        console.log('signInMode is now:', signInMode);
+    }
+
+    function openSignInForm() {
+        setSignInMode(true);
+        setShowForm(true);
+    }
+
+    function openSignUpForm() {
+        setSignInMode(false);
+        setShowForm(true);
     }
 
     function closeForm() {
@@ -22,21 +34,34 @@ export default function AuthWidget() {
     }
 
     function handleSuccess() {
-        setIsAuthenticated(true);
         closeForm();
     }
 
+    console.log('Rendering AuthWidget with user:', user?.email);
     return (
         <>
             {showForm && (
                 <AuthForm
-                    SignIn={signUpMode}
+                    SignIn={signInMode}
                     onSuccess={handleSuccess}
                     onClose={closeForm}
-                    toggleMode={toggleSignUpMode}
+                    toggleMode={toggleSignInMode}
                 />
             )}
-            <AuthButton onClick={toggleShowForm} />
+            <>
+                {!authenticated ? (
+                    <div className="flex gap-2">
+                        <AuthButton
+                            onClick={openSignInForm}
+                            type="shadow"
+                            text={'Sign In'}
+                        />
+                        <AuthButton onClick={openSignUpForm} text={'Sign Up'} />
+                    </div>
+                ) : (
+                    <div>Welcome, {user?.email}!</div>
+                )}
+            </>
         </>
     );
 }

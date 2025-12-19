@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro';
 import { supabase } from '../../../lib/supabase';
 
 export const POST: APIRoute = async ({ request }) => {
-    let body: { email?: string; password?: string };
+    let body: { email?: string; password?: string; confirm_password?: string };
 
     try {
         body = await request.json();
@@ -16,8 +16,9 @@ export const POST: APIRoute = async ({ request }) => {
 
     const email = body.email?.trim();
     const password = body.password;
+    const confirm_password = body.confirm_password;
 
-    console.log('Signup API called', email, password);
+    console.log('Signup API called', email, password, confirm_password);
 
     if (!email || !password) {
         return new Response(
@@ -26,9 +27,19 @@ export const POST: APIRoute = async ({ request }) => {
         );
     }
 
+    if (password !== confirm_password) {
+        return new Response(
+            JSON.stringify({ error: 'Passwords do not match' }),
+            { status: 400, headers: { 'Content-Type': 'application/json' } },
+        );
+    }
+
     const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+            emailRedirectTo: `${import.meta.env.SITE_URL}/auth/confirmed`,
+        },
     });
 
     if (error) {
