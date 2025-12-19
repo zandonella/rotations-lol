@@ -1,8 +1,6 @@
 ---
 import AuthWidget from '../components/authWidget.jsx';
 import NavLink from './navLink.astro';
-
-const { showAuth, user } = Astro.props;
 ---
 
 <nav class="flex h-16 items-center justify-between bg-zinc-950 px-4">
@@ -12,5 +10,5 @@ const { showAuth, user } = Astro.props;
         <NavLink href="/sales" name="Sale Rotation" />
         <NavLink href="/catalog" name="Catalog" />
     </div>
-    <div>{showAuth && <AuthWidget client:load user={user} />}</div>
+    <AuthWidget client:load transition:persist />
 </nav>

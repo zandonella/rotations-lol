@@ -21,6 +21,10 @@ export default defineConfig({
 
     output: 'static',
 
+    prefetch: {
+        prefetchAll: true,
+    },
+
     adapter: node({
         mode: 'standalone',
     }),

@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
 import Nav from '../components/nav.astro';
-
-const { showAuth = false, user = null } = Astro.props;
+import AuthModal from '../components/authModal';
+import { ClientRouter } from 'astro:transitions';
 ---
 
 <html lang="en">
@@ -11,10 +11,12 @@ const { showAuth = false, user = null } = Astro.props;
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width" />
         <title>Astro</title>
+        <!-- <ClientRouter /> -->
     </head>
 
     <body class="flex min-h-dvh flex-col bg-zinc-900 text-zinc-100">
-        <Nav showAuth={showAuth} user={user} />
+        <Nav />
+        <AuthModal client:load />
         <slot />
     </body>
 </html>

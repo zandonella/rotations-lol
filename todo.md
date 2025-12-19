@@ -13,3 +13,7 @@
 - ~~add email confirmation page (possibly sign in user?)~~
 - prototype individual pages
 - design tables and define scope of each page (still deciding on adding emotes or not)
+
+## Bugs
+
+- flickering on authWidget

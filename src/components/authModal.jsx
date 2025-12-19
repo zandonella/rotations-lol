@@ -15,10 +15,6 @@ export default function authModal() {
     let [notice, setNotice] = useState('');
     let [loading, setLoading] = useState(false);
 
-    if (!open) {
-        return null;
-    }
-
     useEffect(() => {
         if (open) {
             setError('');
@@ -26,6 +22,10 @@ export default function authModal() {
             setLoading(false);
         }
     }, [open]);
+
+    if (!open) {
+        return null;
+    }
 
     function switchFormMode() {
         setError('');
@@ -54,6 +54,8 @@ export default function authModal() {
             password: String(formData.get('password') ?? ''),
             confirmPassword: String(formData.get('confirmPassword') ?? ''),
         };
+
+        console.log(payload);
 
         try {
             let response = await fetch(endpoint, {
