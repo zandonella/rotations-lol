@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
 import Layout from '../layouts/layout.astro';
+import AuthModal from '../components/authModal.jsx';
 
 import { supabase } from '../lib/supabase.ts';
 
@@ -15,6 +16,7 @@ console.log('User:', user);
 ---
 
 <Layout showAuth={true} user={user}>
+    <AuthModal client:load />
     <div class="mt-30 flex flex-1 flex-col items-center justify-start">
         <h1 class="text-5xl font-bold">Catalog Page</h1>
         <p class="mt-4 max-w-xl text-center text-lg">

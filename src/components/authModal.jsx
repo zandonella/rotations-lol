@@ -1,20 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useStore } from '@nanostores/react';
+import {
+    authModalOpen,
+    authModalModeSignIn,
+    toggleAuthModalMode,
+    closeAuthModal,
+} from '../stores/authModal.js';
 
-export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
+export default function authModal() {
+    const open = useStore(authModalOpen);
+    const SignIn = useStore(authModalModeSignIn); // true = Sign In, false = Sign Up
+
     let [error, setError] = useState('');
     let [notice, setNotice] = useState('');
     let [loading, setLoading] = useState(false);
 
+    if (!open) {
+        return null;
+    }
+
+    useEffect(() => {
+        if (open) {
+            setError('');
+            setNotice('');
+            setLoading(false);
+        }
+    }, [open]);
+
     function switchFormMode() {
         setError('');
         setNotice('');
-        toggleMode();
+        toggleAuthModalMode();
     }
 
     // close modal when clicking outside of the form
     function handleModalClick(e) {
-        if (e.target.classList.contains('inset-0')) {
-            onClose();
+        if (e.target === e.currentTarget) {
+            closeAuthModal();
         }
     }
 
@@ -60,8 +82,8 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
             }
 
             form.reset();
-            onSuccess();
-            onClose();
+            closeAuthModal();
+            window.location.reload();
         } catch (err) {
             setError(err.message || 'Something went wrong');
         } finally {
@@ -128,6 +150,7 @@ export default function AuthForm({ SignIn, onSuccess, onClose, toggleMode }) {
                         )}
                         <button
                             type="submit"
+                            disabled={loading}
                             className="mt-2 rounded-md border border-zinc-900 bg-zinc-900 py-1.5 text-sm font-medium text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             {loading
