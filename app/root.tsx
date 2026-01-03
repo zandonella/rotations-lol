@@ -2,6 +2,7 @@ import {
     isRouteErrorResponse,
     Links,
     Meta,
+    NavLink,
     Outlet,
     Scripts,
     ScrollRestoration,
@@ -25,7 +26,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en" className="dark">
+        <html lang="en" className="">
             <head>
                 <meta charSet="utf-8" />
                 <meta
@@ -45,7 +46,46 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-    return <Outlet />;
+    return (
+        <>
+            <nav className="bg-bg text-text p-4 shadow">
+                <div className="container mx-auto flex items-center justify-between">
+                    <div className="text-text-muted flex items-center gap-4">
+                        <NavLink
+                            to="/"
+                            className={'text-text text-lg font-black'}
+                        >
+                            Logo
+                        </NavLink>
+                        <NavLink
+                            to="/test"
+                            className={({ isActive }) =>
+                                isActive ? 'text-text' : 'text-text-muted'
+                            }
+                        >
+                            Test
+                        </NavLink>
+                        <NavLink
+                            to="/test2"
+                            className={({ isActive }) =>
+                                isActive ? 'text-text' : 'text-text-muted'
+                            }
+                        >
+                            Test2
+                        </NavLink>
+                    </div>
+                    <div className="flex gap-4">
+                        <button className="cursor-pointer rounded-2xl p-2 font-bold transition duration-150">
+                            Toggle Dark mode
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            <main>
+                <Outlet />
+            </main>
+        </>
+    );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -65,11 +105,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     }
 
     return (
-        <main className="pt-16 p-4 container mx-auto">
+        <main className="container mx-auto p-4 pt-16">
             <h1>{message}</h1>
             <p>{details}</p>
             {stack && (
-                <pre className="w-full p-4 overflow-x-auto">
+                <pre className="w-full overflow-x-auto p-4">
                     <code>{stack}</code>
                 </pre>
             )}
