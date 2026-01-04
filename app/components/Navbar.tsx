@@ -10,12 +10,14 @@ export default function Navbar() {
             <div className="container mx-auto flex items-center justify-between">
                 <div className="text-text-muted flex items-center gap-4">
                     <NavLink to="/" className={'text-text text-lg font-black'}>
-                        Logo
+                        SkinSale
                     </NavLink>
                     <NavLink
                         to="/test"
                         className={({ isActive }) =>
-                            isActive ? 'text-text' : 'text-text-muted'
+                            isActive
+                                ? 'text-text font-black'
+                                : 'text-text-muted'
                         }
                     >
                         Test
@@ -23,14 +25,19 @@ export default function Navbar() {
                     <NavLink
                         to="/test2"
                         className={({ isActive }) =>
-                            isActive ? 'text-text' : 'text-text-muted'
+                            isActive
+                                ? 'text-text font-black'
+                                : 'text-text-muted'
                         }
                     >
                         Test2
                     </NavLink>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-2">
                     <ThemeButton />
+                    <button className="bg-accent dark:text-bg text-text cursor-pointer rounded-lg px-4 py-2 font-bold transition duration-150 hover:brightness-110">
+                        Sign In
+                    </button>
                 </div>
             </div>
         </nav>

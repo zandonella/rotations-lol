@@ -1,13 +1,14 @@
 import { useTheme } from '../ThemeProvider';
+import { LuSun, LuMoon } from 'react-icons/lu';
 
 export default function ThemeButton() {
-    const { toggle } = useTheme();
+    const { toggle, theme } = useTheme();
     return (
         <button
-            className="cursor-pointer rounded-2xl p-2 font-bold transition duration-150"
+            className="hover:text-accent cursor-pointer px-1 transition-colors duration-200 ease-in-out"
             onClick={toggle}
         >
-            Toggle Dark mode
+            {theme === 'dark' ? <LuSun size={28} /> : <LuMoon size={28} />}
         </button>
     );
 }

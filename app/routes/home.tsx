@@ -17,7 +17,7 @@ export default function Home() {
             <button className="bg-primary text-bg-light cursor-pointer rounded-2xl p-2 font-bold transition duration-150 hover:brightness-110">
                 Click me
             </button>
-            <button className="bg-accent text-bg-light cursor-pointer rounded-2xl p-2 font-bold transition duration-150 hover:brightness-110">
+            <button className="bg-accent cursor-pointer rounded-2xl p-2 font-bold transition duration-150 hover:brightness-110">
                 Click me
             </button>
         </div>

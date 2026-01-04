@@ -31,7 +31,7 @@ export const links: Route.LinksFunction = () => [
 
 export async function loader({ request }: Route.LoaderArgs) {
     const stored = await themeCookie.parse(request.headers.get('Cookie'));
-    const theme: Theme = stored === 'dark' ? 'dark' : 'light';
+    const theme: Theme = stored === 'light' ? 'light' : 'dark';
     return data({ theme });
 }
 
@@ -52,7 +52,7 @@ export async function action({ request }: Route.ActionArgs) {
 export function Layout({ children }: { children: React.ReactNode }) {
     const { theme } = useLoaderData<typeof loader>();
     return (
-        <html lang="en" className={theme === 'dark' ? 'dark' : ''}>
+        <html lang="en" className={theme === 'light' ? '' : 'dark'}>
             <head>
                 <meta charSet="utf-8" />
                 <meta
