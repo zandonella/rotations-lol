@@ -1,15 +1,20 @@
 import {
+    data,
     isRouteErrorResponse,
     Links,
     Meta,
-    NavLink,
     Outlet,
     Scripts,
     ScrollRestoration,
+    useLoaderData,
 } from 'react-router';
 
 import type { Route } from './+types/root';
 import './app.css';
+import Navbar from './components/Navbar';
+import { ThemeProvider } from './ThemeProvider';
+import type { Theme } from './types.ts';
+import { themeCookie } from './cookies.server';
 
 export const links: Route.LinksFunction = () => [
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -24,9 +29,30 @@ export const links: Route.LinksFunction = () => [
     },
 ];
 
+export async function loader({ request }: Route.LoaderArgs) {
+    const stored = await themeCookie.parse(request.headers.get('Cookie'));
+    const theme: Theme = stored === 'dark' ? 'dark' : 'light';
+    return data({ theme });
+}
+
+export async function action({ request }: Route.ActionArgs) {
+    const body = await request.json().catch(() => ({}));
+    const next = body?.theme;
+
+    if (next !== 'light' && next !== 'dark') {
+        return new Response('Invalid theme', { status: 400 });
+    }
+
+    return data(
+        { ok: true },
+        { headers: { 'Set-Cookie': await themeCookie.serialize(next) } },
+    );
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+    const { theme } = useLoaderData<typeof loader>();
     return (
-        <html lang="en" className="">
+        <html lang="en" className={theme === 'dark' ? 'dark' : ''}>
             <head>
                 <meta charSet="utf-8" />
                 <meta
@@ -46,44 +72,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+    const { theme } = useLoaderData<typeof loader>();
+
     return (
         <>
-            <nav className="bg-bg text-text p-4 shadow">
-                <div className="container mx-auto flex items-center justify-between">
-                    <div className="text-text-muted flex items-center gap-4">
-                        <NavLink
-                            to="/"
-                            className={'text-text text-lg font-black'}
-                        >
-                            Logo
-                        </NavLink>
-                        <NavLink
-                            to="/test"
-                            className={({ isActive }) =>
-                                isActive ? 'text-text' : 'text-text-muted'
-                            }
-                        >
-                            Test
-                        </NavLink>
-                        <NavLink
-                            to="/test2"
-                            className={({ isActive }) =>
-                                isActive ? 'text-text' : 'text-text-muted'
-                            }
-                        >
-                            Test2
-                        </NavLink>
-                    </div>
-                    <div className="flex gap-4">
-                        <button className="cursor-pointer rounded-2xl p-2 font-bold transition duration-150">
-                            Toggle Dark mode
-                        </button>
-                    </div>
-                </div>
-            </nav>
-            <main>
-                <Outlet />
-            </main>
+            <ThemeProvider theme={theme}>
+                <Navbar />
+                <main>
+                    <Outlet />
+                </main>
+            </ThemeProvider>
         </>
     );
 }
