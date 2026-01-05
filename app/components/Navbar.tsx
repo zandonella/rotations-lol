@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router';
+import NavbarLink from './Navbarlink';
 import ThemeButton from './ThemeButton';
 
 export default function Navbar() {
@@ -8,30 +9,19 @@ export default function Navbar() {
     return (
         <nav className="bg-bg text-text p-4 shadow">
             <div className="container mx-auto flex items-center justify-between">
-                <div className="text-text-muted flex items-center gap-4">
-                    <NavLink to="/" className={'text-text text-lg font-black'}>
+                <div className="text-text-muted flex items-center">
+                    <NavLink
+                        to="/"
+                        className={'text-text py-1 pr-2 text-lg font-black'}
+                    >
                         SkinSale
                     </NavLink>
-                    <NavLink
-                        to="/test"
-                        className={({ isActive }) =>
-                            isActive
-                                ? 'text-text font-black'
-                                : 'text-text-muted'
-                        }
-                    >
-                        Test
-                    </NavLink>
-                    <NavLink
-                        to="/test2"
-                        className={({ isActive }) =>
-                            isActive
-                                ? 'text-text font-black'
-                                : 'text-text-muted'
-                        }
-                    >
-                        Test2
-                    </NavLink>
+                    <NavbarLink to="/skin-sales" text="Sale Rotation" />
+                    <NavbarLink to="/mythic-shop" text="Mythic Shop" />
+                    <NavbarLink to="/tft" text="TFT" />
+                    <NavbarLink to="/catalog" text="Catalog" />
+                    <NavbarLink to="/wishlist" text="Wishlist" />
+                    <NavbarLink to="/about" text="About" />
                 </div>
                 <div className="flex gap-2">
                     <ThemeButton />
