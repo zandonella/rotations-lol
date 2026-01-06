@@ -15,9 +15,7 @@ export default function NavbarLink({ to, text }: NavbarLinkProps) {
             className={({ isActive }) =>
                 [
                     baseClasses,
-                    isActive
-                        ? 'dark:text-accent text-text'
-                        : 'text-text-muted hover:text-accent',
+                    isActive ? 'text-primary' : 'hover:text-primary',
                 ].join(' ')
             }
         >

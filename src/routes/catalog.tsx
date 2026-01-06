@@ -53,6 +53,33 @@ export default function Catalog() {
                             wishlisted={item.wishlisted}
                         />
                     ))}
+                    {mockItems.map((item) => (
+                        <ItemCard
+                            key={item.name}
+                            name={item.name}
+                            imageUrl={item.imageUrl}
+                            skinline={item.skinline}
+                            wishlisted={item.wishlisted}
+                        />
+                    ))}
+                    {mockItems.map((item) => (
+                        <ItemCard
+                            key={item.name}
+                            name={item.name}
+                            imageUrl={item.imageUrl}
+                            skinline={item.skinline}
+                            wishlisted={item.wishlisted}
+                        />
+                    ))}
+                    {mockItems.map((item) => (
+                        <ItemCard
+                            key={item.name}
+                            name={item.name}
+                            imageUrl={item.imageUrl}
+                            skinline={item.skinline}
+                            wishlisted={item.wishlisted}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
