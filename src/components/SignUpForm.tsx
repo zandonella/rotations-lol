@@ -11,9 +11,10 @@ import type { ModalMode } from '../lib/types';
 
 interface SignUpFormProps {
     updateMode?: (mode: ModalMode) => void;
+    errors?: string[];
 }
 
-export default function SignUpForm({ updateMode }: SignUpFormProps) {
+export default function SignUpForm({ updateMode, errors }: SignUpFormProps) {
     return (
         <>
             <DialogHeader>
@@ -51,6 +52,18 @@ export default function SignUpForm({ updateMode }: SignUpFormProps) {
                         required
                     />
                 </div>
+                {errors && errors.length > 0 && (
+                    <div className="space-y-2">
+                        {errors.map((error, index) => (
+                            <ul
+                                key={index}
+                                className="text-foreground bg-card border-destructive rounded border-2 p-2 text-sm"
+                            >
+                                <li>{error}</li>
+                            </ul>
+                        ))}
+                    </div>
+                )}
             </div>
             <DialogFooter>
                 <div className="flex w-full flex-col items-center gap-2">
