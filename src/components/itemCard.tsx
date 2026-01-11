@@ -1,4 +1,6 @@
-import { IoIosAdd, IoIosClose } from 'react-icons/io';
+import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
+import { useAuth } from '@/providers/AuthContext';
+import { useState } from 'react';
 
 interface ItemCardProps {
     name: string;
@@ -13,13 +15,16 @@ export default function ItemCard({
     skinline,
     wishlisted,
 }: ItemCardProps) {
+    const { session } = useAuth();
+
+    // const authed = !!session;
+    const authed = false;
+
     if (!name || !imageUrl) {
         return null;
     }
 
-    if (skinline === null) {
-        skinline = 'None';
-    }
+    const skinlineText = skinline ? skinline : 'None';
 
     function toggleWishlist() {
         // Placeholder function for toggling wishlist status
@@ -33,6 +38,26 @@ export default function ItemCard({
         // swap visual state of button
     }
 
+    function getIcon() {
+        if (!authed)
+            return (
+                <IoLockClosedOutline
+                    size={28}
+                    className="text-primary group-hover:text-card"
+                />
+            );
+        if (wishlisted)
+            return (
+                <IoCloseOutline
+                    size={32}
+                    className="text-primary group-hover:text-card"
+                />
+            );
+        return (
+            <IoAdd size={32} className="text-primary group-hover:text-card" />
+        );
+    }
+
     return (
         <div className="bg-card hover:border-primary border-border max-w-3xs rounded-lg border-2 p-4 shadow-sm transition-colors duration-500">
             <div className="relative">
@@ -42,25 +67,15 @@ export default function ItemCard({
                     className="mb-4 w-full rounded-md"
                 />
                 <button
-                    className="bg-card group hover:bg-primary absolute right-0 bottom-0 m-1.5 cursor-pointer rounded-full p-1 shadow-sm transition duration-300 hover:scale-110"
+                    className="bg-card group hover:bg-primary absolute right-0 bottom-0 m-1.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 shadow-sm transition duration-300 hover:scale-110"
                     onClick={toggleWishlist}
                 >
-                    {wishlisted ? (
-                        <IoIosClose
-                            size={32}
-                            className="text-primary group-hover:text-card"
-                        />
-                    ) : (
-                        <IoIosAdd
-                            size={32}
-                            className="text-primary group-hover:text-card"
-                        />
-                    )}
+                    {getIcon()}
                 </button>
             </div>
             <h2>{name}</h2>
             {skinline && (
-                <p className="text-muted-foreground text-sm">{skinline}</p>
+                <p className="text-muted-foreground text-sm">{skinlineText}</p>
             )}
         </div>
     );
