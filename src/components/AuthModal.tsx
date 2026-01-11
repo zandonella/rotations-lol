@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
 import SignUpForm from './SignUpForm';
 import SignInForm from './SignInForm';
-import type { ModalMode, SignUpValues } from '../lib/types';
+import type { ModalMode, SignUpValues, SignInValues } from '../lib/types';
 import validator from 'validator';
 import { useAuth } from '@/providers/AuthContext';
 
@@ -61,6 +61,20 @@ export default function AuthModal() {
         return errs;
     }
 
+    function validateSignIn(values: SignInValues) {
+        const errs: string[] = [];
+
+        if (!validator.isEmail(values.email)) {
+            errs.push('Invalid email address.');
+        }
+
+        if (validator.isEmpty(values.password)) {
+            errs.push('Password cannot be empty.');
+        }
+
+        return errs;
+    }
+
     async function submitHandler(e: React.FormEvent) {
         e.preventDefault();
         setErrors([]);
@@ -69,51 +83,63 @@ export default function AuthModal() {
         const formData = new FormData(e.target as HTMLFormElement);
         const values = Object.fromEntries(formData.entries());
 
-        // Handle form submission based on mode
-        if (mode === 'sign-up') {
-            const signUpValues: SignUpValues = {
-                email: values.email as string,
-                password: values.password as string,
-                confirmPassword: values.confirmPassword as string,
-            };
+        try {
+            if (mode === 'sign-up') {
+                const signUpValues: SignUpValues = {
+                    email: values.email as string,
+                    password: values.password as string,
+                    confirmPassword: values.confirmPassword as string,
+                };
 
-            const errs = validateSignUp(signUpValues);
-            if (errs.length > 0) {
-                setErrors(errs);
-                console.log('Sign Up Errors:', errs);
-                setLoading(false);
-                return;
-            }
+                const errs = validateSignUp(signUpValues);
+                if (errs.length > 0) {
+                    setErrors(errs);
+                    console.log('Sign Up Errors:', errs);
+                    return;
+                }
 
-            // if no validation errors
-            const result = await signUp(
-                signUpValues.email,
-                signUpValues.password,
-            );
-            if (!result.success) {
-                setErrors([result.error.message || 'Error signing up']);
-                console.log('Sign Up Errors:', result.error);
-                setLoading(false);
-                return;
+                // if no validation errors
+                const result = await signUp(
+                    signUpValues.email,
+                    signUpValues.password,
+                );
+                if (!result.success) {
+                    setErrors([result.error.message || 'Error signing up']);
+                    console.log('Sign Up Errors:', result.error);
+                    return;
+                }
+                setSuccess(true);
+            } else if (mode === 'sign-in') {
+                // Sign in logic
+                const signInValues: SignInValues = {
+                    email: values.email as string,
+                    password: values.password as string,
+                };
+
+                const errs = validateSignIn(signInValues);
+                if (errs.length > 0) {
+                    setErrors(errs);
+                    console.log('Sign In Errors:', errs);
+                    return;
+                }
+
+                const result = await signIn(
+                    signInValues.email,
+                    signInValues.password,
+                );
+                if (!result.success) {
+                    setErrors([result.error.message || 'Error signing in']);
+                    console.log('Sign In Errors:', result.error);
+                    return;
+                }
+                setOpen(false);
             }
-            setSuccess(true);
-        } else if (mode === 'sign-in') {
-            // Sign in logic
-            // const signInValues = {
-            //     email: values.email as string,
-            //     password: values.password as string,
-            // };
-            // const result = await signIn(
-            //     signInValues.email,
-            //     signInValues.password,
-            // );
-            // if (!result.success) {
-            //     setErrors([result.error.message || 'Error signing in']);
-            //     console.log('Sign In Errors:', result.error);
-            //     return;
-            // }
+        } catch (error) {
+            setErrors(['An unexpected error occurred. Please try again.']);
+            console.error('Unexpected Error:', error);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     return (
@@ -137,7 +163,12 @@ export default function AuthModal() {
                             />
                         )}
                         {mode === 'sign-in' && (
-                            <SignInForm updateMode={updateMode} />
+                            <SignInForm
+                                updateMode={updateMode}
+                                errors={errors}
+                                loading={loading}
+                                success={success}
+                            />
                         )}
                         {/* Future implementation for 'forgot-password' can be added here */}
                     </form>

@@ -11,9 +11,17 @@ import type { ModalMode } from '../lib/types';
 
 interface SignInFormProps {
     updateMode?: (mode: ModalMode) => void;
+    errors?: string[];
+    loading?: boolean;
+    success?: boolean;
 }
 
-export default function SignInForm({ updateMode }: SignInFormProps) {
+export default function SignInForm({
+    updateMode,
+    errors,
+    loading,
+    success,
+}: SignInFormProps) {
     return (
         <>
             <DialogHeader>
@@ -49,12 +57,30 @@ export default function SignInForm({ updateMode }: SignInFormProps) {
                         required
                     />
                 </div>
+                {errors && errors.length > 0 && (
+                    <div className="space-y-2">
+                        {errors.map((error, index) => (
+                            <ul
+                                key={index}
+                                className="text-foreground bg-destructive/30 border-destructive rounded border-2 p-2 text-sm"
+                            >
+                                <li>{error}</li>
+                            </ul>
+                        ))}
+                    </div>
+                )}
+                {success && (
+                    <div className="text-foreground border-chart-3 bg-chart-3/30 rounded border-2 p-2 text-sm">
+                        You've signed in!
+                    </div>
+                )}
             </div>
             <DialogFooter>
                 <div className="flex w-full flex-col items-center gap-2">
                     <Button
                         type="submit"
                         className="mt-2 w-full cursor-pointer"
+                        disabled={loading}
                     >
                         Sign In
                     </Button>
