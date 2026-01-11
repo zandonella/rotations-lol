@@ -1,6 +1,7 @@
 import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
 import { useState } from 'react';
+import { useAuthModal } from '@/providers/AuthModalContext';
 
 interface ItemCardProps {
     name: string;
@@ -16,9 +17,9 @@ export default function ItemCard({
     wishlisted,
 }: ItemCardProps) {
     const { session } = useAuth();
+    const { openModal } = useAuthModal();
 
-    // const authed = !!session;
-    const authed = false;
+    const authed = !!session;
 
     if (!name || !imageUrl) {
         return null;
@@ -27,13 +28,11 @@ export default function ItemCard({
     const skinlineText = skinline ? skinline : 'None';
 
     function toggleWishlist() {
-        // Placeholder function for toggling wishlist status
-        console.log(
-            `${wishlisted ? 'Removing' : 'Adding'} ${name} to wishlist`,
-        );
-
-        // if authed, make api call to add/remove from wishlist
-        // else, show login modal
+        // if not logged in, open auth modal
+        if (!authed) {
+            openModal();
+            return;
+        }
 
         // swap visual state of button
     }

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { AuthContextProvider } from './providers/AuthContext.tsx';
+import { AuthModalProvider } from './providers/AuthModalContext.tsx';
 import Home from './routes/home.tsx';
 import SkinSales from './routes/skinSales.tsx';
 import MythicShop from './routes/mythicShop.tsx';
@@ -16,17 +17,22 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
             <AuthContextProvider>
-                <Routes>
-                    <Route element={<NavLayout />}>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/skin-sales" element={<SkinSales />} />
-                        <Route path="/mythic-shop" element={<MythicShop />} />
-                        <Route path="/tft" element={<TFT />} />
-                        <Route path="/catalog" element={<Catalog />} />
-                        <Route path="/wishlist" element={<Wishlist />} />
-                        <Route path="/about" element={<About />} />
-                    </Route>
-                </Routes>
+                <AuthModalProvider>
+                    <Routes>
+                        <Route element={<NavLayout />}>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/skin-sales" element={<SkinSales />} />
+                            <Route
+                                path="/mythic-shop"
+                                element={<MythicShop />}
+                            />
+                            <Route path="/tft" element={<TFT />} />
+                            <Route path="/catalog" element={<Catalog />} />
+                            <Route path="/wishlist" element={<Wishlist />} />
+                            <Route path="/about" element={<About />} />
+                        </Route>
+                    </Routes>
+                </AuthModalProvider>
             </AuthContextProvider>
         </BrowserRouter>
     </StrictMode>,

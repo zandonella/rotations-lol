@@ -6,13 +6,10 @@ import SignInForm from './SignInForm';
 import type { ModalMode, SignUpValues, SignInValues } from '../lib/types';
 import validator from 'validator';
 import { useAuth } from '@/providers/AuthContext';
+import { useAuthModal } from '@/providers/AuthModalContext';
 
-interface AuthModalProps {
-    initialOpen?: boolean;
-}
-
-export default function AuthModal({ initialOpen = false }: AuthModalProps) {
-    const [open, setOpen] = useState(initialOpen);
+export default function AuthModal() {
+    const { open, setOpen } = useAuthModal();
     const [mode, setMode] = useState<ModalMode>('sign-up');
     const [errors, setErrors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
