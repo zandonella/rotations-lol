@@ -89,7 +89,7 @@ export default function SignUpForm({
                     <p>
                         Already have an account?{' '}
                         <span
-                            className="hover:text-primary cursor-pointer font-medium underline"
+                            className="hover:text-primary cursor-pointer font-medium underline transition-colors duration-150 ease-in-out"
                             onClick={() => updateMode && updateMode('sign-in')}
                         >
                             Sign in

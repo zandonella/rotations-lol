@@ -7,13 +7,17 @@ import type { ModalMode, SignUpValues, SignInValues } from '../lib/types';
 import validator from 'validator';
 import { useAuth } from '@/providers/AuthContext';
 
-export default function AuthModal() {
-    const [open, setOpen] = useState(true);
+interface AuthModalProps {
+    initialOpen?: boolean;
+}
+
+export default function AuthModal({ initialOpen = false }: AuthModalProps) {
+    const [open, setOpen] = useState(initialOpen);
     const [mode, setMode] = useState<ModalMode>('sign-up');
     const [errors, setErrors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const { signUp, signIn } = useAuth();
+    const { signUp, signIn, session, signOut } = useAuth();
 
     function updateMode(newMode: ModalMode) {
         setMode(newMode);
@@ -145,9 +149,26 @@ export default function AuthModal() {
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <div>
-                <DialogTrigger asChild>
-                    <Button variant="outline">Open Dialog</Button>
-                </DialogTrigger>
+                {session ? (
+                    <Button
+                        size="lg"
+                        variant="ghost"
+                        className="text-md cursor-pointer px-4 font-bold"
+                        onClick={signOut}
+                    >
+                        Sign out
+                    </Button>
+                ) : (
+                    <DialogTrigger asChild>
+                        <Button
+                            size="lg"
+                            variant="default"
+                            className="text-md cursor-pointer px-4 font-bold"
+                        >
+                            Sign Up
+                        </Button>
+                    </DialogTrigger>
+                )}
                 <DialogContent className="sm:max-w-[425px]">
                     <form
                         noValidate

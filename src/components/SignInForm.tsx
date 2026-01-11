@@ -44,7 +44,7 @@ export default function SignInForm({
                     <div className="flex items-baseline justify-between">
                         <Label htmlFor="password">Password</Label>
                         <div className="mt-2 text-right">
-                            <span className="hover:text-primary cursor-pointer text-sm leading-none font-medium underline">
+                            <span className="hover:text-primary cursor-pointer text-sm leading-none font-medium underline transition-colors duration-150 ease-in-out">
                                 Forgot password?
                             </span>
                         </div>
@@ -87,7 +87,7 @@ export default function SignInForm({
                     <p>
                         Don't have an account?{' '}
                         <span
-                            className="hover:text-primary cursor-pointer font-medium underline"
+                            className="hover:text-primary cursor-pointer font-medium underline transition-colors duration-150 ease-in-out"
                             onClick={() => updateMode && updateMode('sign-up')}
                         >
                             Sign Up

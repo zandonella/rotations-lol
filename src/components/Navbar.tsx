@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router';
 import NavbarLink from './Navbarlink';
 import ThemeButton from './ThemeButton';
+import AuthModal from './AuthModal';
 
 export default function Navbar() {
     return (
@@ -24,9 +25,7 @@ export default function Navbar() {
                 </div>
                 <div className="flex gap-2">
                     <ThemeButton />
-                    <button className="bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer rounded-lg px-4 py-2 font-bold transition duration-150 ease-in-out">
-                        Sign In
-                    </button>
+                    <AuthModal />
                 </div>
             </div>
         </nav>
