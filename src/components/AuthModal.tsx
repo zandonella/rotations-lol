@@ -5,15 +5,20 @@ import SignUpForm from './SignUpForm';
 import SignInForm from './SignInForm';
 import type { ModalMode, SignUpValues } from '../lib/types';
 import validator from 'validator';
+import { useAuth } from '@/providers/AuthContext';
 
 export default function AuthModal() {
     const [open, setOpen] = useState(true);
     const [mode, setMode] = useState<ModalMode>('sign-up');
     const [errors, setErrors] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const { signUp, signIn } = useAuth();
 
     function updateMode(newMode: ModalMode) {
         setMode(newMode);
         setErrors([]);
+        setSuccess(false);
     }
 
     function handleOpenChange(nextOpen: boolean) {
@@ -21,6 +26,7 @@ export default function AuthModal() {
         if (!nextOpen) {
             setMode('sign-up');
             setErrors([]);
+            setSuccess(false);
         }
     }
 
@@ -31,30 +37,34 @@ export default function AuthModal() {
             errs.push('Invalid email address.');
         }
 
-        if (
-            !validator.isStrongPassword(values.password, {
-                minLength: 8,
-                minLowercase: 1,
-                minUppercase: 1,
-                minNumbers: 1,
-                minSymbols: 1,
-            })
-        ) {
-            errs.push(
-                'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and symbols.',
-            );
-        }
+        // if (
+        //     !validator.isStrongPassword(values.password, {
+        //         minLength: 8,
+        //         minLowercase: 1,
+        //         minUppercase: 1,
+        //         minNumbers: 1,
+        //         minSymbols: 1,
+        //     })
+        // ) {
+        //     errs.push(
+        //         'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and symbols.',
+        //     );
+        // }
 
-        if (values.password !== values.confirmPassword) {
+        if (
+            values.password !== values.confirmPassword ||
+            !values.confirmPassword
+        ) {
             errs.push('Passwords do not match.');
         }
 
         return errs;
     }
 
-    function submitHandler(e: React.FormEvent) {
+    async function submitHandler(e: React.FormEvent) {
         e.preventDefault();
         setErrors([]);
+        setLoading(true);
 
         const formData = new FormData(e.target as HTMLFormElement);
         const values = Object.fromEntries(formData.entries());
@@ -71,11 +81,39 @@ export default function AuthModal() {
             if (errs.length > 0) {
                 setErrors(errs);
                 console.log('Sign Up Errors:', errs);
+                setLoading(false);
                 return;
             }
+
+            // if no validation errors
+            const result = await signUp(
+                signUpValues.email,
+                signUpValues.password,
+            );
+            if (!result.success) {
+                setErrors([result.error.message || 'Error signing up']);
+                console.log('Sign Up Errors:', result.error);
+                setLoading(false);
+                return;
+            }
+            setSuccess(true);
         } else if (mode === 'sign-in') {
             // Sign in logic
+            // const signInValues = {
+            //     email: values.email as string,
+            //     password: values.password as string,
+            // };
+            // const result = await signIn(
+            //     signInValues.email,
+            //     signInValues.password,
+            // );
+            // if (!result.success) {
+            //     setErrors([result.error.message || 'Error signing in']);
+            //     console.log('Sign In Errors:', result.error);
+            //     return;
+            // }
         }
+        setLoading(false);
     }
 
     return (
@@ -94,6 +132,8 @@ export default function AuthModal() {
                             <SignUpForm
                                 updateMode={updateMode}
                                 errors={errors}
+                                loading={loading}
+                                success={success}
                             />
                         )}
                         {mode === 'sign-in' && (

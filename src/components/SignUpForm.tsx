@@ -12,9 +12,16 @@ import type { ModalMode } from '../lib/types';
 interface SignUpFormProps {
     updateMode?: (mode: ModalMode) => void;
     errors?: string[];
+    loading?: boolean;
+    success?: boolean;
 }
 
-export default function SignUpForm({ updateMode, errors }: SignUpFormProps) {
+export default function SignUpForm({
+    updateMode,
+    errors,
+    loading,
+    success,
+}: SignUpFormProps) {
     return (
         <>
             <DialogHeader>
@@ -57,11 +64,16 @@ export default function SignUpForm({ updateMode, errors }: SignUpFormProps) {
                         {errors.map((error, index) => (
                             <ul
                                 key={index}
-                                className="text-foreground bg-card border-destructive rounded border-2 p-2 text-sm"
+                                className="text-foreground bg-destructive/30 border-destructive rounded border-2 p-2 text-sm"
                             >
                                 <li>{error}</li>
                             </ul>
                         ))}
+                    </div>
+                )}
+                {success && (
+                    <div className="text-foreground border-chart-3 bg-chart-3/30 rounded border-2 p-2 text-sm">
+                        Account created successfully!
                     </div>
                 )}
             </div>
@@ -70,6 +82,7 @@ export default function SignUpForm({ updateMode, errors }: SignUpFormProps) {
                     <Button
                         type="submit"
                         className="mt-2 w-full cursor-pointer"
+                        disabled={loading}
                     >
                         Sign Up
                     </Button>
