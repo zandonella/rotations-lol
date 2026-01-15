@@ -43,7 +43,7 @@ export default function ItemCard({
         if (!authed)
             return (
                 <IoLockClosedOutline
-                    size={28}
+                    size={24}
                     className="text-primary group-hover:text-card"
                 />
             );
