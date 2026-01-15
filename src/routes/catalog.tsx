@@ -25,6 +25,7 @@ export default function Catalog() {
             const { data, error, count } = await supabase
                 .from('CatalogItem')
                 .select('*', { count: 'exact' })
+                .order('Champion', { ascending: true })
                 .order('RiotItemID', { ascending: true })
                 .range(from, to);
 
