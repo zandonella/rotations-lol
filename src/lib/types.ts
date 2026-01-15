@@ -18,3 +18,17 @@ export type CatalogItemRecord = {
     Skinline: string | null;
     ImageURL: string;
 };
+
+export type CatalogFilters = {
+    champions: string[]; // e.g. ["Ahri", "Yasuo"]
+    types: {
+        skins: boolean; // true => include, false => exclude
+        chromas: boolean;
+        icons: boolean;
+        emotes: boolean;
+    };
+    skinline?: string; // optional exact match
+    search?: string; // optional text search
+};
+
+export type CatalogTypes = 'skins' | 'chromas' | 'icons' | 'emotes';
