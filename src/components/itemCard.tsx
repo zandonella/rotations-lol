@@ -1,7 +1,6 @@
 import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
-import { Skeleton } from './ui/skeleton';
 
 interface ItemCardProps {
     name: string;
@@ -16,7 +15,6 @@ export default function ItemCard({
     imageUrl,
     skinline,
     wishlisted,
-    loading = false,
 }: ItemCardProps) {
     const { session } = useAuth();
     const { openModal } = useAuthModal();
