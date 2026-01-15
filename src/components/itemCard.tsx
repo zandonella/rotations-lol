@@ -1,6 +1,5 @@
 import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
-import { useState } from 'react';
 import { useAuthModal } from '@/providers/AuthModalContext';
 
 interface ItemCardProps {

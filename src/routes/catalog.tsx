@@ -1,86 +1,82 @@
+import { useEffect, useState } from 'react';
 import ItemCard from '../components/itemCard';
+import CatalogPagination from '../components/CatalogPagination';
+import supabase from '../lib/supabase.ts';
+import type { CatalogItemRecord } from '@/lib/types.ts';
 
-const mockItems = [
-    {
-        name: 'Pool Party Sett',
-        skinline: 'Pool Party',
-        imageUrl:
-            '//wsrv.nl/?url=https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/sett/skins/skin10/images/sett_splash_tile_10.jpg',
-        wishlisted: false,
-    },
-    {
-        name: 'Prestige Coven Akali',
-        skinline: 'Coven',
-        imageUrl:
-            '//wsrv.nl/?url=https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/akali/skins/skin82/images/akali_splash_tile_82.jpg',
-        wishlisted: false,
-    },
-    {
-        name: 'Definitely Not Blitzcrank',
-        skinline: 'Definitely Not',
-        imageUrl:
-            '//wsrv.nl/?url=https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/blitzcrank/skins/skin05/images/blitzcrank_splash_tile_5.jpg',
-        wishlisted: true,
-    },
-    {
-        name: 'Panda Pal Lux',
-        skinline: null,
-        imageUrl:
-            '//wsrv.nl/?url=https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/lux/skins/skin72/images/lux_splash_tile_72.skins_lux_skin72.jpg',
-        wishlisted: false,
-    },
-    {
-        name: 'Debonair Brand',
-        skinline: 'Debonair',
-        imageUrl:
-            '//wsrv.nl/?url=https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/brand/skins/skin21/images/brand_splash_tile_21.jpg',
-        wishlisted: false,
-    },
-];
+const PAGE_SIZE = 20;
 
 export default function Catalog() {
+    const [items, setItems] = useState<CatalogItemRecord[]>([]);
+    const [page, setPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function fetchPage() {
+            setLoading(true);
+            setError(null);
+
+            const from = (page - 1) * PAGE_SIZE;
+            const to = from + PAGE_SIZE - 1;
+
+            const { data, error, count } = await supabase
+                .from('CatalogItem')
+                .select('*', { count: 'exact' })
+                .order('RiotItemID', { ascending: true })
+                .range(from, to);
+
+            if (error) {
+                setError(error.message);
+                setItems([]);
+                setTotalItems(0);
+            } else {
+                setItems(data || []);
+                setTotalItems(count || 0);
+            }
+            setLoading(false);
+        }
+        fetchPage();
+    }, [page]);
+
+    const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+
+    let content;
+
+    if (loading) {
+        content = <p>Loading...</p>;
+    } else if (error) {
+        content = <p className="text-red-500">Error: {error}</p>;
+    } else if (items.length === 0) {
+        content = <p>No items found.</p>;
+    } else {
+        content = (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {items.map((item: CatalogItemRecord) => (
+                    <ItemCard
+                        key={item.ItemID}
+                        name={item.Name}
+                        imageUrl={item.ImageURL}
+                        skinline={item.Skinline}
+                        wishlisted={false}
+                    />
+                ))}
+            </div>
+        );
+    }
+
     return (
         <div className="text-text container mx-auto mt-8 flex items-center justify-center px-4">
             <div className="flex flex-col items-center gap-6 p-8">
                 <p className="text-xl font-bold">Catalog Page</p>
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    {mockItems.map((item) => (
-                        <ItemCard
-                            key={item.name}
-                            name={item.name}
-                            imageUrl={item.imageUrl}
-                            skinline={item.skinline}
-                            wishlisted={item.wishlisted}
-                        />
-                    ))}
-                    {mockItems.map((item) => (
-                        <ItemCard
-                            key={item.name}
-                            name={item.name}
-                            imageUrl={item.imageUrl}
-                            skinline={item.skinline}
-                            wishlisted={item.wishlisted}
-                        />
-                    ))}
-                    {mockItems.map((item) => (
-                        <ItemCard
-                            key={item.name}
-                            name={item.name}
-                            imageUrl={item.imageUrl}
-                            skinline={item.skinline}
-                            wishlisted={item.wishlisted}
-                        />
-                    ))}
-                    {mockItems.map((item) => (
-                        <ItemCard
-                            key={item.name}
-                            name={item.name}
-                            imageUrl={item.imageUrl}
-                            skinline={item.skinline}
-                            wishlisted={item.wishlisted}
-                        />
-                    ))}
-                </div>
+                {content}
+                <CatalogPagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                />
             </div>
         </div>
     );

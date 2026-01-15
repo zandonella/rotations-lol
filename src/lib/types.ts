@@ -9,3 +9,12 @@ export type SignInValues = {
     email: string;
     password: string;
 };
+
+export type CatalogItemRecord = {
+    ItemID: number;
+    ItemType: string;
+    RiotItemID: string;
+    Name: string;
+    Skinline: string | null;
+    ImageURL: string;
+};
