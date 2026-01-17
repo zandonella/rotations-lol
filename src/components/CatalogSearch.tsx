@@ -19,8 +19,6 @@ export default function CatalogSearch({
 }: CatalogSearchProps) {
     const [itemTypes, setItemTypes] = useState<number[]>(filters.itemTypeIDs);
 
-    console.log('Current item types in CatalogSearch:', itemTypes);
-
     function updateItemTypes(types: number[]) {
         setItemTypes(types);
         setFilters((prev) => ({
