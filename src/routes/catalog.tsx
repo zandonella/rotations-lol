@@ -7,18 +7,31 @@ import CatalogSearch from '../components/CatalogSearch.tsx';
 
 const PAGE_SIZE = 20;
 
-const DEFAULT_FILTERS: CatalogFilters = {
+export const DEFAULT_FILTERS: CatalogFilters = {
     championIDs: [],
     skinlineID: undefined,
     itemTypeIDs: [1],
     search: '',
 };
 
+const STORAGE_KEY = 'catalogFilters';
+
+function loadStoredFilters(): CatalogFilters {
+    try {
+        if (typeof window === 'undefined') return DEFAULT_FILTERS;
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return DEFAULT_FILTERS;
+        return JSON.parse(stored) as CatalogFilters;
+    } catch {
+        return DEFAULT_FILTERS;
+    }
+}
+
 export default function Catalog() {
     const [items, setItems] = useState<CatalogItemRecord[]>([]);
     const [page, setPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
-    const [filters, setFilters] = useState<CatalogFilters>(DEFAULT_FILTERS);
+    const [filters, setFilters] = useState<CatalogFilters>(loadStoredFilters());
     const [searchQuery, setSearchQuery] = useState('');
 
     const [loading, setLoading] = useState(true);
@@ -28,6 +41,16 @@ export default function Catalog() {
         setPage(1);
         setFilters((prev) => ({ ...prev, ...partial }));
     }
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
+        } catch {}
+    }, [filters]);
+
+    useEffect(() => {
+        setSearchQuery(filters.search ?? '');
+    }, []);
 
     useEffect(() => {
         const trimmed = searchQuery.trim();

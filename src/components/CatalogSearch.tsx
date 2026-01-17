@@ -33,6 +33,7 @@ export default function CatalogSearch({
                     const query = e.target.value;
                     setSearchQuery(query);
                 }}
+                defaultValue={filters.search}
             />
             <ItemTypeFilter
                 itemTypes={itemTypes}
