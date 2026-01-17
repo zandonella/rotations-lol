@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
 import ItemCard from '../components/itemCard';
 import CatalogPagination from '../components/CatalogPagination';
 import supabase from '../lib/supabase.ts';
@@ -24,14 +24,18 @@ export default function Catalog() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    function setFiltersAndResetPage(partial: Partial<CatalogFilters>) {
+        setPage(1);
+        setFilters((prev) => ({ ...prev, ...partial }));
+    }
+
     useEffect(() => {
         const trimmed = searchQuery.trim();
 
         const delayDebounce = setTimeout(() => {
             if (filters.search === trimmed) return;
 
-            setFilters((prev) => ({ ...prev, search: trimmed }));
-            setPage(1);
+            setFiltersAndResetPage({ search: trimmed });
         }, 500);
         return () => clearTimeout(delayDebounce);
     }, [searchQuery]);
@@ -41,6 +45,7 @@ export default function Catalog() {
             if (filters.itemTypeIDs.length === 0) {
                 setItems([]);
                 setTotalItems(0);
+                setPage(1);
                 setLoading(false);
                 return;
             }
@@ -119,7 +124,7 @@ export default function Catalog() {
             <p className="text-xl font-bold">Catalog Page</p>
             <CatalogSearch
                 setSearchQuery={setSearchQuery}
-                setFilters={setFilters}
+                setFilters={setFiltersAndResetPage}
                 filters={filters}
             />
             <div className="flex flex-col items-center gap-6 p-8 pt-0">

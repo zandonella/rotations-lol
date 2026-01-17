@@ -1,5 +1,4 @@
 import type { CatalogFilters } from '@/lib/types.ts';
-import type { Dispatch, SetStateAction } from 'react';
 import { Checkbox } from './ui/checkbox';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -8,7 +7,7 @@ import ItemTypeFilter from './ItemTypeFilter';
 
 interface CatalogSearchProps {
     setSearchQuery: (query: string) => void;
-    setFilters: Dispatch<SetStateAction<CatalogFilters>>;
+    setFilters: (partial: Partial<CatalogFilters>) => void;
     filters: CatalogFilters;
 }
 
@@ -21,10 +20,7 @@ export default function CatalogSearch({
 
     function updateItemTypes(types: number[]) {
         setItemTypes(types);
-        setFilters((prev) => ({
-            ...prev,
-            itemTypeIDs: types,
-        }));
+        setFilters({ itemTypeIDs: types });
     }
 
     return (
