@@ -7,8 +7,6 @@ import {
     MultiSelectValue,
 } from '@/components/ui/multi-select';
 
-const CHAMPIONS = [];
-
 export default function ChampionFilter() {
     return (
         <MultiSelect>
@@ -17,7 +15,7 @@ export default function ChampionFilter() {
             </MultiSelectTrigger>
             <MultiSelectContent>
                 <MultiSelectGroup>
-                    {CHAMPIONS.map((champion) => (
+                    {champions.map((champion) => (
                         <MultiSelectItem key={champion} value={champion}>
                             {champion}
                         </MultiSelectItem>

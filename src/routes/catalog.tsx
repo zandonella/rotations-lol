@@ -25,8 +25,13 @@ export default function Catalog() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        const trimmed = searchQuery.trim();
+
         const delayDebounce = setTimeout(() => {
-            setFilters((prev) => ({ ...prev, search: searchQuery }));
+            if (filters.search === trimmed) return;
+
+            setFilters((prev) => ({ ...prev, search: trimmed }));
+            setPage(1);
         }, 500);
         return () => clearTimeout(delayDebounce);
     }, [searchQuery]);
