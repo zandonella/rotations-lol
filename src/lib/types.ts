@@ -10,6 +10,16 @@ export type SignInValues = {
     password: string;
 };
 
+export type CatalogFilters = {
+    championIDs: number[];
+    skinlineID?: number;
+    itemTypeIDs: number[];
+    search: string;
+};
+
+export type CatalogTypes = 'skins' | 'chromas' | 'icons' | 'emotes';
+
+// database types
 export type CatalogItemRecord = {
     ItemID: number;
     ItemType: string;
@@ -19,16 +29,18 @@ export type CatalogItemRecord = {
     ImageURL: string;
 };
 
-export type CatalogFilters = {
-    champions: string[]; // e.g. ["Ahri", "Yasuo"]
-    types: {
-        skins: boolean; // true => include, false => exclude
-        chromas: boolean;
-        icons: boolean;
-        emotes: boolean;
-    };
-    skinline?: string; // optional exact match
-    search?: string; // optional text search
+export type ChampionRecord = {
+    id: number;
+    Slug: string;
+    Name: string;
 };
 
-export type CatalogTypes = 'skins' | 'chromas' | 'icons' | 'emotes';
+export type SkinlineRecord = {
+    id: number;
+    Name: string;
+};
+
+export type ItemTypeRecord = {
+    id: number;
+    Type: string;
+};

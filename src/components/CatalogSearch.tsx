@@ -17,17 +17,15 @@ export default function CatalogSearch({
     setFilters,
     filters,
 }: CatalogSearchProps) {
-    const [itemTypes, setItemTypes] = useState<string[]>(['skins']);
-    function updateItemTypes(types: string[]) {
+    const [itemTypes, setItemTypes] = useState<number[]>(filters.itemTypeIDs);
+
+    console.log('Current item types in CatalogSearch:', itemTypes);
+
+    function updateItemTypes(types: number[]) {
         setItemTypes(types);
         setFilters((prev) => ({
             ...prev,
-            types: {
-                skins: types.includes('skins'),
-                chromas: types.includes('chromas'),
-                icons: types.includes('icons'),
-                emotes: types.includes('emotes'),
-            },
+            itemTypeIDs: types,
         }));
     }
 

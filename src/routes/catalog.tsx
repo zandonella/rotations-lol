@@ -8,14 +8,9 @@ import CatalogSearch from '../components/CatalogSearch.tsx';
 const PAGE_SIZE = 20;
 
 const DEFAULT_FILTERS: CatalogFilters = {
-    champions: [],
-    types: {
-        skins: true,
-        chromas: false,
-        icons: false,
-        emotes: false,
-    },
-    skinline: undefined,
+    championIDs: [],
+    skinlineID: undefined,
+    itemTypeIDs: [1],
     search: '',
 };
 
@@ -38,6 +33,13 @@ export default function Catalog() {
 
     useEffect(() => {
         async function fetchPage() {
+            if (filters.itemTypeIDs.length === 0) {
+                setItems([]);
+                setTotalItems(0);
+                setLoading(false);
+                return;
+            }
+
             setLoading(true);
             setError(null);
 
@@ -47,32 +49,23 @@ export default function Catalog() {
             let query = supabase
                 .from('CatalogItem')
                 .select('*', { count: 'exact' })
-                .order('Champion', { ascending: true })
+                .order('ChampionID', { ascending: true })
                 .order('RiotItemID', { ascending: true });
 
-            if (filters.champions.length > 0) {
-                query = query.in('Champion', filters.champions);
+            if (filters.championIDs.length > 0) {
+                query = query.in('ChampionID', filters.championIDs);
             }
 
-            if (filters.skinline) {
-                query = query.eq('Skinline', filters.skinline);
+            if (filters.skinlineID) {
+                query = query.eq('SkinlineID', filters.skinlineID);
             }
 
             if (filters.search?.trim()) {
                 query = query.ilike('Name', `%${filters.search.trim()}%`);
             }
 
-            if (!filters.types.skins) {
-                query = query.neq('ItemType', 'Skin');
-            }
-            if (!filters.types.chromas) {
-                query = query.neq('ItemType', 'Chroma');
-            }
-            if (!filters.types.icons) {
-                query = query.neq('ItemType', 'Icon');
-            }
-            if (!filters.types.emotes) {
-                query = query.neq('ItemType', 'Emote');
+            if (filters.itemTypeIDs.length > 0) {
+                query = query.in('ItemType', filters.itemTypeIDs);
             }
 
             const { data, error, count } = await query.range(from, to);

@@ -6,25 +6,40 @@ import {
     MultiSelectTrigger,
     MultiSelectValue,
 } from '@/components/ui/multi-select';
+import { useEffect, useState } from 'react';
+import supabase from '@/lib/supabase.ts';
+import type { ItemTypeRecord } from '@/lib/types.ts';
 
 interface ItemTypeFilterProps {
-    setItemTypes: (types: string[]) => void;
-    itemTypes: string[];
+    setItemTypes: (types: number[]) => void;
+    itemTypes: number[];
 }
-
-const ITEM_TYPES = [
-    { value: 'skins', label: 'Skins' },
-    { value: 'chromas', label: 'Chromas' },
-    { value: 'icons', label: 'Icons' },
-    { value: 'emotes', label: 'Emotes' },
-];
 
 export default function ItemTypeFilter({
     setItemTypes,
     itemTypes,
 }: ItemTypeFilterProps) {
+    const [types, setTypes] = useState<ItemTypeRecord[]>([]);
+
+    useEffect(() => {
+        async function fetchTypes() {
+            const { data, error } = await supabase.from('ItemType').select('*');
+
+            if (error) {
+                console.error('Failed to fetch item types', error);
+                return;
+            }
+
+            setTypes(data ?? []);
+        }
+        fetchTypes();
+    }, []);
+
     return (
-        <MultiSelect values={itemTypes} onValuesChange={setItemTypes}>
+        <MultiSelect
+            values={itemTypes.map(String)}
+            onValuesChange={(values) => setItemTypes(values.map(Number))}
+        >
             <MultiSelectTrigger className="w-full max-w-[250px] shrink cursor-pointer">
                 <MultiSelectValue
                     placeholder="Select item types..."
@@ -33,13 +48,13 @@ export default function ItemTypeFilter({
             </MultiSelectTrigger>
             <MultiSelectContent>
                 <MultiSelectGroup>
-                    {ITEM_TYPES.map((type) => (
+                    {types.map((type) => (
                         <MultiSelectItem
-                            key={type.value}
-                            value={type.value}
+                            key={type.id}
+                            value={type.id.toString()}
                             className="cursor-pointer"
                         >
-                            {type.label}
+                            {type.Type}
                         </MultiSelectItem>
                     ))}
                 </MultiSelectGroup>
