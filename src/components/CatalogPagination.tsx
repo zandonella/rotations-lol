@@ -46,6 +46,12 @@ export default function CatalogPagination({
 }: CatalogPaginationProps) {
     const visiblePages = getVisiblePageNumbers(currentPage, totalPages);
 
+    function clampPage(page: number) {
+        if (page < 1) return 1;
+        if (page > totalPages) return totalPages;
+        return page;
+    }
+
     return (
         <Pagination>
             <PaginationContent>
@@ -54,8 +60,9 @@ export default function CatalogPagination({
                         href="#"
                         onClick={(e) => {
                             e.preventDefault();
-                            onPageChange(currentPage - 1);
+                            onPageChange(clampPage(currentPage - 1));
                         }}
+                        disabled={currentPage === 1}
                     />
                 </PaginationItem>
                 {visiblePages.map((page, idx) => {
@@ -64,7 +71,9 @@ export default function CatalogPagination({
                             <EllipsisInput
                                 key={`ellipsis-${idx}`}
                                 totalPages={totalPages}
-                                onPageChange={onPageChange}
+                                onPageChange={(page) =>
+                                    onPageChange(clampPage(page))
+                                }
                             />
                         );
                     }
@@ -75,7 +84,7 @@ export default function CatalogPagination({
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    onPageChange(page);
+                                    onPageChange(clampPage(page));
                                 }}
                                 isActive={page === currentPage}
                             >
@@ -89,8 +98,9 @@ export default function CatalogPagination({
                         href="#"
                         onClick={(e) => {
                             e.preventDefault();
-                            onPageChange(currentPage + 1);
+                            onPageChange(clampPage(currentPage + 1));
                         }}
+                        disabled={currentPage === totalPages}
                     />
                 </PaginationItem>
             </PaginationContent>
