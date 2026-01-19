@@ -45,10 +45,7 @@ export default function ChampionFilter({
             }
         >
             <MultiSelectTrigger className="max-w-[250px] shrink">
-                <MultiSelectValue
-                    placeholder="Select champions..."
-                    className=""
-                />
+                <MultiSelectValue placeholder="Select champions..." />
             </MultiSelectTrigger>
             <MultiSelectContent>
                 <MultiSelectGroup>
@@ -57,6 +54,7 @@ export default function ChampionFilter({
                             key={champ.Slug}
                             value={champ.id.toString()}
                             badgeLabel={champ.Name}
+                            className="cursor-pointer"
                         >
                             {/* Dropdown content */}
                             <div className="flex items-center gap-2">

@@ -40,7 +40,7 @@ export default function ItemTypeFilter({
             values={itemTypes.map(String)}
             onValuesChange={(values) => setItemTypes(values.map(Number))}
         >
-            <MultiSelectTrigger className="max-w-[250px] shrink cursor-pointer">
+            <MultiSelectTrigger className="max-w-[250px] shrink">
                 <MultiSelectValue
                     placeholder="Select item types..."
                     overflowBehavior="cutoff"
