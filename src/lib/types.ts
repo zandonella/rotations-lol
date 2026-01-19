@@ -33,6 +33,7 @@ export type ChampionRecord = {
     id: number;
     Slug: string;
     Name: string;
+    ImageURL: string;
 };
 
 export type SkinlineRecord = {

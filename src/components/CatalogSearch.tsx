@@ -1,9 +1,8 @@
 import type { CatalogFilters } from '@/lib/types.ts';
-import { Checkbox } from './ui/checkbox';
 import { Input } from './ui/input';
-import { Label } from './ui/label';
 import { useState } from 'react';
 import ItemTypeFilter from './ItemTypeFilter';
+import ChampionFilter from './ChampionFilter';
 
 interface CatalogSearchProps {
     setSearchQuery: (query: string) => void;
@@ -39,6 +38,7 @@ export default function CatalogSearch({
                 itemTypes={itemTypes}
                 setItemTypes={updateItemTypes}
             />
+            <ChampionFilter />
         </div>
     );
 }
