@@ -10,7 +10,15 @@ import supabase from '@/lib/supabase';
 import type { ChampionRecord } from '@/lib/types';
 import { useEffect, useState } from 'react';
 
-export default function ChampionFilter() {
+interface ChampionFilterProps {
+    selectedChampions: number[];
+    setSelectedChampions: (champIDs: number[]) => void;
+}
+
+export default function ChampionFilter({
+    selectedChampions,
+    setSelectedChampions,
+}: ChampionFilterProps) {
     const [champs, setChamps] = useState<ChampionRecord[]>([]);
     useEffect(() => {
         async function fetchTypes() {
@@ -30,7 +38,12 @@ export default function ChampionFilter() {
     }, []);
 
     return (
-        <MultiSelect>
+        <MultiSelect
+            values={selectedChampions.map(String)}
+            onValuesChange={(values) =>
+                setSelectedChampions(values.map(Number))
+            }
+        >
             <MultiSelectTrigger className="max-w-[250px] shrink">
                 <MultiSelectValue
                     placeholder="Select champions..."
@@ -42,7 +55,7 @@ export default function ChampionFilter() {
                     {champs.map((champ) => (
                         <MultiSelectItem
                             key={champ.Slug}
-                            value={champ.Slug}
+                            value={champ.id.toString()}
                             badgeLabel={champ.Name}
                         >
                             {/* Dropdown content */}

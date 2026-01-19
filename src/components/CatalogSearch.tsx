@@ -16,10 +16,18 @@ export default function CatalogSearch({
     filters,
 }: CatalogSearchProps) {
     const [itemTypes, setItemTypes] = useState<number[]>(filters.itemTypeIDs);
+    const [selectedChampions, setSelectedChampions] = useState<number[]>(
+        filters.championIDs,
+    );
 
     function updateItemTypes(types: number[]) {
         setItemTypes(types);
         setFilters({ itemTypeIDs: types });
+    }
+
+    function updateChampions(champIDs: number[]) {
+        setSelectedChampions(champIDs);
+        setFilters({ championIDs: champIDs });
     }
 
     return (
@@ -38,7 +46,10 @@ export default function CatalogSearch({
                 itemTypes={itemTypes}
                 setItemTypes={updateItemTypes}
             />
-            <ChampionFilter />
+            <ChampionFilter
+                selectedChampions={selectedChampions}
+                setSelectedChampions={updateChampions}
+            />
         </div>
     );
 }
