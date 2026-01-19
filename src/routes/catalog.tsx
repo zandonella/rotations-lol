@@ -81,8 +81,10 @@ export default function Catalog() {
 
             let query = supabase
                 .from('CatalogItem')
-                .select('*', { count: 'exact' })
-                .order('ChampionID', { ascending: true })
+                .select('*, Champion(Name)', { count: 'exact' })
+                .order('Champion(Name)', {
+                    ascending: true,
+                })
                 .order('RiotItemID', { ascending: true });
 
             if (filters.championIDs.length > 0) {
