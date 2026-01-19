@@ -12,7 +12,7 @@ export type SignInValues = {
 
 export type CatalogFilters = {
     championIDs: number[];
-    skinlineID?: number;
+    skinlineIDs: number[];
     itemTypeIDs: number[];
     search: string;
 };

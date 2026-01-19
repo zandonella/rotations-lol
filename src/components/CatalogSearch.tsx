@@ -3,6 +3,7 @@ import { Input } from './ui/input';
 import { useState } from 'react';
 import ItemTypeFilter from './ItemTypeFilter';
 import ChampionFilter from './ChampionFilter';
+import SkinlineFilter from './SkinlineFilter';
 
 interface CatalogSearchProps {
     setSearchQuery: (query: string) => void;
@@ -19,6 +20,9 @@ export default function CatalogSearch({
     const [selectedChampions, setSelectedChampions] = useState<number[]>(
         filters.championIDs,
     );
+    const [selectedSkinlines, setSelectedSkinlines] = useState<number[]>(
+        filters.skinlineIDs,
+    );
 
     function updateItemTypes(types: number[]) {
         setItemTypes(types);
@@ -30,12 +34,17 @@ export default function CatalogSearch({
         setFilters({ championIDs: champIDs });
     }
 
+    function updateSkinlines(skinlineIDs: number[]) {
+        setSelectedSkinlines(skinlineIDs);
+        setFilters({ skinlineIDs: skinlineIDs });
+    }
+
     return (
         <div className="flex w-full flex-1 items-center justify-center gap-4">
             <Input
                 type="text"
                 placeholder="Search catalog..."
-                className="w-full max-w-[300px]"
+                className="max-w-[250px]"
                 onChange={(e) => {
                     const query = e.target.value;
                     setSearchQuery(query);
@@ -49,6 +58,10 @@ export default function CatalogSearch({
             <ChampionFilter
                 selectedChampions={selectedChampions}
                 setSelectedChampions={updateChampions}
+            />
+            <SkinlineFilter
+                selectedSkinlines={selectedSkinlines}
+                setSelectedSkinlines={updateSkinlines}
             />
         </div>
     );

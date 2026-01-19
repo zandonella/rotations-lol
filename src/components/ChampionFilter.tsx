@@ -21,7 +21,7 @@ export default function ChampionFilter({
 }: ChampionFilterProps) {
     const [champs, setChamps] = useState<ChampionRecord[]>([]);
     useEffect(() => {
-        async function fetchTypes() {
+        async function fetchChampions() {
             const { data, error } = await supabase
                 .from('Champion')
                 .select('*')
@@ -34,7 +34,7 @@ export default function ChampionFilter({
 
             setChamps(data ?? []);
         }
-        fetchTypes();
+        fetchChampions();
     }, []);
 
     return (
@@ -45,7 +45,10 @@ export default function ChampionFilter({
             }
         >
             <MultiSelectTrigger className="max-w-[250px] shrink">
-                <MultiSelectValue placeholder="Select champions..." />
+                <MultiSelectValue
+                    placeholder="Select champions..."
+                    overflowBehavior="cutoff"
+                />
             </MultiSelectTrigger>
             <MultiSelectContent>
                 <MultiSelectGroup>

@@ -9,7 +9,7 @@ const PAGE_SIZE = 20;
 
 export const DEFAULT_FILTERS: CatalogFilters = {
     championIDs: [],
-    skinlineID: undefined,
+    skinlineIDs: [],
     itemTypeIDs: [1],
     search: '',
 };
@@ -91,8 +91,8 @@ export default function Catalog() {
                 query = query.in('ChampionID', filters.championIDs);
             }
 
-            if (filters.skinlineID) {
-                query = query.eq('SkinlineID', filters.skinlineID);
+            if (filters.skinlineIDs.length > 0) {
+                query = query.in('SkinlineID', filters.skinlineIDs);
             }
 
             if (filters.search?.trim()) {
