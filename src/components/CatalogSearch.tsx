@@ -40,11 +40,11 @@ export default function CatalogSearch({
     }
 
     return (
-        <div className="flex w-full flex-1 items-center justify-center gap-4">
+        <div className="flex w-full max-w-[1000px] flex-1 flex-wrap items-center justify-center gap-4">
             <Input
                 type="text"
                 placeholder="Search catalog..."
-                className="max-w-[250px]"
+                className="min-w-[200px] flex-1 shrink"
                 onChange={(e) => {
                     const query = e.target.value;
                     setSearchQuery(query);
