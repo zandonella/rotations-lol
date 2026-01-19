@@ -145,14 +145,14 @@ export default function Catalog() {
     }
 
     return (
-        <div className="text-text container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-4">
+        <div className="text-text container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 sm:px-4">
             <p className="text-xl font-bold">Catalog Page</p>
             <CatalogSearch
                 setSearchQuery={setSearchQuery}
                 setFilters={setFiltersAndResetPage}
                 filters={filters}
             />
-            <div className="flex flex-col items-center gap-6 p-8 pt-0">
+            <div className="flex flex-col items-center gap-6 pt-0">
                 {content}
                 <CatalogPagination
                     currentPage={page}
