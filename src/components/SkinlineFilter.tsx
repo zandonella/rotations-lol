@@ -46,7 +46,7 @@ export default function SkinlineFilter({
                 setSelectedSkinlines(values.map(Number))
             }
         >
-            <MultiSelectTrigger className="min-w-[200px] flex-1 shrink">
+            <MultiSelectTrigger className="w-full flex-1 shrink">
                 <MultiSelectValue
                     placeholder="Select skinlines..."
                     overflowBehavior="cutoff"

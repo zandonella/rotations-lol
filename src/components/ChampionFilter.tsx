@@ -44,7 +44,7 @@ export default function ChampionFilter({
                 setSelectedChampions(values.map(Number))
             }
         >
-            <MultiSelectTrigger className="min-w-[200px] flex-1 shrink">
+            <MultiSelectTrigger className="w-full flex-1 shrink">
                 <MultiSelectValue
                     placeholder="Select champions..."
                     overflowBehavior="cutoff"

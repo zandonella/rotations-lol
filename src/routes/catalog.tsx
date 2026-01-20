@@ -130,7 +130,7 @@ export default function Catalog() {
         content = <p>No items found.</p>;
     } else {
         content = (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {items.map((item: CatalogItemRecord) => (
                     <ItemCard
                         key={item.ItemID}
@@ -145,14 +145,14 @@ export default function Catalog() {
     }
 
     return (
-        <div className="text-text container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 sm:px-4">
-            <p className="text-xl font-bold">Catalog Page</p>
-            <CatalogSearch
-                setSearchQuery={setSearchQuery}
-                setFilters={setFiltersAndResetPage}
-                filters={filters}
-            />
-            <div className="flex flex-col items-center gap-6 pt-0">
+        <div className="text-text container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 pb-6 sm:px-4">
+            <h1 className="text-xl font-bold">Catalog Page</h1>
+            <div className="flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+                <CatalogSearch
+                    setSearchQuery={setSearchQuery}
+                    setFilters={setFiltersAndResetPage}
+                    filters={filters}
+                />
                 {content}
                 <CatalogPagination
                     currentPage={page}
