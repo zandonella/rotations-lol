@@ -1,6 +1,7 @@
 import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
+import { cn } from '@/lib/utils';
 
 interface ItemCardProps {
     name: string;
@@ -8,6 +9,8 @@ interface ItemCardProps {
     skinline?: string | null;
     wishlisted: boolean;
     loading?: boolean;
+    timeUntilSaleEnds?: string;
+    className?: string;
 }
 
 export default function ItemCard({
@@ -15,6 +18,8 @@ export default function ItemCard({
     imageUrl,
     skinline,
     wishlisted,
+    timeUntilSaleEnds,
+    className,
 }: ItemCardProps) {
     const { session } = useAuth();
     const { openModal } = useAuthModal();
@@ -58,7 +63,12 @@ export default function ItemCard({
     }
 
     return (
-        <div className="bg-card hover:border-primary border-border max-w-3xs rounded-lg border-2 p-4 shadow-sm transition-colors duration-500">
+        <div
+            className={cn(
+                'bg-card hover:border-primary border-border max-w-3xs rounded-lg border-2 p-4 shadow-sm transition-colors duration-500',
+                className,
+            )}
+        >
             <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-md">
                 <img
                     src={imageUrl}
@@ -71,6 +81,11 @@ export default function ItemCard({
                 >
                     {getIcon()}
                 </button>
+                {timeUntilSaleEnds && (
+                    <span className="bg-primary text-card absolute top-0 left-0 m-1.5 rounded-full px-2 py-1 text-xs font-semibold">
+                        {timeUntilSaleEnds}
+                    </span>
+                )}
             </div>
             <h2>{name}</h2>
             {skinline && (

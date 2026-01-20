@@ -52,3 +52,18 @@ export type ItemTypeRecord = {
     id: number;
     Type: string;
 };
+
+export type CatalogSaleRecord = {
+    RiotItemID: number;
+    SaleStartAt: string;
+    SaleEndAt: string;
+    ItemType: number;
+    NormalPrice: number;
+    SalePrice: number;
+    PercentOff: number;
+    IsActive: boolean;
+};
+
+export type CatalogSaleWithItemRecord = CatalogSaleRecord & {
+    CatalogItem: CatalogItemRecord;
+};
