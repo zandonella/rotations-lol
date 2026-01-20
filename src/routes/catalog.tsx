@@ -81,7 +81,7 @@ export default function Catalog() {
 
             let query = supabase
                 .from('CatalogItem')
-                .select('*, Champion(Name)', { count: 'exact' })
+                .select('*, Champion(Name), Skinline(Name)', { count: 'exact' })
                 .order('Champion(Name)', {
                     ascending: true,
                 })
@@ -136,7 +136,7 @@ export default function Catalog() {
                         key={item.ItemID}
                         name={item.Name}
                         imageUrl={item.ImageURL}
-                        skinline={item.Skinline}
+                        skinline={item.Skinline?.Name}
                         wishlisted={false}
                     />
                 ))}

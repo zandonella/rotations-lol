@@ -25,8 +25,15 @@ export type CatalogItemRecord = {
     ItemType: string;
     RiotItemID: string;
     Name: string;
-    Skinline: string | null;
     ImageURL: string;
+
+    Champion?: {
+        Name: string;
+    } | null;
+
+    Skinline?: {
+        Name: string;
+    } | null;
 };
 
 export type ChampionRecord = {
