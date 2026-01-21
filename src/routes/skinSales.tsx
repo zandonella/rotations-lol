@@ -1,38 +1,8 @@
 import { useState, useEffect, use } from 'react';
 import supabase from '../lib/supabase.ts';
-import type { CatalogSaleRecord, CatalogSaleWithItemRecord } from '@/lib/types';
+import type { CatalogSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
-
-export function calculateTimeUntilEnd(endDateStr: string): string {
-    const endDate = new Date(endDateStr);
-    const now = new Date();
-    const diffMs = endDate.getTime() - now.getTime();
-
-    if (diffMs <= 0) {
-        return 'Sale ended, new sale soon!';
-    }
-
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor(
-        (diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-    );
-    const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-    if (diffDays === 0 && diffHours === 0 && diffMinutes === 0) {
-        return 'Less than a minute left!';
-    }
-
-    let result = '';
-    if (diffDays > 0) {
-        result += `${diffDays}d `;
-    }
-    if (diffHours > 0 || diffDays > 0) {
-        result += `${diffHours}h `;
-    }
-    result += `${diffMinutes}m`;
-
-    return result.trim();
-}
+import { calculateTimeUntilEnd } from '@/lib/utils.ts';
 
 export default function SkinSales() {
     const [skinSales, setSkinSales] = useState<CatalogSaleWithItemRecord[]>([]);
@@ -43,7 +13,8 @@ export default function SkinSales() {
         async function fetchCatalogSales() {
             const { data, error } = await supabase
                 .from('CatalogSale')
-                .select('*, CatalogItem(*)');
+                .select('*, CatalogItem(*)')
+                .eq('IsActive', true);
             if (error) {
                 console.error('Error fetching skin sales:', error);
             } else {
@@ -64,7 +35,7 @@ export default function SkinSales() {
             <div className="flex w-full flex-wrap justify-center gap-4">
                 {skinSales.map((sale: CatalogSaleWithItemRecord) => (
                     <ItemCard
-                        className="max-w-[220px]"
+                        className="max-w-[250px]"
                         key={sale.RiotItemID}
                         name={sale.CatalogItem.Name}
                         imageUrl={sale.CatalogItem.ImageURL}

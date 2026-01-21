@@ -65,6 +65,28 @@ export type CatalogSaleRecord = {
     IsActive: boolean;
 };
 
+export type sectionType = 'DAILY' | 'WEEKLY' | 'BIWEEKLY' | 'FEATURED';
+
+export type MythicSaleRecord = {
+    OfferID: string;
+    SaleStartAt: string;
+
+    PrimaryItemID: string;
+    SaleEndAt: string;
+    Price: number;
+    Currency: string;
+    IsActive: boolean;
+    Section: sectionType;
+
+    IsBundle: boolean;
+    IncludedItems: string[];
+    BundleType: string | null;
+};
+
 export type CatalogSaleWithItemRecord = CatalogSaleRecord & {
+    CatalogItem: CatalogItemRecord;
+};
+
+export type MythicSaleWithItemRecord = MythicSaleRecord & {
     CatalogItem: CatalogItemRecord;
 };

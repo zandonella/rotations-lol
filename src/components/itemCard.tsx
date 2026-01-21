@@ -2,7 +2,8 @@ import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import { cn } from '@/lib/utils';
-import RPIcon from '@/assets/rpIcon.png';
+import RPIcon from '@/assets/RPIcon.png';
+import MEIcon from '@/assets/MEIcon.png';
 
 interface ItemCardProps {
     name: string;
@@ -12,11 +13,12 @@ interface ItemCardProps {
     loading?: boolean;
     sale?: {
         SaleEndAt: string;
-        NormalPrice: number;
+        NormalPrice?: number;
         SalePrice: number;
         Currency: string;
-        PercentOff: number;
+        PercentOff?: number;
     };
+    badgeSize?: number;
     className?: string;
 }
 
@@ -26,6 +28,7 @@ export default function ItemCard({
     skinline,
     wishlisted,
     sale,
+    badgeSize = 4,
     className,
 }: ItemCardProps) {
     const { session } = useAuth();
@@ -53,9 +56,21 @@ export default function ItemCard({
         switch (currency) {
             case 'RP':
                 return RPIcon;
-            // add more currencies here as needed
+            case 'ME':
+                return MEIcon;
             default:
                 return RPIcon;
+        }
+    }
+
+    function getTextColor(currency: string) {
+        switch (currency) {
+            case 'RP':
+                return 'text-primary';
+            case 'ME':
+                return 'text-chart-5';
+            default:
+                return 'text-primary';
         }
     }
 
@@ -115,13 +130,19 @@ export default function ItemCard({
             )}
             {sale && (
                 <div className="mt-1 flex gap-1">
-                    <p className="text-primary flex items-center gap-1 text-sm font-semibold">
+                    <p
+                        className={
+                            'flex items-center gap-1 text-sm font-semibold ' +
+                            getTextColor(sale.Currency)
+                        }
+                    >
                         <img
                             src={getCurrencyIcon(sale.Currency)}
                             alt={sale.Currency}
-                            className="h-4 w-4"
+                            className={`h-${badgeSize} w-${badgeSize}`}
                         />
-                        {sale.SalePrice}{' '}
+
+                        {sale.SalePrice}
                     </p>
                     <p className="text-muted-foreground text-sm line-through">
                         {sale.NormalPrice}
