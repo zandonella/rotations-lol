@@ -69,9 +69,13 @@ export default function SkinSales() {
                         name={sale.CatalogItem.Name}
                         imageUrl={sale.CatalogItem.ImageURL}
                         wishlisted={false}
-                        timeUntilSaleEnds={calculateTimeUntilEnd(
-                            sale.SaleEndAt,
-                        )}
+                        sale={{
+                            SaleEndAt: calculateTimeUntilEnd(sale.SaleEndAt),
+                            NormalPrice: sale.NormalPrice,
+                            SalePrice: sale.SalePrice,
+                            PercentOff: sale.PercentOff,
+                            Currency: sale.Currency,
+                        }}
                     />
                 ))}
             </div>

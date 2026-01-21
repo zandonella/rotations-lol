@@ -2,6 +2,7 @@ import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import { cn } from '@/lib/utils';
+import RPIcon from '@/assets/rpIcon.png';
 
 interface ItemCardProps {
     name: string;
@@ -9,7 +10,13 @@ interface ItemCardProps {
     skinline?: string | null;
     wishlisted: boolean;
     loading?: boolean;
-    timeUntilSaleEnds?: string;
+    sale?: {
+        SaleEndAt: string;
+        NormalPrice: number;
+        SalePrice: number;
+        Currency: string;
+        PercentOff: number;
+    };
     className?: string;
 }
 
@@ -18,7 +25,7 @@ export default function ItemCard({
     imageUrl,
     skinline,
     wishlisted,
-    timeUntilSaleEnds,
+    sale,
     className,
 }: ItemCardProps) {
     const { session } = useAuth();
@@ -40,6 +47,16 @@ export default function ItemCard({
         }
 
         // swap visual state of button
+    }
+
+    function getCurrencyIcon(currency: string) {
+        switch (currency) {
+            case 'RP':
+                return RPIcon;
+            // add more currencies here as needed
+            default:
+                return RPIcon;
+        }
     }
 
     function getIcon() {
@@ -81,15 +98,35 @@ export default function ItemCard({
                 >
                     {getIcon()}
                 </button>
-                {timeUntilSaleEnds && (
-                    <span className="bg-primary text-card absolute top-0 left-0 m-1.5 rounded-full px-2 py-1 text-xs font-semibold">
-                        {timeUntilSaleEnds}
+                {sale?.SaleEndAt && (
+                    <span className="bg-primary text-card absolute top-0 left-0 m-1.5 rounded-full px-2 py-1 text-xs font-bold">
+                        {sale.SaleEndAt}
+                    </span>
+                )}
+                {sale?.PercentOff && (
+                    <span className="bg-card text-card-foreground absolute top-0 right-0 m-1.5 rounded-full px-2 py-1 text-xs font-bold">
+                        -{sale.PercentOff}%
                     </span>
                 )}
             </div>
             <h2>{name}</h2>
             {skinline && (
                 <p className="text-muted-foreground text-sm">{skinlineText}</p>
+            )}
+            {sale && (
+                <div className="mt-1 flex gap-1">
+                    <p className="text-primary flex items-center gap-1 text-sm font-semibold">
+                        <img
+                            src={getCurrencyIcon(sale.Currency)}
+                            alt={sale.Currency}
+                            className="h-4 w-4"
+                        />
+                        {sale.SalePrice}{' '}
+                    </p>
+                    <p className="text-muted-foreground text-sm line-through">
+                        {sale.NormalPrice}
+                    </p>
+                </div>
             )}
         </div>
     );
