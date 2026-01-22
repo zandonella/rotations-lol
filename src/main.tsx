@@ -7,7 +7,6 @@ import { AuthModalProvider } from './providers/AuthModalContext.tsx';
 import Home from './routes/home.tsx';
 import SkinSales from './routes/skinSales.tsx';
 import MythicShop from './routes/mythicShop.tsx';
-import TFT from './routes/tft.tsx';
 import Catalog from './routes/catalog.tsx';
 import Wishlist from './routes/wishlist.tsx';
 import About from './routes/about.tsx';
@@ -26,7 +25,6 @@ createRoot(document.getElementById('root')!).render(
                                 path="/mythic-shop"
                                 element={<MythicShop />}
                             />
-                            <Route path="/tft" element={<TFT />} />
                             <Route path="/catalog" element={<Catalog />} />
                             <Route path="/wishlist" element={<Wishlist />} />
                             <Route path="/about" element={<About />} />
