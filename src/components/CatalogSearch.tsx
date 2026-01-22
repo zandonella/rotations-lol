@@ -5,6 +5,8 @@ import ItemTypeFilter from './ItemTypeFilter';
 import ChampionFilter from './ChampionFilter';
 import SkinlineFilter from './SkinlineFilter';
 import { XIcon } from 'lucide-react';
+import { Button } from './ui/button';
+import { DEFAULT_FILTERS } from '@/routes/catalog';
 
 interface CatalogSearchProps {
     searchQuery: string;
@@ -77,6 +79,17 @@ export default function CatalogSearch({
                 selectedSkinlines={selectedSkinlines}
                 setSelectedSkinlines={updateSkinlines}
             />
+            <Button
+                onClick={() => {
+                    setSearchQuery('');
+                    setFilters(DEFAULT_FILTERS);
+                    setItemTypes(DEFAULT_FILTERS.itemTypeIDs);
+                    setSelectedChampions(DEFAULT_FILTERS.championIDs);
+                    setSelectedSkinlines(DEFAULT_FILTERS.skinlineIDs);
+                }}
+            >
+                Reset to Defaults
+            </Button>
         </div>
     );
 }

@@ -7,7 +7,7 @@ import CatalogSearch from '../components/CatalogSearch.tsx';
 
 const PAGE_SIZE = 20;
 
-const DEFAULT_FILTERS: CatalogFilters = {
+export const DEFAULT_FILTERS: CatalogFilters = {
     championIDs: [],
     skinlineIDs: [],
     itemTypeIDs: [1],
