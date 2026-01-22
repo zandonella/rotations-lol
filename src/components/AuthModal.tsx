@@ -7,6 +7,8 @@ import type { ModalMode, SignUpValues, SignInValues } from '../lib/types';
 import validator from 'validator';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
+import { toast } from 'sonner';
+import { Toaster } from './ui/sonner';
 
 export default function AuthModal() {
     const { open, setOpen } = useAuthModal();
@@ -29,6 +31,11 @@ export default function AuthModal() {
             setErrors([]);
             setSuccess(false);
         }
+    }
+
+    function handleSignout() {
+        signOut();
+        toast.success('Signed out successfully!');
     }
 
     function validateSignUp(values: SignUpValues) {
@@ -109,7 +116,7 @@ export default function AuthModal() {
                     console.log('Sign Up Errors:', result.error);
                     return;
                 }
-                setSuccess(true);
+                toast.success('Account created successfully! Please sign in.');
             } else if (mode === 'sign-in') {
                 // Sign in logic
                 const signInValues: SignInValues = {
@@ -134,6 +141,7 @@ export default function AuthModal() {
                     return;
                 }
                 setOpen(false);
+                toast.success('Signed in successfully!');
             }
         } catch (error) {
             setErrors(['An unexpected error occurred. Please try again.']);
@@ -146,12 +154,13 @@ export default function AuthModal() {
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <div>
+                <Toaster position="top-center" richColors />
                 {session ? (
                     <Button
                         size="lg"
                         variant="ghost"
                         className="text-md cursor-pointer px-4 font-bold"
-                        onClick={signOut}
+                        onClick={handleSignout}
                     >
                         Sign out
                     </Button>
