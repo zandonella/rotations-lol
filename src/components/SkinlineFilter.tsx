@@ -27,8 +27,6 @@ export default function SkinlineFilter({
                 .select('*')
                 .order('Name', { ascending: true });
 
-            console.log(data, error);
-
             if (error) {
                 console.error('Failed to fetch skinlines', error);
                 return;
