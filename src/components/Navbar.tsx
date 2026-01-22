@@ -20,10 +20,10 @@ export default function Navbar() {
                     <NavLink
                         to="/"
                         className={
-                            'text-sidebar-foreground py-1 pr-2 text-lg font-black'
+                            'text-sidebar-foreground py-1 pr-2 text-lg font-bold'
                         }
                     >
-                        SkinSale
+                        Rotations.lol
                     </NavLink>
                     {LINKS.map(({ to, text }) => (
                         <NavbarLink key={to} to={to} text={text} />
