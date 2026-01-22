@@ -45,7 +45,7 @@ export default function CatalogSearch({
     }
 
     return (
-        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <div className="relative w-full">
                 <Input
                     type="text"
@@ -87,6 +87,8 @@ export default function CatalogSearch({
                     setSelectedChampions(DEFAULT_FILTERS.championIDs);
                     setSelectedSkinlines(DEFAULT_FILTERS.skinlineIDs);
                 }}
+                className="text-muted-foreground hover:text-foreground col-span-2 cursor-pointer lg:col-span-1"
+                variant="outline"
             >
                 Reset to Defaults
             </Button>
