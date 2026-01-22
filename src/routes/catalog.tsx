@@ -1,4 +1,4 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react';
+import { useEffect, useState } from 'react';
 import ItemCard from '../components/itemCard';
 import CatalogPagination from '../components/CatalogPagination';
 import supabase from '../lib/supabase.ts';
@@ -7,7 +7,7 @@ import CatalogSearch from '../components/CatalogSearch.tsx';
 
 const PAGE_SIZE = 20;
 
-export const DEFAULT_FILTERS: CatalogFilters = {
+const DEFAULT_FILTERS: CatalogFilters = {
     championIDs: [],
     skinlineIDs: [],
     itemTypeIDs: [1],
@@ -43,14 +43,8 @@ export default function Catalog() {
     }
 
     useEffect(() => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
-        } catch {}
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
     }, [filters]);
-
-    useEffect(() => {
-        setSearchQuery(filters.search ?? '');
-    }, []);
 
     useEffect(() => {
         const trimmed = searchQuery.trim();
@@ -149,6 +143,7 @@ export default function Catalog() {
             <h1 className="text-xl font-bold">Catalog Page</h1>
             <div className="flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 <CatalogSearch
+                    searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}
                     setFilters={setFiltersAndResetPage}
                     filters={filters}

@@ -4,14 +4,17 @@ import { useState } from 'react';
 import ItemTypeFilter from './ItemTypeFilter';
 import ChampionFilter from './ChampionFilter';
 import SkinlineFilter from './SkinlineFilter';
+import { XIcon } from 'lucide-react';
 
 interface CatalogSearchProps {
+    searchQuery: string;
     setSearchQuery: (query: string) => void;
     setFilters: (partial: Partial<CatalogFilters>) => void;
     filters: CatalogFilters;
 }
 
 export default function CatalogSearch({
+    searchQuery,
     setSearchQuery,
     setFilters,
     filters,
@@ -41,16 +44,27 @@ export default function CatalogSearch({
 
     return (
         <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Input
-                type="text"
-                placeholder="Search catalog..."
-                className="text-muted-foreground w-full text-sm font-normal"
-                onChange={(e) => {
-                    const query = e.target.value;
-                    setSearchQuery(query);
-                }}
-                defaultValue={filters.search}
-            />
+            <div className="relative w-full">
+                <Input
+                    type="text"
+                    placeholder="Search catalog..."
+                    className="text-muted-foreground w-full text-sm font-normal"
+                    value={searchQuery}
+                    onChange={(e) => {
+                        const query = e.target.value;
+                        setSearchQuery(query);
+                    }}
+                />
+                {searchQuery && (
+                    <XIcon
+                        className="text-muted-foreground hover:text-foreground absolute top-2 right-2 cursor-pointer"
+                        size={20}
+                        onClick={() => {
+                            setSearchQuery('');
+                        }}
+                    />
+                )}
+            </div>
             <ItemTypeFilter
                 itemTypes={itemTypes}
                 setItemTypes={updateItemTypes}
