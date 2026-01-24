@@ -1,6 +1,5 @@
 import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
-import { useAuthModal } from '@/providers/AuthModalContext';
 import { cn } from '@/lib/utils';
 import RPIcon from '@/assets/RPIcon.png';
 import MEIcon from '@/assets/MEIcon.png';
@@ -10,6 +9,7 @@ interface ItemCardProps {
     imageUrl: string;
     skinline?: string | null;
     wishlisted: boolean;
+    onToggleWishlist: () => void;
     loading?: boolean;
     sale?: {
         SaleEndAt: string;
@@ -27,30 +27,15 @@ export default function ItemCard({
     imageUrl,
     skinline,
     wishlisted,
+    onToggleWishlist,
     sale,
     badgeSize = 4,
     className,
 }: ItemCardProps) {
     const { session } = useAuth();
-    const { openModal } = useAuthModal();
-
     const authed = !!session;
 
-    if (!name || !imageUrl) {
-        return null;
-    }
-
     const skinlineText = skinline ? skinline : 'None';
-
-    function toggleWishlist() {
-        // if not logged in, open auth modal
-        if (!authed) {
-            openModal();
-            return;
-        }
-
-        // swap visual state of button
-    }
 
     function getCurrencyIcon(currency: string) {
         switch (currency) {
@@ -109,7 +94,7 @@ export default function ItemCard({
                 />
                 <button
                     className="bg-card group hover:bg-primary absolute right-0 bottom-0 m-1.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 shadow-sm transition duration-300 hover:scale-110"
-                    onClick={toggleWishlist}
+                    onClick={onToggleWishlist}
                 >
                     {getIcon()}
                 </button>

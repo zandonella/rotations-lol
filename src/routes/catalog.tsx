@@ -4,6 +4,7 @@ import CatalogPagination from '../components/CatalogPagination';
 import supabase from '../lib/supabase.ts';
 import type { CatalogItemRecord, CatalogFilters } from '@/lib/types.ts';
 import CatalogSearch from '../components/CatalogSearch.tsx';
+import { useWishlist } from '@/providers/WishlistContext';
 
 const PAGE_SIZE = 20;
 
@@ -36,6 +37,8 @@ export default function Catalog() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const { isWishlisted, toggleWishlist } = useWishlist();
 
     function setFiltersAndResetPage(partial: Partial<CatalogFilters>) {
         setPage(1);
@@ -131,7 +134,8 @@ export default function Catalog() {
                         name={item.Name}
                         imageUrl={item.ImageURL}
                         skinline={item.Skinline?.Name}
-                        wishlisted={false}
+                        wishlisted={isWishlisted(item.ItemID)}
+                        onToggleWishlist={() => toggleWishlist(item.ItemID)}
                     />
                 ))}
             </div>

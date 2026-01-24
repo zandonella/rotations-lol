@@ -32,13 +32,14 @@ export default function SkinSales() {
         skinContent = <p>Loading...</p>;
     } else {
         skinContent = (
-            <div className="flex w-full flex-wrap justify-center gap-4">
+            <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-5">
                 {skinSales.map((sale: CatalogSaleWithItemRecord) => (
                     <ItemCard
                         className="max-w-[250px]"
-                        key={sale.RiotItemID}
+                        key={sale.CatalogItem.ItemID}
                         name={sale.CatalogItem.Name}
                         imageUrl={sale.CatalogItem.ImageURL}
+                        ItemID={sale.CatalogItem.ItemID}
                         wishlisted={false}
                         sale={{
                             SaleEndAt: calculateTimeUntilEnd(sale.SaleEndAt),
