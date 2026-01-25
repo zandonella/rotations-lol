@@ -3,8 +3,10 @@ import supabase from '../lib/supabase.ts';
 import type { CatalogSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
 import { calculateTimeUntilEnd } from '@/lib/utils.ts';
+import { useWishlist } from '@/providers/WishlistContext.tsx';
 
 export default function SkinSales() {
+    const { isWishlisted, toggleWishlist } = useWishlist();
     const [skinSales, setSkinSales] = useState<CatalogSaleWithItemRecord[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -39,8 +41,13 @@ export default function SkinSales() {
                         key={sale.CatalogItem.ItemID}
                         name={sale.CatalogItem.Name}
                         imageUrl={sale.CatalogItem.ImageURL}
-                        ItemID={sale.CatalogItem.ItemID}
-                        wishlisted={false}
+                        wishlisted={isWishlisted(sale.CatalogItem.ItemID)}
+                        onToggleWishlist={() =>
+                            toggleWishlist(
+                                sale.CatalogItem.ItemID,
+                                sale.CatalogItem.Name,
+                            )
+                        }
                         sale={{
                             SaleEndAt: calculateTimeUntilEnd(sale.SaleEndAt),
                             NormalPrice: sale.NormalPrice,

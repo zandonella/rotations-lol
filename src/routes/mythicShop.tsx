@@ -3,8 +3,10 @@ import supabase from '../lib/supabase.ts';
 import type { MythicSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
 import { calculateTimeUntilEnd } from '@/lib/utils.ts';
+import { useWishlist } from '@/providers/WishlistContext.tsx';
 
 export default function MythicShop() {
+    const { isWishlisted, toggleWishlist } = useWishlist();
     const [mythicSales, setMythicSales] = useState<MythicSaleWithItemRecord[]>(
         [],
     );
@@ -64,7 +66,10 @@ export default function MythicShop() {
                                 key={sale.OfferID}
                                 name={item.Name}
                                 imageUrl={item.ImageURL}
-                                wishlisted={false}
+                                wishlisted={isWishlisted(item.ItemID)}
+                                onToggleWishlist={() =>
+                                    toggleWishlist(item.ItemID, item.Name)
+                                }
                                 sale={{
                                     SaleEndAt: calculateTimeUntilEnd(
                                         sale.SaleEndAt,
