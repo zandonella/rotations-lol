@@ -115,7 +115,8 @@ export default function AuthModal() {
                     console.log('Sign Up Errors:', result.error);
                     return;
                 }
-                toast.success('Account created successfully! Please sign in.');
+                setOpen(false);
+                toast.success('Account created successfully!');
             } else if (mode === 'sign-in') {
                 // Sign in logic
                 const signInValues: SignInValues = {
