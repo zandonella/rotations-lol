@@ -60,23 +60,9 @@ export default function ItemCard({
     }
 
     function getIcon() {
-        if (!authed)
-            return (
-                <IoLockClosedOutline
-                    size={24}
-                    className="text-primary group-hover:text-card"
-                />
-            );
-        if (wishlisted)
-            return (
-                <IoCloseOutline
-                    size={32}
-                    className="text-primary group-hover:text-card"
-                />
-            );
-        return (
-            <IoAdd size={32} className="text-primary group-hover:text-card" />
-        );
+        if (!authed) return <IoLockClosedOutline size={24} />;
+        if (wishlisted) return <IoCloseOutline size={32} />;
+        return <IoAdd size={32} />;
     }
 
     return (
@@ -94,7 +80,12 @@ export default function ItemCard({
                     className="h-full w-full object-cover"
                 />
                 <button
-                    className="bg-card group hover:bg-primary absolute right-0 bottom-0 m-1.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 shadow-sm transition duration-300 hover:scale-110"
+                    className={cn(
+                        'bg-card hover:bg-primary text-primary hover:text-card absolute right-0 bottom-0 m-1.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 shadow-sm transition duration-300 hover:scale-110',
+                        wishlisted
+                            ? 'hover:bg-destructive hover:text-primary'
+                            : '',
+                    )}
                     onClick={onToggleWishlist}
                 >
                     {getIcon()}
