@@ -135,7 +135,9 @@ export default function Catalog() {
                         imageUrl={item.ImageURL}
                         skinline={item.Skinline?.Name}
                         wishlisted={isWishlisted(item.ItemID)}
-                        onToggleWishlist={() => toggleWishlist(item.ItemID)}
+                        onToggleWishlist={() =>
+                            toggleWishlist(item.ItemID, item.Name)
+                        }
                     />
                 ))}
             </div>
@@ -143,7 +145,7 @@ export default function Catalog() {
     }
 
     return (
-        <div className="text-text container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 pb-6 sm:px-4">
+        <div className="container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 pb-6 sm:px-4">
             <h1 className="text-xl font-bold">Catalog Page</h1>
             <div className="flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 <CatalogSearch

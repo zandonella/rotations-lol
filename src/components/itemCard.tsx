@@ -83,6 +83,7 @@ export default function ItemCard({
         <div
             className={cn(
                 'bg-card hover:border-primary border-border max-w-3xs rounded-lg border-2 p-4 shadow-sm transition-colors duration-500',
+                wishlisted ? 'border-primary/60' : 'border-border',
                 className,
             )}
         >

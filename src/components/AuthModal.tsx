@@ -8,7 +8,6 @@ import validator from 'validator';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import { toast } from 'sonner';
-import { Toaster } from './ui/sonner';
 
 export default function AuthModal() {
     const { open, setOpen } = useAuthModal();
@@ -154,7 +153,6 @@ export default function AuthModal() {
     return (
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <div>
-                <Toaster position="top-center" richColors />
                 {session ? (
                     <Button
                         size="lg"

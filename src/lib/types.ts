@@ -90,3 +90,12 @@ export type CatalogSaleWithItemRecord = CatalogSaleRecord & {
 export type MythicSaleWithItemRecord = MythicSaleRecord & {
     CatalogItem: CatalogItemRecord;
 };
+
+export type WishlistItemRecord = {
+    UserID: string;
+    ItemID: number;
+};
+
+export type WishlistWithItemRecord = WishlistItemRecord & {
+    CatalogItem: CatalogItemRecord;
+};

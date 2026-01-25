@@ -9,14 +9,17 @@ import {
 import supabase from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
+import type { WishlistWithItemRecord } from '@/lib/types';
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 type WishlistContextType = {
-    wishlist: Set<number>;
+    wishlistIDs: Set<number>;
+    wishlistItems: WishlistWithItemRecord[];
     isWishlisted: (itemId: number) => boolean;
-    toggleWishlist: (itemId: number) => Promise<void>;
+    toggleWishlist: (itemId: number, itemName: string) => Promise<void>;
     refreshWishlist: () => Promise<void>;
     loading: boolean;
-    error: string | null;
 };
 
 const WishlistContext = createContext<WishlistContextType | null>(null);
@@ -29,38 +32,40 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
     const { session } = useAuth();
     const { openModal } = useAuthModal();
 
-    const [wishlistedIDs, setWishlistedIDs] = useState<Set<number>>(
+    const [wishlistIDs, setWishlistIDs] = useState<Set<number>>(
         () => new Set(),
     );
+    const [wishlistItems, setWishlistItems] = useState<
+        WishlistWithItemRecord[]
+    >([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
 
     const userID = session?.user.id || null;
     const authed = !!session;
 
     const reset = () => {
-        setWishlistedIDs(new Set());
+        setWishlistIDs(new Set());
+        setWishlistItems([]);
         setLoading(false);
-        setError(null);
     };
 
     async function refreshWishlist() {
         if (!authed) return;
         setLoading(true);
-        setError(null);
 
         const { data, error: fetchError } = await supabase
             .from('WishlistItem')
-            .select('ItemID')
+            .select('*, CatalogItem(*)')
             .eq('UserID', userID);
 
         if (fetchError) {
-            setError('Failed to load wishlist.');
+            toast.error('Failed to load wishlist.');
             setLoading(false);
             return;
         }
 
-        setWishlistedIDs(new Set(data.map((item) => item.ItemID)));
+        setWishlistIDs(new Set(data.map((item) => item.ItemID)));
+        setWishlistItems(data);
         setLoading(false);
     }
 
@@ -73,20 +78,18 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
     }, [userID]);
 
     function isWishlisted(itemId: number) {
-        return wishlistedIDs.has(itemId);
+        return wishlistIDs.has(itemId);
     }
 
-    async function toggleWishlist(itemId: number) {
+    async function toggleWishlist(itemId: number, itemName: string) {
         if (!authed) {
             openModal();
             return;
         }
 
-        setError(null);
+        const currentlyWishlisted = wishlistIDs.has(itemId);
 
-        const currentlyWishlisted = wishlistedIDs.has(itemId);
-
-        setWishlistedIDs((prev) => {
+        setWishlistIDs((prev) => {
             const newSet = new Set(prev);
             if (currentlyWishlisted) {
                 newSet.delete(itemId);
@@ -97,6 +100,10 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
         });
 
         if (currentlyWishlisted) {
+            setWishlistItems((prev) => prev.filter((x) => x.ItemID !== itemId));
+        }
+
+        if (currentlyWishlisted) {
             const { error: deleteError } = await supabase
                 .from('WishlistItem')
                 .delete()
@@ -104,9 +111,10 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
                 .eq('ItemID', itemId);
 
             if (deleteError) {
-                setError('Failed to remove from wishlist.');
+                toast.error('Failed to remove from wishlist.');
                 await refreshWishlist();
             }
+            toast.success(`Removed ${itemName} from wishlist.`);
         } else {
             const { error: insertError } = await supabase
                 .from('WishlistItem')
@@ -116,26 +124,28 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
                 });
 
             if (insertError) {
-                setError('Failed to add to wishlist.');
-                await refreshWishlist();
+                toast.error('Failed to add to wishlist.');
             }
+            toast.success(`Added ${itemName} to wishlist.`);
+            await refreshWishlist();
         }
     }
 
     const value = useMemo(
         () => ({
-            wishlist: wishlistedIDs,
+            wishlistIDs,
+            wishlistItems,
             isWishlisted,
             toggleWishlist,
             refreshWishlist,
             loading,
-            error,
         }),
-        [wishlistedIDs, loading, error],
+        [wishlistIDs, wishlistItems, loading],
     );
 
     return (
         <WishlistContext.Provider value={value}>
+            <Toaster position="top-center" richColors />
             {children}
         </WishlistContext.Provider>
     );
