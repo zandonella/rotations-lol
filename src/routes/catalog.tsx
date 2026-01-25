@@ -82,7 +82,7 @@ export default function Catalog() {
                 .order('Champion(Name)', {
                     ascending: true,
                 })
-                .order('RiotItemID', { ascending: true });
+                .order('RiotItemID', { ascending: false });
 
             if (filters.championIDs.length > 0) {
                 query = query.in('ChampionID', filters.championIDs);
