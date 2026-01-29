@@ -18,14 +18,15 @@ export const DEFAULT_FILTERS: CatalogFilters = {
 const STORAGE_KEY = 'catalogFilters';
 
 function loadStoredFilters(): CatalogFilters {
-    try {
-        if (typeof window === 'undefined') return DEFAULT_FILTERS;
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) return DEFAULT_FILTERS;
-        return JSON.parse(stored) as CatalogFilters;
-    } catch {
-        return DEFAULT_FILTERS;
-    }
+    // try {
+    //     if (typeof window === 'undefined') return DEFAULT_FILTERS;
+    //     const stored = localStorage.getItem(STORAGE_KEY);
+    //     if (!stored) return DEFAULT_FILTERS;
+    //     return JSON.parse(stored) as CatalogFilters;
+    // } catch {
+    //     return DEFAULT_FILTERS;
+    // }
+    return DEFAULT_FILTERS;
 }
 
 export default function Catalog() {
