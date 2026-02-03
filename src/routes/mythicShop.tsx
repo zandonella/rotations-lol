@@ -52,11 +52,22 @@ export default function MythicShop() {
         return { featured, biweekly, weekly, daily };
     }, [mythicSales]);
 
-    function renderSection(title: string, sales: MythicSaleWithItemRecord[]) {
+    function renderSection(
+        title: string,
+        sales: MythicSaleWithItemRecord[],
+        subtitle?: string,
+    ) {
         if (sales.length === 0) return null;
         return (
             <div className="flex w-full flex-col items-center gap-4">
-                <h2 className="text-2xl font-semibold">{title}</h2>
+                <div className="flex flex-col items-center">
+                    <h2 className="text-2xl font-semibold">{title}</h2>
+                    {subtitle && (
+                        <p className="text-muted-foreground font-semibold">
+                            {subtitle}
+                        </p>
+                    )}
+                </div>
                 <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {sales.map((sale) => {
                         const item = sale.CatalogItem;
@@ -99,18 +110,25 @@ export default function MythicShop() {
         content = (
             <>
                 {renderSection('Featured', featured)}
-                {renderSection('Biweekly', biweekly)}
-                {renderSection('Weekly', weekly)}
-                {renderSection('Daily', daily)}
+                {renderSection(
+                    'Biweekly',
+                    biweekly,
+                    'Resets every other Wednesday at 4PM PST',
+                )}
+                {renderSection(
+                    'Weekly',
+                    weekly,
+                    'Resets every Wednesday at 4PM PST',
+                )}
+                {renderSection('Daily', daily, 'Resets daily at 4PM PST')}
             </>
         );
     }
 
     return (
-        <div className="text-text container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 pb-6 sm:px-4">
+        <div className="text-text container mx-auto mt-8 flex flex-col items-center justify-center px-2 pb-6 sm:px-4">
             <h1 className="text-2xl font-bold">Mythic Rotations</h1>
-
-            <div className="flex w-full flex-col items-center gap-12 p-4">
+            <div className="flex w-full flex-col items-center gap-6 p-4">
                 {content}
             </div>
         </div>
