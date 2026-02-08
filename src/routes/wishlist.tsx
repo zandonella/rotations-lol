@@ -5,8 +5,7 @@ import ItemCard from '@/components/itemCard';
 import type { WishlistWithItemRecord } from '@/lib/types';
 
 export default function Wishlist() {
-    const { wishlistItems, loading, isWishlisted, toggleWishlist } =
-        useWishlist();
+    const { wishlistItems, loading, toggleWishlist } = useWishlist();
     const { session } = useAuth();
     const authed = !!session;
 
@@ -44,7 +43,12 @@ export default function Wishlist() {
 
     return (
         <div className="container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 pb-6 sm:px-4">
-            <h1 className="text-2xl font-bold">Wishlist</h1>
+            <div className="flex flex-col items-center gap-1">
+                <h1 className="text-2xl font-bold">Wishlist</h1>
+                <span className="bg-card text-muted-foreground rounded-full px-3 py-1 text-sm font-medium">
+                    {wishlistItems.length} / 25
+                </span>
+            </div>
             <div className="flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 {content}
             </div>

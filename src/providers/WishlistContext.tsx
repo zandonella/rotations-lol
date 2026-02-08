@@ -1,11 +1,4 @@
-import {
-    createContext,
-    useContext,
-    useState,
-    useMemo,
-    useRef,
-    useEffect,
-} from 'react';
+import { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import supabase from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
@@ -113,9 +106,27 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
             if (deleteError) {
                 toast.error('Failed to remove from wishlist.');
                 await refreshWishlist();
+            } else {
+                toast.success(`Removed ${itemName} from wishlist.`);
             }
-            toast.success(`Removed ${itemName} from wishlist.`);
         } else {
+            const { count, error: countError } = await supabase
+                .from('WishlistItem')
+                .select('*', { count: 'exact' })
+                .eq('UserID', userID);
+
+            if (countError) {
+                toast.error('Failed to update wishlist.');
+                await refreshWishlist();
+                return;
+            }
+
+            if ((count ?? 0) >= 25) {
+                toast.error('Wishlist limit of 25 items reached.');
+                await refreshWishlist();
+                return;
+            }
+
             const { error: insertError } = await supabase
                 .from('WishlistItem')
                 .insert({
@@ -125,8 +136,9 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
 
             if (insertError) {
                 toast.error('Failed to add to wishlist.');
+            } else {
+                toast.success(`Added ${itemName} to wishlist.`);
             }
-            toast.success(`Added ${itemName} to wishlist.`);
             await refreshWishlist();
         }
     }
