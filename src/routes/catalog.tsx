@@ -71,7 +71,6 @@ export default function Catalog() {
                 return;
             }
 
-            setLoading(true);
             setError(null);
 
             const from = (page - 1) * PAGE_SIZE;
