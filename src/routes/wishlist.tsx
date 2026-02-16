@@ -42,7 +42,7 @@ export default function Wishlist() {
     }
 
     return (
-        <div className="container mx-auto mt-8 flex flex-col items-center justify-center px-2 pb-8 sm:px-4">
+        <>
             <div className="flex flex-col items-center">
                 <h1 className="text-2xl font-bold">Wishlist</h1>
                 <p className="text-muted-foreground max-w-xl text-center">
@@ -57,6 +57,6 @@ export default function Wishlist() {
             <div className="mt-6 flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 {content}
             </div>
-        </div>
+        </>
     );
 }

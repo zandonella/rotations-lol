@@ -145,7 +145,7 @@ export default function Catalog() {
     }
 
     return (
-        <div className="container mx-auto mt-8 flex flex-col items-center justify-center px-2 pb-6 sm:px-4">
+        <>
             <h1 className="text-2xl font-bold">Catalog</h1>
             <p className="text-muted-foreground max-w-xl text-center">
                 View every League item in one place. Add anything to your
@@ -166,6 +166,6 @@ export default function Catalog() {
                     onPageChange={setPage}
                 />
             </div>
-        </div>
+        </>
     );
 }
