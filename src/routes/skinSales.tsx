@@ -61,9 +61,9 @@ export default function SkinSales() {
         );
     }
     return (
-        <div className="container mx-auto mt-4 flex flex-col items-center justify-center px-2 pb-6 sm:px-4">
+        <div className="container mx-auto mt-8 flex flex-col items-center justify-center px-2 pb-8 sm:px-4">
             <h1 className="text-2xl font-bold">Sale Rotations</h1>
-            <p className="text-muted-foreground font-semibold">
+            <p className="text-muted-foreground">
                 Resets every Monday at 4PM PST
             </p>
             <div className="mt-4 flex w-full flex-col items-center gap-4">

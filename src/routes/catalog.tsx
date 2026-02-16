@@ -145,9 +145,14 @@ export default function Catalog() {
     }
 
     return (
-        <div className="container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 pb-6 sm:px-4">
-            <h1 className="text-xl font-bold">Catalog Page</h1>
-            <div className="flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+        <div className="container mx-auto mt-8 flex flex-col items-center justify-center px-2 pb-6 sm:px-4">
+            <h1 className="text-2xl font-bold">Catalog</h1>
+            <p className="text-muted-foreground max-w-xl text-center">
+                View every League item in one place. Add anything to your
+                wishlist and we'll notify you if it ever appears in a supported
+                shop rotation
+            </p>
+            <div className="mt-4 flex w-full flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 <CatalogSearch
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}

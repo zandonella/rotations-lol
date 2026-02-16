@@ -42,14 +42,19 @@ export default function Wishlist() {
     }
 
     return (
-        <div className="container mx-auto mt-8 flex flex-col items-center justify-center gap-6 px-2 pb-6 sm:px-4">
-            <div className="flex flex-col items-center gap-1">
+        <div className="container mx-auto mt-8 flex flex-col items-center justify-center px-2 pb-8 sm:px-4">
+            <div className="flex flex-col items-center">
                 <h1 className="text-2xl font-bold">Wishlist</h1>
-                <span className="bg-card text-muted-foreground rounded-full px-3 py-1 text-sm font-medium">
+                <p className="text-muted-foreground max-w-xl text-center">
+                    We'll alert you if a wishlisted item appears in a supported
+                    shop rotation. Some limited or exclusive items may never
+                    appear in a rotation.
+                </p>
+                <span className="bg-card text-muted-foreground mt-2 rounded-full px-3 py-1 text-sm font-medium">
                     {wishlistItems.length} / 25
                 </span>
             </div>
-            <div className="flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+            <div className="mt-6 flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 {content}
             </div>
         </div>
