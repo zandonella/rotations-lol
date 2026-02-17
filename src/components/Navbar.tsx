@@ -5,8 +5,8 @@ import AuthModal from './AuthModal';
 import NavMenu from './NavMenu';
 
 const LINKS = [
-    { to: '/skin-sales', text: 'Sale Rotation' },
-    { to: '/mythic-shop', text: 'Mythic Shop' },
+    { to: '/sales', text: 'Sale Rotation' },
+    { to: '/mythic', text: 'Mythic Shop' },
     { to: '/catalog', text: 'Catalog' },
     { to: '/wishlist', text: 'Wishlist' },
     { to: '/about', text: 'About' },

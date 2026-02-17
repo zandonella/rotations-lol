@@ -22,12 +22,9 @@ createRoot(document.getElementById('root')!).render(
                         <Routes>
                             <Route element={<NavLayout />}>
                                 <Route path="/" element={<Home />} />
+                                <Route path="/sales" element={<SkinSales />} />
                                 <Route
-                                    path="/skin-sales"
-                                    element={<SkinSales />}
-                                />
-                                <Route
-                                    path="/mythic-shop"
+                                    path="/mythic"
                                     element={<MythicShop />}
                                 />
                                 <Route path="/catalog" element={<Catalog />} />
