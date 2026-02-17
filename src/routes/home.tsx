@@ -1,12 +1,374 @@
-import supabase from '@/lib/supabase.ts';
-import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
+import { cn } from '@/lib/utils';
+
+// If you have shadcn installed, this is the typical import:
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
 
 export default function Home() {
     return (
         <>
-            <div className="text-text bg-bg container mx-auto mt-8 flex w-fit flex-col gap-4 rounded-2xl p-8">
-                <p className="">This is the home page.</p>
+            <div className="relative flex max-w-6xl flex-col gap-8 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col items-start gap-4">
+                    <div className="border-border bg-card text-muted-foreground inline-flex items-center gap-2 rounded-full border-2 px-3 py-1 text-xs font-semibold shadow-sm">
+                        <span className="bg-primary h-2 w-2 rounded-full" />
+                        Rotations • Wishlists • Alerts
+                    </div>
+
+                    <h1 className="text-2xl font-bold sm:text-3xl">
+                        Check rotations fast. <br />
+                        Don't miss what you want.
+                    </h1>
+
+                    <p className="text-muted-foreground max-w-xl text-sm sm:text-base">
+                        <span className="text-primary font-bold">
+                            Rotations.lol
+                        </span>{' '}
+                        makes league shop rotations easy to browse online — no
+                        need to open the game. Build a wishlist, and if
+                        something you want appears in a supported rotation,
+                        we'll notify you.
+                    </p>
+
+                    <div className="flex flex-wrap gap-3 pt-2">
+                        <Link
+                            to="/sales"
+                            className="bg-primary text-primary-foreground inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition"
+                        >
+                            View Sale Rotations
+                        </Link>
+
+                        <Link
+                            to="/mythic"
+                            className="border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-accent-foreground inline-flex items-center justify-center rounded-lg border-2 px-4 py-2 text-sm font-semibold shadow-sm transition"
+                        >
+                            View Mythic Shop
+                        </Link>
+                        <Link
+                            to="/wishlist"
+                            className="border-border bg-card hover:border-primary rounded-lg border-2 px-4 py-2 text-sm font-semibold shadow-sm transition"
+                        >
+                            Set Up Alerts
+                        </Link>
+                    </div>
+                </div>
+
+                <div className="grid w-full gap-3 lg:max-w-md">
+                    <PreviewBlock
+                        title="Browse rotations online"
+                        badge="Easy to check"
+                        body="See what's in the shop quickly, on any device — no client launch required."
+                        tone="secondary"
+                    />
+                    <PreviewBlock
+                        title="Wishlist notifications"
+                        badge="Extra RP in your pocket"
+                        body="For regular sales, save RP by waiting for discounts on what you actually want."
+                        tone="muted"
+                    />
+                    <PreviewBlock
+                        title="Mythic alerts matter more"
+                        badge="Get what you want"
+                        body="Mythic items are limited and rotate unpredictably — missing a window can mean waiting a long time."
+                        tone="primary"
+                    />
+                </div>
+            </div>
+
+            <div className="mt-6 flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+                <section className="w-full">
+                    <div className="mb-3 flex flex-col items-center text-center">
+                        <h2 className="text-2xl font-semibold">Jump in</h2>
+                        <p className="text-muted-foreground">
+                            View rotations and get alerts for the stuff you care
+                            about.
+                        </p>
+                    </div>
+
+                    <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+                        <NavTile
+                            to="/sales"
+                            title="Sale Rotations"
+                            subtitle="Current RP discounts"
+                            body="View the current rotation's skin discounts online — no need to open the client."
+                            accent="primary"
+                        />
+
+                        <NavTile
+                            to="/mythic"
+                            title="Mythic Shop"
+                            subtitle="Every mythic rotation"
+                            body="Track every mythic rotation: featured entries, prestige skins, chromas, and daily cosmetics — all in one place."
+                            highlight="mythic"
+                        />
+
+                        <NavTile
+                            to="/catalog"
+                            title="Catalog"
+                            subtitle="Everything we track"
+                            body="Browse the full item catalog and wishlist what you want. If it ever enters either sale rotation, you'll be notified."
+                        />
+
+                        <NavTile
+                            to="/wishlist"
+                            title="Wishlist"
+                            subtitle="Alerts when items rotate in"
+                            body="Get notified shortly after new rotations go live if they include items you care about."
+                        />
+                    </div>
+                </section>
+
+                {/* STEP FLOW (stacked, connected, more “designed”) */}
+                <section className="w-full">
+                    <div className="mb-3 text-center">
+                        <h2 className="text-xl font-semibold">How it works</h2>
+                    </div>
+
+                    <div className="relative mx-auto w-full max-w-2xl flex-col gap-3 sm:flex">
+                        <div className="bg-border absolute top-10 left-5 hidden h-[calc(100%-5rem)] w-px sm:block" />
+
+                        <StepRow
+                            step="1"
+                            title="Browse rotations or search the catalog"
+                            body="Use Rotations.lol to quickly see what's live, or search the catalog for anything you're waiting on."
+                            tone="secondary"
+                        />
+                        <StepRow
+                            step="2"
+                            title="Add the items you care about to your wishlist"
+                            body="Wishlist regular sales for savings and wishlist mythic items so you don't miss limited rotation windows."
+                            tone="muted"
+                        />
+                        <StepRow
+                            step="3"
+                            title="Get notified when it appears"
+                            body="If a wishlisted item shows up in either sale rotation, we'll send you an alert."
+                            tone="primary"
+                        />
+                    </div>
+                </section>
+
+                {/* FAQ (Accordion) */}
+                <section className="w-full">
+                    <div className="mb-3 text-center">
+                        <h2 className="text-xl font-semibold">FAQ</h2>
+                    </div>
+
+                    <div className="border-border bg-card w-full rounded-lg border-2 p-2 shadow-sm">
+                        <Accordion type="single" collapsible className="w-full">
+                            <AccordionItem value="catalog">
+                                <AccordionTrigger>
+                                    Does the catalog include everything?
+                                </AccordionTrigger>
+                                <AccordionContent className="text-muted-foreground">
+                                    That's the goal — the catalog is intended to
+                                    include every League item we track, even if
+                                    it can't appear in rotations.
+                                </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="rotations">
+                                <AccordionTrigger>
+                                    Why can't some items appear in rotations?
+                                </AccordionTrigger>
+                                <AccordionContent className="text-muted-foreground">
+                                    Rotating shops use limited item pools, and
+                                    some items may never be offered through
+                                    those rotations.
+                                </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="mythic">
+                                <AccordionTrigger>
+                                    Why are mythic alerts more important?
+                                </AccordionTrigger>
+                                <AccordionContent className="text-muted-foreground">
+                                    Mythic inventory is limited and rotates
+                                    unpredictably. If you miss a window, it can
+                                    be a long wait before it comes back —
+                                    wishlist alerts help you catch it.
+                                </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="wishlist">
+                                <AccordionTrigger>
+                                    What happens if I wishlist something that
+                                    never rotates?
+                                </AccordionTrigger>
+                                <AccordionContent className="text-muted-foreground">
+                                    Nothing bad — it just may never trigger an
+                                    alert. If it ever appears in a supported
+                                    rotation, you'll be notified.
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+
+                    <div className="mt-4 flex justify-center">
+                        <Link
+                            to="/about"
+                            className="text-muted-foreground hover:text-foreground text-sm font-semibold underline underline-offset-4"
+                        >
+                            Read more on the About page
+                        </Link>
+                    </div>
+                </section>
+
+                <footer className="border-border text-muted-foreground w-full border-t pt-6 text-center text-xs">
+                    rotations.lol is an unofficial fan project and is not
+                    affiliated with Riot Games.
+                </footer>
             </div>
         </>
+    );
+}
+
+function PreviewBlock({
+    title,
+    badge,
+    body,
+    tone,
+}: {
+    title: string;
+    badge: string;
+    body: string;
+    tone: 'primary' | 'secondary' | 'muted';
+}) {
+    const toneClasses =
+        tone === 'primary'
+            ? 'dark:bg-primary/10 dark:border-primary/30 bg-primary/65 border-primary/40'
+            : tone === 'secondary'
+              ? 'bg-secondary border-border'
+              : 'dark:bg-muted/60 bg-secondary border-border';
+
+    return (
+        <div className={cn('rounded-lg border-2 p-4 shadow-sm', toneClasses)}>
+            <div className="flex items-center justify-between gap-3">
+                <p className="font-semibold">{title}</p>
+                <span className="bg-background/70 dark:text-muted-foreground text-foreground rounded-full px-2 py-0.5 text-xs font-semibold">
+                    {badge}
+                </span>
+            </div>
+            <p className="text-muted-foreground mt-2 text-sm">{body}</p>
+        </div>
+    );
+}
+
+function NavTile({
+    to,
+    title,
+    subtitle,
+    body,
+    accent,
+    highlight,
+}: {
+    to: string;
+    title: string;
+    subtitle: string;
+    body: string;
+    accent?: 'primary';
+    highlight?: 'mythic';
+}) {
+    return (
+        <Link
+            to={to}
+            className={cn(
+                'group border-border bg-card hover:border-primary relative rounded-lg border-2 p-4 shadow-sm transition-colors duration-500',
+                accent === 'primary'
+                    ? 'border-primary/40 from-card to-primary/25 hover:to-primary/40 hover:border-primary hover:from-primary/25 bg-gradient-to-b from-30%'
+                    : '',
+                highlight === 'mythic'
+                    ? 'from-card to-chart-5/25 hover:to-chart-5/40 hover:border-chart-5 hover:from-chart-5/25 bg-gradient-to-b from-20%'
+                    : '',
+            )}
+        >
+            <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-semibold">{title}</h3>
+                        {accent === 'primary' && (
+                            <span className="bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-semibold">
+                                Start here
+                            </span>
+                        )}
+                        {highlight === 'mythic' && (
+                            <span className="border-border bg-background/60 text-muted-foreground rounded-full border px-2 py-0.5 text-xs font-semibold">
+                                Rotates daily!
+                            </span>
+                        )}
+                    </div>
+                    <p className="text-muted-foreground text-sm font-medium">
+                        {subtitle}
+                    </p>
+                </div>
+
+                <span className="text-muted-foreground group-hover:text-foreground mt-1 text-sm">
+                    View &rarr;
+                </span>
+            </div>
+
+            <p className="text-muted-foreground mt-2 text-sm">{body}</p>
+        </Link>
+    );
+}
+
+function StepRow({
+    step,
+    title,
+    body,
+    tone,
+}: {
+    step: string;
+    title: string;
+    body: string;
+    tone: 'primary' | 'secondary' | 'muted';
+}) {
+    const bubble =
+        tone === 'primary'
+            ? 'bg-primary text-primary-foreground'
+            : tone === 'secondary'
+              ? 'bg-secondary text-secondary-foreground'
+              : 'bg-muted text-foreground';
+
+    const panel =
+        tone === 'primary'
+            ? 'bg-primary/10 border-primary/25'
+            : tone === 'secondary'
+              ? 'bg-secondary border-border'
+              : 'bg-muted/50 border-border';
+
+    return (
+        <div className="relative flex items-center gap-4 rounded-lg p-2 sm:p-0">
+            <div className="relative z-10 hidden w-10 justify-center sm:flex">
+                <div
+                    className={cn(
+                        'border-border flex h-10 w-10 items-center justify-center rounded-full border-2 font-bold',
+                        bubble,
+                    )}
+                >
+                    {step}
+                </div>
+            </div>
+
+            <div
+                className={cn(
+                    'w-full rounded-lg border-2 p-4 shadow-sm',
+                    panel,
+                )}
+            >
+                <div className="flex items-start justify-between gap-3">
+                    <div>
+                        <p className="font-semibold">{title}</p>
+                        <p className="text-muted-foreground mt-1 text-sm">
+                            {body}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
