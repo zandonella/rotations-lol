@@ -22,7 +22,7 @@ export type CatalogTypes = 'skins' | 'chromas' | 'icons' | 'emotes';
 // database types
 export type CatalogItemRecord = {
     ItemID: number;
-    ItemType: string;
+    ItemType: number;
     RiotItemID: string;
     Name: string;
     ImageURL: string;
@@ -33,6 +33,10 @@ export type CatalogItemRecord = {
 
     Skinline?: {
         Name: string;
+        UniverseID: number;
+        Universe?: {
+            Name: string;
+        };
     } | null;
 };
 
@@ -63,6 +67,8 @@ export type CatalogSaleRecord = {
     PercentOff: number;
     Currency: string;
     IsActive: boolean;
+    SaleID: string;
+    Limited: boolean;
 };
 
 export type sectionType = 'DAILY' | 'WEEKLY' | 'BIWEEKLY' | 'FEATURED';
