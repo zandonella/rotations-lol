@@ -87,7 +87,7 @@ export default function CatalogSearch({
                     setSelectedChampions(DEFAULT_FILTERS.championIDs);
                     setSelectedSkinlines(DEFAULT_FILTERS.skinlineIDs);
                 }}
-                className="text-muted-foreground hover:text-foreground cursor-pointer md:col-span-2 lg:col-span-1"
+                className="text-muted-foreground hover:text-foreground cursor-pointer sm:col-span-2 lg:col-span-1"
                 variant="outline"
             >
                 Reset to Defaults
