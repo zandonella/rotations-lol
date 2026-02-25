@@ -20,7 +20,7 @@ export default function Navbar() {
                     <NavLink
                         to="/"
                         className={
-                            'text-sidebar-foreground py-1 pr-2 text-lg font-bold'
+                            'text-sidebar-foreground py-1 pr-2 text-xl font-bold'
                         }
                     >
                         Rotations.lol

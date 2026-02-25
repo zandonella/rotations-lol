@@ -162,11 +162,6 @@ export default function Home() {
                         </Link>
                     </div>
                 </section>
-
-                <footer className="border-border text-muted-foreground w-full border-t pt-6 text-center text-xs">
-                    rotations.lol is an unofficial fan project and is not
-                    affiliated with Riot Games.
-                </footer>
             </div>
         </>
     );
