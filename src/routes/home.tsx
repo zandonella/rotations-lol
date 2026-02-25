@@ -1,13 +1,6 @@
 import { Link } from 'react-router';
 import { cn } from '@/lib/utils';
-
-// If you have shadcn installed, this is the typical import:
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@/components/ui/accordion';
+import FAQAccordion from '@/components/FAQAccordion';
 
 export default function Home() {
     return (
@@ -122,7 +115,6 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* STEP FLOW (stacked, connected, more “designed”) */}
                 <section className="w-full">
                     <div className="mb-3 text-center">
                         <h2 className="text-xl font-semibold">How it works</h2>
@@ -152,60 +144,13 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* FAQ (Accordion) */}
                 <section className="w-full">
                     <div className="mb-3 text-center">
                         <h2 className="text-xl font-semibold">FAQ</h2>
                     </div>
 
-                    <div className="border-border bg-card w-full rounded-lg border-2 p-2 shadow-sm">
-                        <Accordion type="single" collapsible className="w-full">
-                            <AccordionItem value="catalog">
-                                <AccordionTrigger>
-                                    Does the catalog include everything?
-                                </AccordionTrigger>
-                                <AccordionContent className="text-muted-foreground">
-                                    That's the goal — the catalog is intended to
-                                    include every League item we track, even if
-                                    it can't appear in rotations.
-                                </AccordionContent>
-                            </AccordionItem>
-
-                            <AccordionItem value="rotations">
-                                <AccordionTrigger>
-                                    Why can't some items appear in rotations?
-                                </AccordionTrigger>
-                                <AccordionContent className="text-muted-foreground">
-                                    Rotating shops use limited item pools, and
-                                    some items may never be offered through
-                                    those rotations.
-                                </AccordionContent>
-                            </AccordionItem>
-
-                            <AccordionItem value="mythic">
-                                <AccordionTrigger>
-                                    Why are mythic alerts more important?
-                                </AccordionTrigger>
-                                <AccordionContent className="text-muted-foreground">
-                                    Mythic inventory is limited and rotates
-                                    unpredictably. If you miss a window, it can
-                                    be a long wait before it comes back —
-                                    wishlist alerts help you catch it.
-                                </AccordionContent>
-                            </AccordionItem>
-
-                            <AccordionItem value="wishlist">
-                                <AccordionTrigger>
-                                    What happens if I wishlist something that
-                                    never rotates?
-                                </AccordionTrigger>
-                                <AccordionContent className="text-muted-foreground">
-                                    Nothing bad — it just may never trigger an
-                                    alert. If it ever appears in a supported
-                                    rotation, you'll be notified.
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                    <div className="border-border mx-auto max-w-2xl rounded-lg border-2 p-2 shadow-sm">
+                        <FAQAccordion />
                     </div>
 
                     <div className="mt-4 flex justify-center">
