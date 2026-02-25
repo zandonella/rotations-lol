@@ -9,22 +9,22 @@ export default function Home() {
                 <div className="flex flex-col items-start gap-4">
                     <div className="border-border bg-card text-muted-foreground inline-flex items-center gap-2 rounded-full border-2 px-3 py-1 text-xs font-semibold shadow-sm">
                         <span className="bg-primary h-2 w-2 rounded-full" />
-                        Rotations • Wishlists • Alerts
+                        Sale Rotation • Mythic Shop • Wishlist Alerts
                     </div>
 
                     <h1 className="text-2xl font-bold sm:text-3xl">
-                        Check rotations fast. <br />
-                        Don't miss what you want.
+                        Wishlist any item. <br />
+                        Get notified when it shows up.
                     </h1>
 
                     <p className="text-muted-foreground max-w-xl text-sm sm:text-base">
                         <span className="text-primary font-bold">
                             Rotations.lol
                         </span>{' '}
-                        makes league shop rotations easy to browse online — no
-                        need to open the game. Build a wishlist, and if
-                        something you want appears in a supported rotation,
-                        we'll notify you.
+                        monitors both regular sale and mythic shop rotations.
+                        Wishlist any supported item, and if it appears in a
+                        tracked rotation, you'll be notified shortly after it
+                        goes live.
                     </p>
 
                     <div className="flex flex-wrap gap-3 pt-2">
@@ -32,7 +32,7 @@ export default function Home() {
                             to="/sales"
                             className="bg-primary text-primary-foreground inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition"
                         >
-                            View Sale Rotations
+                            View Sale Rotation
                         </Link>
 
                         <Link
@@ -42,31 +42,33 @@ export default function Home() {
                             View Mythic Shop
                         </Link>
                         <Link
-                            to="/wishlist"
+                            to="/catalog"
                             className="border-border bg-card hover:border-primary rounded-lg border-2 px-4 py-2 text-sm font-semibold shadow-sm transition"
                         >
-                            Set Up Alerts
+                            Browse Catalog
                         </Link>
                     </div>
                 </div>
 
                 <div className="grid w-full gap-3 lg:max-w-md">
                     <PreviewBlock
-                        title="Browse rotations online"
-                        badge="Easy to check"
-                        body="See what's in the shop quickly, on any device — no client launch required."
+                        title="Sale Rotation"
+                        badge="Anyone can view"
+                        body="See weekly discounts and limited seasonal releases in the main store rotation, updated as rotations change"
                         tone="secondary"
                     />
+
                     <PreviewBlock
-                        title="Wishlist notifications"
-                        badge="Extra RP in your pocket"
-                        body="For regular sales, save RP by waiting for discounts on what you actually want."
+                        title="Mythic Shop"
+                        badge="Anyone can view"
+                        body="Monitor prestige skins, featured mythic entries, weekly chromas, and other limited cosmetics."
                         tone="muted"
                     />
+
                     <PreviewBlock
-                        title="Mythic alerts matter more"
-                        badge="Get what you want"
-                        body="Mythic items are limited and rotate unpredictably — missing a window can mean waiting a long time."
+                        title="Wishlist Notifications"
+                        badge="Account feature"
+                        body="Wishlist items from the catalog and get notified when they appear in either rotation."
                         tone="primary"
                     />
                 </div>
@@ -75,27 +77,27 @@ export default function Home() {
             <div className="mt-6 flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 <section className="w-full">
                     <div className="mb-3 flex flex-col items-center text-center">
-                        <h2 className="text-2xl font-semibold">Jump in</h2>
+                        <h2 className="text-2xl font-semibold">Explore</h2>
                         <p className="text-muted-foreground">
-                            View rotations and get alerts for the stuff you care
-                            about.
+                            See what's available now, or use the catalog to
+                            wishlist items for alerts.
                         </p>
                     </div>
 
                     <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
                         <NavTile
                             to="/sales"
-                            title="Sale Rotations"
-                            subtitle="Current RP discounts"
-                            body="View the current rotation's skin discounts online — no need to open the client."
+                            title="Sale Rotation"
+                            subtitle="Weekly & seasonal"
+                            body="View the current weekly discounts and limited seasonal skins in the main store."
                             accent="primary"
                         />
 
                         <NavTile
                             to="/mythic"
                             title="Mythic Shop"
-                            subtitle="Every mythic rotation"
-                            body="Track every mythic rotation: featured entries, prestige skins, chromas, and daily cosmetics — all in one place."
+                            subtitle="Rotating premium content"
+                            body="View prestige skins, featured mythic entries, weekly chromas, and other rotating premium content."
                             highlight="mythic"
                         />
 
@@ -103,14 +105,14 @@ export default function Home() {
                             to="/catalog"
                             title="Catalog"
                             subtitle="Everything we track"
-                            body="Browse the full item catalog and wishlist what you want. If it ever enters either sale rotation, you'll be notified."
+                            body="Browse the full League catalog (skins, chromas, emotes, icons, wards, and more) and wishlist what you want to track."
                         />
 
                         <NavTile
                             to="/wishlist"
                             title="Wishlist"
-                            subtitle="Alerts when items rotate in"
-                            body="Get notified shortly after new rotations go live if they include items you care about."
+                            subtitle="Get notified when items are available"
+                            body="Manage your wishlist, and get notified when wishlisted items appear in either rotations."
                         />
                     </div>
                 </section>
@@ -125,20 +127,20 @@ export default function Home() {
 
                         <StepRow
                             step="1"
-                            title="Browse rotations or search the catalog"
-                            body="Use Rotations.lol to quickly see what's live, or search the catalog for anything you're waiting on."
+                            title="Check what's live, or start in the catalog"
+                            body="Browse the Sale Rotation and Mythic Shop, or search the full catalog for items you want to track."
                             tone="secondary"
                         />
                         <StepRow
                             step="2"
-                            title="Add the items you care about to your wishlist"
-                            body="Wishlist regular sales for savings and wishlist mythic items so you don't miss limited rotation windows."
+                            title="Wishlist items you're waiting for"
+                            body="If an item isn't available right now, add it to your wishlist to keep track of it."
                             tone="muted"
                         />
                         <StepRow
                             step="3"
-                            title="Get notified when it appears"
-                            body="If a wishlisted item shows up in either sale rotation, we'll send you an alert."
+                            title="Get notified when it rotates in"
+                            body="When a wishlisted item appears in either rotation, you'll get an alert shortly after it goes live."
                             tone="primary"
                         />
                     </div>
