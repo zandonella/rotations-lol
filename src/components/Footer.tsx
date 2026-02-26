@@ -62,7 +62,8 @@ export default function Footer() {
                     </p>
 
                     <p className="text-muted-foreground mt-4 text-center">
-                        Questions? Contact us at contact@rotations.lol
+                        Questions or suggestions? Contact us at
+                        contact@rotations.lol
                     </p>
 
                     <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-center leading-relaxed">
