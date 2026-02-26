@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import supabase from '@/lib/supabase';
 import type { Session } from '@supabase/supabase-js';
+import { track } from '@/lib/umami.ts';
 
 interface AuthContextType {
     session: Session | undefined;
@@ -41,9 +42,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         const { data, error } = await supabase.auth.signUp({ email, password });
 
         if (error) {
+            track('signup_failure');
             console.error('Error signing up');
             return { success: false, error };
         }
+
+        track('signup_success');
 
         return { success: true, data };
     }
@@ -52,6 +56,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     async function signOut() {
         await supabase.auth.signOut();
         setSession(undefined);
+        track('signout_success');
     }
 
     // Sign in
@@ -62,10 +67,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         });
 
         if (error) {
+            track('signin_failure');
             console.error('Error signing in');
             return { success: false, error };
         }
 
+        track('signin_success');
         return { success: true, data };
     }
 

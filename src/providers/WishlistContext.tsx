@@ -5,6 +5,7 @@ import { useAuthModal } from '@/providers/AuthModalContext';
 import type { WishlistWithItemRecord } from '@/lib/types';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
+import { track } from '@/lib/umami.ts';
 
 type WishlistContextType = {
     wishlistIDs: Set<number>;
@@ -108,6 +109,10 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
                 await refreshWishlist();
             } else {
                 toast.success(`Removed ${itemName} from wishlist.`);
+                track('remove_wishlist', {
+                    item_id: itemId,
+                    item_name: itemName,
+                });
             }
         } else {
             const { count, error: countError } = await supabase
@@ -138,6 +143,10 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
                 toast.error('Failed to add to wishlist.');
             } else {
                 toast.success(`Added ${itemName} to wishlist.`);
+                track('add_wishlist', {
+                    item_id: itemId,
+                    item_name: itemName,
+                });
             }
             await refreshWishlist();
         }
