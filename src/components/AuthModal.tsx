@@ -44,19 +44,19 @@ export default function AuthModal() {
             errs.push('Invalid email address.');
         }
 
-        // if (
-        //     !validator.isStrongPassword(values.password, {
-        //         minLength: 8,
-        //         minLowercase: 1,
-        //         minUppercase: 1,
-        //         minNumbers: 1,
-        //         minSymbols: 1,
-        //     })
-        // ) {
-        //     errs.push(
-        //         'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and symbols.',
-        //     );
-        // }
+        if (
+            !validator.isStrongPassword(values.password, {
+                minLength: 8,
+                minLowercase: 1,
+                minUppercase: 1,
+                minNumbers: 1,
+                minSymbols: 1,
+            })
+        ) {
+            errs.push(
+                'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and symbols.',
+            );
+        }
 
         if (
             values.password !== values.confirmPassword ||
