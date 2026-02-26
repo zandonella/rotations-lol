@@ -46,12 +46,12 @@ export default function Wishlist() {
             <div className="flex flex-col items-center">
                 <h1 className="text-2xl font-bold">Wishlist</h1>
                 <p className="text-muted-foreground max-w-xl text-center">
-                    We'll alert you if a wishlisted item appears in a supported
-                    shop rotation. Some limited or exclusive items may never
-                    appear in a rotation.
+                    We'll send you an email when a wishlisted item appears in a
+                    supported shop rotation. Some limited or exclusive items may
+                    never appear in a rotation.
                 </p>
                 <span className="bg-card text-muted-foreground mt-2 rounded-full px-3 py-1 text-sm font-medium">
-                    {wishlistItems.length} / 25
+                    {wishlistItems.length} / 50
                 </span>
             </div>
             <div className="mt-6 flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">

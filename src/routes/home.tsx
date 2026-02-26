@@ -9,7 +9,7 @@ export default function Home() {
                 <div className="flex flex-col items-start gap-4">
                     <div className="border-border bg-card text-muted-foreground inline-flex items-center gap-2 rounded-full border-2 px-3 py-1 text-xs font-semibold shadow-sm">
                         <span className="bg-primary h-2 w-2 rounded-full" />
-                        Sale Rotation • Mythic Shop • Wishlist Alerts
+                        Sale Rotation • Mythic Shop • Wishlist Notifications
                     </div>
 
                     <h1 className="text-2xl font-bold sm:text-3xl">
@@ -80,7 +80,7 @@ export default function Home() {
                         <h2 className="text-2xl font-semibold">Explore</h2>
                         <p className="text-muted-foreground">
                             See what's available now, or use the catalog to
-                            wishlist items for alerts.
+                            wishlist items for email notifications.
                         </p>
                     </div>
 
@@ -140,7 +140,7 @@ export default function Home() {
                         <StepRow
                             step="3"
                             title="Get notified when it rotates in"
-                            body="When a wishlisted item appears in either rotation, you'll get an alert shortly after it goes live."
+                            body="When a wishlisted item appears in either rotation, you'll get an email shortly after it goes live."
                             tone="primary"
                         />
                     </div>
@@ -151,11 +151,11 @@ export default function Home() {
                         <h2 className="text-xl font-semibold">FAQ</h2>
                     </div>
 
-                    <div className="border-border mx-auto max-w-2xl rounded-lg border-2 p-2 shadow-sm">
+                    <div className="mx-auto max-w-2xl rounded-lg">
                         <FAQAccordion />
                     </div>
 
-                    <div className="mt-4 flex justify-center">
+                    <div className="mt-6 flex justify-center">
                         <Link
                             to="/about"
                             className="text-muted-foreground hover:text-foreground text-sm font-semibold underline underline-offset-4"

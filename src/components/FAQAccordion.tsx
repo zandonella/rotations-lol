@@ -19,7 +19,7 @@ const FAQs = [
     {
         title: 'Do I need an account to use Rotations.lol?',
         content:
-            'No account is required to browse the Sale Rotation or the Mythic Shop. An account is only required if you want to create a wishlist and receive notification alerts.',
+            'No account is required to browse the Sale Rotation or the Mythic Shop. An account is only required if you want to create a wishlist and receive notification emails.',
     },
     {
         title: 'What happens if I wishlist something that never rotates?',
@@ -35,7 +35,10 @@ const FAQs = [
 
 export default function FAQAccordion() {
     return (
-        <Accordion type="single" collapsible className="w-full">
+        <Accordion
+            type="multiple"
+            className="border-border bg-popover w-full rounded-lg border"
+        >
             {FAQs.map((faq) => (
                 <FAQAccordionItem
                     key={faq.title}
@@ -55,7 +58,10 @@ function FAQAccordionItem({
     content: string;
 }) {
     return (
-        <AccordionItem value={title}>
+        <AccordionItem
+            value={title}
+            className="border-border border-b px-4 last:border-b-0"
+        >
             <AccordionTrigger className="cursor-pointer">
                 {title}
             </AccordionTrigger>
