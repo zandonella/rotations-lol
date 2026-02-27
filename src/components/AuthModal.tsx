@@ -8,6 +8,7 @@ import validator from 'validator';
 import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import { toast } from 'sonner';
+import { Skeleton } from './ui/skeleton';
 
 export default function AuthModal() {
     const { open, setOpen } = useAuthModal();
@@ -15,7 +16,17 @@ export default function AuthModal() {
     const [errors, setErrors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const { signUp, signIn, session, signOut } = useAuth();
+    const {
+        signUp,
+        signIn,
+        session,
+        signOut,
+        loading: authLoading,
+    } = useAuth();
+
+    if (authLoading) {
+        return <Skeleton className="h-10 rounded-md px-12" />;
+    }
 
     function updateMode(newMode: ModalMode) {
         setMode(newMode);
