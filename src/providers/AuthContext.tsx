@@ -5,6 +5,7 @@ import { track } from '@/lib/umami.ts';
 
 interface AuthContextType {
     session: Session | undefined;
+    loading: boolean;
     signUp: (
         email: string,
         password: string,
@@ -24,12 +25,14 @@ interface AuthContextProviderProps {
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
     const [session, setSession] = useState<Session | undefined>(undefined);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
             if (session) {
                 setSession(session);
             }
+            setLoading(false);
         });
 
         supabase.auth.onAuthStateChange((_event, session) => {
@@ -77,7 +80,9 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
 
     return (
-        <AuthContext.Provider value={{ session, signUp, signOut, signIn }}>
+        <AuthContext.Provider
+            value={{ session, signUp, signOut, signIn, loading }}
+        >
             {children}
         </AuthContext.Provider>
     );
