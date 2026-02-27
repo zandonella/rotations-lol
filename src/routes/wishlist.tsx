@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useWishlist } from '@/providers/WishlistContext';
 import { useAuth } from '@/providers/AuthContext';
+import { useAuthModal } from '@/providers/AuthModalContext';
 import ItemCard from '@/components/itemCard';
 import type { WishlistWithItemRecord } from '@/lib/types';
 
@@ -8,6 +9,16 @@ export default function Wishlist() {
     const { wishlistItems, loading, toggleWishlist } = useWishlist();
     const { session } = useAuth();
     const authed = !!session;
+
+    const { openModal } = useAuthModal();
+    const AutoOpenedRef = useRef(false);
+
+    useEffect(() => {
+        if (!authed && !AutoOpenedRef.current) {
+            openModal();
+            AutoOpenedRef.current = true;
+        }
+    }, [authed, openModal]);
 
     let content;
 
