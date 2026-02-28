@@ -54,7 +54,7 @@ export default function About() {
                 <h2 className="text-xl font-semibold">Project & Contact</h2>
 
                 <p className="text-muted-foreground leading-relaxed">
-                    This project is developed and maintained independently. It’s
+                    This project is developed and maintained independently. It's
                     both a practical tool for players and an ongoing systems
                     project that I continue to improve over time.
                 </p>
