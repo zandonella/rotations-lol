@@ -9,6 +9,8 @@ import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import { toast } from 'sonner';
 import { Skeleton } from './ui/skeleton';
+import { LuUserRound } from 'react-icons/lu';
+import { Link } from 'react-router';
 
 export default function AuthModal() {
     const { open, setOpen } = useAuthModal();
@@ -16,13 +18,7 @@ export default function AuthModal() {
     const [errors, setErrors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const {
-        signUp,
-        signIn,
-        session,
-        signOut,
-        loading: authLoading,
-    } = useAuth();
+    const { signUp, signIn, session, loading: authLoading } = useAuth();
 
     if (authLoading) {
         return <Skeleton className="h-10 rounded-md px-12" />;
@@ -41,11 +37,6 @@ export default function AuthModal() {
             setErrors([]);
             setSuccess(false);
         }
-    }
-
-    function handleSignout() {
-        signOut();
-        toast.success('Signed out successfully!');
     }
 
     function validateSignUp(values: SignUpValues) {
@@ -166,14 +157,15 @@ export default function AuthModal() {
         <Dialog open={open} onOpenChange={handleOpenChange}>
             <div>
                 {session ? (
-                    <Button
-                        size="lg"
-                        variant="ghost"
-                        className="text-md cursor-pointer px-4 font-bold"
-                        onClick={handleSignout}
+                    <Link
+                        to="/settings"
+                        className="hover:text-primary text-foreground"
                     >
-                        Sign out
-                    </Button>
+                        <LuUserRound
+                            size={30}
+                            className="cursor-pointer rounded-4xl border-2 transition-colors duration-200 ease-in-out"
+                        />
+                    </Link>
                 ) : (
                     <DialogTrigger asChild>
                         <Button

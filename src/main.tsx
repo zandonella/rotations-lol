@@ -12,9 +12,9 @@ import Catalog from './routes/catalog.tsx';
 import Wishlist from './routes/wishlist.tsx';
 import About from './routes/about.tsx';
 import NavLayout from './layouts/NavLayout.tsx';
-import Profile from './routes/profile.tsx';
 import ProtectedRoute from './layouts/ProtectedRoute.tsx';
 import NotFound from './routes/NotFound.tsx';
+import Settings from './routes/settings.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -38,8 +38,8 @@ createRoot(document.getElementById('root')!).render(
                                 <Route path="/about" element={<About />} />
                                 <Route element={<ProtectedRoute />}>
                                     <Route
-                                        path="/profile"
-                                        element={<Profile />}
+                                        path="/settings"
+                                        element={<Settings />}
                                     />
                                 </Route>
                                 <Route path="*" element={<NotFound />} />

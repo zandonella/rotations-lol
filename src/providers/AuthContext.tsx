@@ -15,6 +15,9 @@ interface AuthContextType {
         email: string,
         password: string,
     ) => Promise<{ success: boolean; error?: any; data?: any }>;
+    updatePassword: (
+        password: string,
+    ) => Promise<{ success: boolean; error?: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -79,9 +82,31 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         return { success: true, data };
     }
 
+    async function updatePassword(password: string) {
+        const { error } = await supabase.auth.updateUser({
+            password,
+        });
+
+        if (error) {
+            track('update_password_failure');
+            console.error('Error updating password');
+            return { success: false, error };
+        }
+
+        track('update_password_success');
+        return { success: true };
+    }
+
     return (
         <AuthContext.Provider
-            value={{ session, signUp, signOut, signIn, loading }}
+            value={{
+                session,
+                signUp,
+                signOut,
+                signIn,
+                loading,
+                updatePassword,
+            }}
         >
             {children}
         </AuthContext.Provider>
