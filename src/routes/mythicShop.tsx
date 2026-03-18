@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import supabase from '../lib/supabase.ts';
 import type { MythicSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
-import { calculateTimeUntilEnd } from '@/lib/utils.ts';
+import { calculateTimeUntilEnd, getPacificResetLabel } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
 
 export default function MythicShop() {
@@ -113,14 +113,14 @@ export default function MythicShop() {
                 {renderSection(
                     'Biweekly',
                     biweekly,
-                    'Resets every other Wednesday at 4PM PST',
+                    `Resets every other Wednesday at ${getPacificResetLabel()}`,
                 )}
                 {renderSection(
                     'Weekly',
                     weekly,
-                    'Resets every Wednesday at 4PM PST',
+                    `Resets every Wednesday at ${getPacificResetLabel()}`,
                 )}
-                {renderSection('Daily', daily, 'Resets daily at 4PM PST')}
+                {renderSection('Daily', daily, `Resets daily at ${getPacificResetLabel()}`)}
             </>
         );
     }

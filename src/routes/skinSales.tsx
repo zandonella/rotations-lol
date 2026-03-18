@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import supabase from '../lib/supabase.ts';
 import type { CatalogSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
-import { calculateTimeUntilEnd } from '@/lib/utils.ts';
+import { calculateTimeUntilEnd, getPacificResetLabel } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
 
 export default function SkinSales() {
@@ -154,7 +154,7 @@ export default function SkinSales() {
                 {renderSection(
                     'Current Weekly Skin Sales',
                     sortSalesBySkinline(weekly),
-                    'Resets every Monday at 4PM PST',
+                    `Resets every Monday at ${getPacificResetLabel()}`,
                 )}
                 {Object.entries(limited).map(([skinline, sales]) =>
                     renderSection(skinline, sortSalesBySkinline(sales)),

@@ -35,3 +35,14 @@ export function calculateTimeUntilEnd(endDateStr: string): string {
 
     return result.trim();
 }
+
+export function getPacificResetLabel() {
+    const date = new Date("2026-03-24T00:00:00.000Z") // arbitrary date that is at midnight UTC
+    return date.toLocaleTimeString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+        timeZoneName: 'short',
+    });
+}
