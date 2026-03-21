@@ -10,7 +10,7 @@ export default function Footer() {
                             to="/"
                             className="text-xl font-bold tracking-tight"
                         >
-                            Rotations.lol
+                            Rotations<span className="text-primary">.lol</span>
                         </NavLink>
                         <p className="text-muted-foreground text-sm">
                             Track League shop rotations, wishlist items, and get

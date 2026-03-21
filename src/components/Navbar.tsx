@@ -23,7 +23,7 @@ export default function Navbar() {
                             'text-sidebar-foreground py-1 pr-2 text-xl font-bold'
                         }
                     >
-                        Rotations.lol
+                        Rotations<span className="text-primary">.lol</span>
                     </NavLink>
                     {LINKS.map(({ to, text }) => (
                         <NavbarLink key={to} to={to} text={text} />
