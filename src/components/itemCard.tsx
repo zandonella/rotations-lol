@@ -91,7 +91,7 @@ export default function ItemCard({
                     {getIcon()}
                 </button>
                 {sale?.SaleEndAt && (
-                    <span className="bg-primary text-card absolute top-0 left-0 m-1.5 rounded-full px-2 py-1 text-xs font-bold">
+                    <span className="bg-primary dark:text-card absolute top-0 left-0 m-1.5 rounded-full px-2 py-1 text-xs font-bold">
                         {sale.SaleEndAt}
                     </span>
                 )}
