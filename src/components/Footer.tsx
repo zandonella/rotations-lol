@@ -55,7 +55,7 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="border-border/40 mx-auto mt-6 max-w-3xl border-t pt-6 text-xs">
+                <div className="border-accent-foreground/40 dark:border-border/40 mx-auto mt-6 max-w-3xl border-t pt-6 text-xs">
                     <p className="text-muted-foreground text-center">
                         &copy; {new Date().getFullYear()} Rotations.lol. All
                         rights reserved.

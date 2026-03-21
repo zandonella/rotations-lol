@@ -123,7 +123,7 @@ export default function Home() {
                     </div>
 
                     <div className="relative mx-auto w-full max-w-2xl flex-col gap-3 sm:flex">
-                        <div className="dark:bg-border bg-accent-foreground absolute top-10 left-5 hidden h-[calc(100%-5rem)] w-px sm:block" />
+                        <div className="dark:bg-border bg-accent-foreground/40 absolute top-10 left-5 hidden h-[calc(100%-5rem)] w-px sm:block" />
 
                         <StepRow
                             step="1"
