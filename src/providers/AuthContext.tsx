@@ -18,6 +18,9 @@ interface AuthContextType {
     updatePassword: (
         password: string,
     ) => Promise<{ success: boolean; error?: any }>;
+    sendPasswordResetEmail: (
+        email: string,
+    ) => Promise<{ success: boolean; error?: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -97,6 +100,22 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         return { success: true };
     }
 
+    async function sendPasswordResetEmail(email: string) {
+        const { data, error } = await supabase.auth.resetPasswordForEmail(
+            email,
+            { redirectTo: `${window.location.origin}/settings` },
+        );
+
+        if (error) {
+            track('password_reset_failure');
+            console.error('Error sending password reset email');
+            return { success: false, error };
+        }
+
+        track('password_reset_success');
+        return { success: true, data };
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -106,6 +125,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
                 signIn,
                 loading,
                 updatePassword,
+                sendPasswordResetEmail,
             }}
         >
             {children}

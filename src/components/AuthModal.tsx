@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { Skeleton } from './ui/skeleton';
 import { LuUserRound } from 'react-icons/lu';
 import { Link } from 'react-router';
+import ForgotPasswordForm from './ForgotPasswordForm';
 
 export default function AuthModal() {
     const { open, setOpen } = useAuthModal();
@@ -18,7 +19,13 @@ export default function AuthModal() {
     const [errors, setErrors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
-    const { signUp, signIn, session, loading: authLoading } = useAuth();
+    const {
+        signUp,
+        signIn,
+        session,
+        loading: authLoading,
+        sendPasswordResetEmail,
+    } = useAuth();
 
     if (authLoading) {
         return <Skeleton className="h-10 rounded-md px-12" />;
@@ -118,7 +125,9 @@ export default function AuthModal() {
                     return;
                 }
                 setOpen(false);
-                toast.success('Account created successfully! Confirm your email to sign in.');
+                toast.success(
+                    'Account created successfully! Confirm your email to sign in.',
+                );
             } else if (mode === 'sign-in') {
                 // Sign in logic
                 const signInValues: SignInValues = {
@@ -144,6 +153,23 @@ export default function AuthModal() {
                 }
                 setOpen(false);
                 toast.success('Signed in successfully!');
+            } else if (mode === 'forgot-password') {
+                const email = values.email as string;
+                if (!validator.isEmail(email)) {
+                    setErrors(['Invalid email address.']);
+                    return;
+                }
+
+                const result = await sendPasswordResetEmail(email);
+                if (!result.success) {
+                    setErrors([
+                        result.error.message || 'Error sending reset email',
+                    ]);
+                    console.log('Forgot Password Errors:', result.error);
+                    return;
+                }
+                setSuccess(true);
+                toast.success('Password reset email sent! Check your inbox.');
             }
         } catch (error) {
             setErrors(['An unexpected error occurred. Please try again.']);
@@ -199,7 +225,14 @@ export default function AuthModal() {
                                 success={success}
                             />
                         )}
-                        {/* Future implementation for 'forgot-password' can be added here */}
+                        {mode === 'forgot-password' && (
+                            <ForgotPasswordForm
+                                updateMode={updateMode}
+                                loading={loading}
+                                errors={errors}
+                                success={success}
+                            />
+                        )}
                     </form>
                 </DialogContent>
             </div>

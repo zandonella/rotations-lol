@@ -44,7 +44,9 @@ export default function SignInForm({
                     <div className="flex items-baseline justify-between">
                         <Label htmlFor="password">Password</Label>
                         <div className="mt-2 text-right">
-                            <span className="hover:text-primary cursor-pointer text-sm leading-none font-medium underline transition-colors duration-150 ease-in-out">
+                            <span className="hover:text-primary cursor-pointer text-sm leading-none font-medium underline transition-colors duration-150 ease-in-out"
+                                onClick={() => updateMode && updateMode('forgot-password')}
+                            >
                                 Forgot password?
                             </span>
                         </div>
