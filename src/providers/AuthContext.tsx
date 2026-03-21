@@ -21,6 +21,7 @@ interface AuthContextType {
     sendPasswordResetEmail: (
         email: string,
     ) => Promise<{ success: boolean; error?: any }>;
+    deleteAccount: () => Promise<{ success: boolean; error?: any; data?: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -116,6 +117,20 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         return { success: true, data };
     }
 
+    async function DeleteAccount() {
+        const { data, error } =
+            await supabase.functions.invoke('delete-account');
+
+        if (error) {
+            track('delete_account_failure');
+            console.error('Error deleting account');
+            return { success: false, error };
+        }
+
+        track('delete_account_success');
+        return { success: true, data };
+    }
+
     return (
         <AuthContext.Provider
             value={{
@@ -126,6 +141,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
                 loading,
                 updatePassword,
                 sendPasswordResetEmail,
+                deleteAccount: DeleteAccount,
             }}
         >
             {children}

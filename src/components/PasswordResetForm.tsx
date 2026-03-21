@@ -6,7 +6,6 @@ import { useAuth } from '@/providers/AuthContext';
 import validator from 'validator';
 
 type PasswordChangeValues = {
-    currentPassword: string;
     password: string;
     confirmPassword: string;
 };
@@ -14,33 +13,29 @@ type PasswordChangeValues = {
 export default function PasswordResetForm() {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
-    const { signIn, session, updatePassword } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const { updatePassword } = useAuth();
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError(null);
+        setLoading(true);
         setSuccess(false);
 
         const formData = new FormData(e.target as HTMLFormElement);
         const values = Object.fromEntries(formData.entries());
 
-        const { currentPassword, password, confirmPassword } =
-            values as PasswordChangeValues;
+        const { password, confirmPassword } = values as PasswordChangeValues;
 
-        if (!currentPassword || !password || !confirmPassword) {
+        if (!password || !confirmPassword) {
             setError('All fields are required.');
+            setLoading(false);
             return;
         }
 
         if (password !== confirmPassword) {
             setError('New password and confirmation do not match.');
-            return;
-        }
-
-        const user = await signIn(session?.user?.email || '', currentPassword);
-
-        if (user.error) {
-            setError('Current password is incorrect.');
+            setLoading(false);
             return;
         }
 
@@ -56,6 +51,7 @@ export default function PasswordResetForm() {
             setError(
                 'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and symbols.',
             );
+            setLoading(false);
             return;
         }
 
@@ -64,10 +60,12 @@ export default function PasswordResetForm() {
         if (updateResult.error) {
             setError('Failed to update password. Please try again.');
             console.error(updateResult.error);
+            setLoading(false);
             return;
         }
 
         setSuccess(true);
+        setLoading(false);
     }
 
     return (
@@ -77,15 +75,6 @@ export default function PasswordResetForm() {
                 onSubmit={handleSubmit}
                 className="mx-auto mt-2 flex w-full max-w-md flex-col gap-4"
             >
-                <div className="grid gap-3">
-                    <Label htmlFor="currentPassword">Current Password</Label>
-                    <Input
-                        id="currentPassword"
-                        type="password"
-                        name="currentPassword"
-                        placeholder="Enter your current password"
-                    />
-                </div>
                 <div className="grid gap-3">
                     <Label htmlFor="password">Password</Label>
                     <Input
@@ -107,16 +96,23 @@ export default function PasswordResetForm() {
                     />
                 </div>
 
-                {error && <p className="text-sm text-red-500">{error}</p>}
+                {error && (
+                    <div className="space-y-2">
+                        <ul className="text-foreground bg-destructive/30 border-destructive rounded border-2 p-2 text-sm">
+                            <li>{error}</li>
+                        </ul>
+                    </div>
+                )}
                 {success && (
-                    <p className="text-sm text-green-500">
+                    <div className="text-foreground border-chart-3 bg-chart-3/30 rounded border-2 p-2 text-sm">
                         Password updated successfully!
-                    </p>
+                    </div>
                 )}
                 <Button
                     variant="default"
                     className="cursor-pointer"
                     type="submit"
+                    disabled={loading}
                 >
                     Update Password
                 </Button>
