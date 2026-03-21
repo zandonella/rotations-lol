@@ -1,4 +1,10 @@
+import { useEffect } from 'react';
+
 export default function About() {
+    useEffect(() => {
+        scrollTo(0, 0);
+    }, []);
+
     return (
         <div className="mx-auto max-w-3xl space-y-10 px-6">
             <section className="space-y-4">
