@@ -1,4 +1,4 @@
-import { LuSun, LuMoon, LuLock } from 'react-icons/lu';
+import { LuSun, LuMoon } from 'react-icons/lu';
 import type { Theme } from '../lib/types';
 import { useEffect, useState } from 'react';
 
