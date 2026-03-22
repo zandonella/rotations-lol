@@ -15,6 +15,8 @@ import NavLayout from './layouts/NavLayout.tsx';
 import ProtectedRoute from './layouts/ProtectedRoute.tsx';
 import NotFound from './routes/NotFound.tsx';
 import Settings from './routes/settings.tsx';
+import Privacy from './routes/privacy.tsx';
+import Terms from './routes/terms.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -36,6 +38,8 @@ createRoot(document.getElementById('root')!).render(
                                     element={<Wishlist />}
                                 />
                                 <Route path="/about" element={<About />} />
+                                <Route path="/privacy" element={<Privacy />} />
+                                <Route path="/terms" element={<Terms />} />
                                 <Route element={<ProtectedRoute />}>
                                     <Route
                                         path="/settings"
