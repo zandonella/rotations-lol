@@ -1,0 +1,7 @@
+services:
+    rotations-lol:
+        build: .
+        container_name: rotations-lol
+        restart: unless-stopped
+        ports:
+            - '3002:80'
