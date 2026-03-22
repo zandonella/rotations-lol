@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { NavLink } from 'react-router';
 
 export default function About() {
     useEffect(() => {
@@ -53,6 +54,29 @@ export default function About() {
                     access player data. Only minimal information necessary to
                     power wishlist notifications (such as email addresses) is
                     stored.
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                    For more details, see the{' '}
+                    <NavLink
+                        to="/privacy"
+                        className="text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors"
+                    >
+                        Privacy Policy
+                    </NavLink>
+                </p>
+            </section>
+            <section className="space-y-3">
+                <h2 className="text-xl font-semibold">Terms</h2>
+
+                <p className="text-muted-foreground leading-relaxed">
+                    Use of Rotations.lol is subject to our{' '}
+                    <NavLink
+                        to="/terms"
+                        className="text-muted-foreground hover:text-foreground underline underline-offset-4 transition-colors"
+                    >
+                        Terms of Use
+                    </NavLink>
+                    , which outline acceptable use of the site and its features.
                 </p>
             </section>
 
