@@ -62,8 +62,13 @@ export default function Footer() {
                     </p>
 
                     <p className="text-muted-foreground mt-4 text-center">
-                        Questions or suggestions? Contact us at
-                        contact@rotations.lol
+                        Questions or suggestions? Contact us at{' '}
+                        <a
+                            href="mailto:contact@rotations.lol"
+                            className="hover:text-foreground underline underline-offset-2"
+                        >
+                            contact@rotations.lol
+                        </a>
                     </p>
 
                     <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-center leading-relaxed">
