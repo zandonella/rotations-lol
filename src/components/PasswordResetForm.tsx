@@ -59,7 +59,6 @@ export default function PasswordResetForm() {
 
         if (updateResult.error) {
             setError('Failed to update password. Please try again.');
-            console.error(updateResult.error);
             setLoading(false);
             return;
         }

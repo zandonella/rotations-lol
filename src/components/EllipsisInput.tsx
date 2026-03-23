@@ -19,7 +19,6 @@ export function EllipsisInput({
     }
 
     function handleSubmit(page: number) {
-        console.log('Submitting page:', page);
         if (page < 1 || page > totalPages) {
             // clamp the page number within valid range
             page = Math.max(1, Math.min(page, totalPages));

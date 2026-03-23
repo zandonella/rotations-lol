@@ -20,7 +20,6 @@ export default function SkinSales() {
             if (error) {
                 console.error('Error fetching skin sales:', error);
             } else {
-                console.log('Fetched skin sales:', data);
                 setSkinSales(data || []);
             }
             setLoading(false);

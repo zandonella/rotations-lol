@@ -22,7 +22,6 @@ export default function MythicShop() {
                 .select('*, CatalogItem(*)')
                 .eq('IsActive', true);
             if (error) {
-                console.error('Error fetching mythic sales:', error);
                 setErrorMsg('Failed to load mythic rotations.');
                 setMythicSales([]);
             } else {
@@ -120,7 +119,11 @@ export default function MythicShop() {
                     weekly,
                     `Resets every Wednesday at ${getPacificResetLabel()}`,
                 )}
-                {renderSection('Daily', daily, `Resets daily at ${getPacificResetLabel()}`)}
+                {renderSection(
+                    'Daily',
+                    daily,
+                    `Resets daily at ${getPacificResetLabel()}`,
+                )}
             </>
         );
     }

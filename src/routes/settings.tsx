@@ -93,7 +93,6 @@ function DeleteAccountDialog() {
             signOut();
         } else {
             setError('Failed to delete account. Please try again.');
-            console.error(result.error);
         }
     }
     return (

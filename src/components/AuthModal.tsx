@@ -110,7 +110,6 @@ export default function AuthModal() {
                 const errs = validateSignUp(signUpValues);
                 if (errs.length > 0) {
                     setErrors(errs);
-                    console.log('Sign Up Errors:', errs);
                     return;
                 }
 
@@ -121,7 +120,6 @@ export default function AuthModal() {
                 );
                 if (!result.success) {
                     setErrors([result.error.message || 'Error signing up']);
-                    console.log('Sign Up Errors:', result.error);
                     return;
                 }
                 setOpen(false);
@@ -138,7 +136,6 @@ export default function AuthModal() {
                 const errs = validateSignIn(signInValues);
                 if (errs.length > 0) {
                     setErrors(errs);
-                    console.log('Sign In Errors:', errs);
                     return;
                 }
 
@@ -148,7 +145,6 @@ export default function AuthModal() {
                 );
                 if (!result.success) {
                     setErrors([result.error.message || 'Error signing in']);
-                    console.log('Sign In Errors:', result.error);
                     return;
                 }
                 setOpen(false);
@@ -165,7 +161,6 @@ export default function AuthModal() {
                     setErrors([
                         result.error.message || 'Error sending reset email',
                     ]);
-                    console.log('Forgot Password Errors:', result.error);
                     return;
                 }
                 setSuccess(true);
@@ -173,7 +168,6 @@ export default function AuthModal() {
             }
         } catch (error) {
             setErrors(['An unexpected error occurred. Please try again.']);
-            console.error('Unexpected Error:', error);
         } finally {
             setLoading(false);
         }
