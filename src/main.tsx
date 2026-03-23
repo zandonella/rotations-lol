@@ -17,6 +17,7 @@ import NotFound from './routes/NotFound.tsx';
 import Settings from './routes/settings.tsx';
 import Privacy from './routes/privacy.tsx';
 import Terms from './routes/terms.tsx';
+import ScrollToTop from './lib/ScrollToTop.tsx';
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')!).render(
             <AuthContextProvider>
                 <AuthModalProvider>
                     <WishlistProvider>
+                        <ScrollToTop />
                         <Routes>
                             <Route element={<NavLayout />}>
                                 <Route path="/" element={<Home />} />
