@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+[data-sonner-toaster] {
+    top: 70px !important;
+}
+
 :root.dark {
     --background: oklch(0.1408 0.0044 285.8229);
     --foreground: oklch(0.9851 0 0);
