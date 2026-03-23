@@ -7,22 +7,22 @@ import type { WishlistWithItemRecord } from '@/lib/types';
 
 export default function Wishlist() {
     const { wishlistItems, loading, toggleWishlist } = useWishlist();
-    const { session } = useAuth();
+    const { session, loading: authLoading } = useAuth();
     const authed = !!session;
 
     const { openModal } = useAuthModal();
     const AutoOpenedRef = useRef(false);
 
     useEffect(() => {
-        if (!authed && !AutoOpenedRef.current) {
+        if (!authLoading && !authed && !AutoOpenedRef.current) {
             openModal();
             AutoOpenedRef.current = true;
         }
-    }, [authed, openModal]);
+    }, [authed, openModal, authLoading]);
 
     let content;
 
-    if (loading) {
+    if (loading || authLoading) {
         content = <p>Loading...</p>;
     } else if (!authed) {
         content = (
