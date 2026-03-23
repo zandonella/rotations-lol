@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /settings
+Disallow: /wishlist
+
+Sitemap: https://rotations.lol/sitemap.xml
