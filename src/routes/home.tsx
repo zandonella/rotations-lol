@@ -5,13 +5,8 @@ import FAQAccordion from '@/components/FAQAccordion';
 export default function Home() {
     return (
         <>
-            <div className="relative flex max-w-6xl flex-col gap-8 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="relative flex max-w-6xl flex-col gap-8 p-4 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex flex-col items-start gap-4">
-                    <div className="border-border bg-card text-muted-foreground inline-flex items-center gap-2 rounded-full border-2 px-3 py-1 text-xs font-semibold shadow-sm">
-                        <span className="bg-primary h-2 w-2 rounded-full" />
-                        Sale Rotation • Mythic Shop • Wishlist Notifications
-                    </div>
-
                     <h1 className="text-2xl font-bold sm:text-3xl">
                         Wishlist any item. <br />
                         Get notified when it shows up.
@@ -30,20 +25,21 @@ export default function Home() {
                     <div className="flex flex-wrap gap-3 pt-2">
                         <Link
                             to="/sales"
-                            className="bg-primary text-primary-foreground inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition"
+                            className="bg-primary text-primary-foreground inline-flex min-w-[160px] items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition"
                         >
                             View Sale Rotation
                         </Link>
 
                         <Link
                             to="/mythic"
-                            className="border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-accent-foreground inline-flex items-center justify-center rounded-lg border-2 px-4 py-2 text-sm font-semibold shadow-sm transition"
+                            className="border-border bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-accent-foreground inline-flex min-w-[160px] items-center justify-center rounded-lg border-2 px-4 py-2 text-sm font-semibold shadow-sm transition"
                         >
                             View Mythic Shop
                         </Link>
+
                         <Link
                             to="/catalog"
-                            className="border-border bg-card hover:border-primary rounded-lg border-2 px-4 py-2 text-sm font-semibold shadow-sm transition"
+                            className="border-border bg-card hover:border-primary inline-flex min-w-[160px] items-center justify-center rounded-lg border-2 px-4 py-2 text-sm font-semibold shadow-sm transition"
                         >
                             Browse Catalog
                         </Link>
@@ -74,7 +70,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <div className="mt-6 flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+            <div className="flex max-w-6xl flex-col gap-8 p-4 sm:p-8 lg:items-center lg:justify-between">
                 <section className="w-full">
                     <div className="mb-3 flex flex-col items-center text-center">
                         <h2 className="text-2xl font-semibold">Explore</h2>
@@ -191,7 +187,7 @@ function PreviewBlock({
         <div className={cn('rounded-lg border-2 p-4 shadow-sm', toneClasses)}>
             <div className="flex items-center justify-between gap-3">
                 <p className="font-semibold">{title}</p>
-                <span className="bg-background/70 dark:text-muted-foreground text-foreground rounded-full px-2 py-0.5 text-xs font-semibold">
+                <span className="bg-background/70 dark:text-muted-foreground text-foreground rounded-full px-2 py-1 text-xs font-semibold whitespace-nowrap">
                     {badge}
                 </span>
             </div>
@@ -230,25 +226,15 @@ function NavTile({
         >
             <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         <h3 className="text-lg font-semibold">{title}</h3>
-                        {accent === 'primary' && (
-                            <span className="bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-semibold">
-                                Start here
-                            </span>
-                        )}
-                        {highlight === 'mythic' && (
-                            <span className="border-border bg-background/60 text-muted-foreground rounded-full border px-2 py-0.5 text-xs font-semibold">
-                                Rotates daily!
-                            </span>
-                        )}
                     </div>
                     <p className="text-muted-foreground text-sm font-medium">
                         {subtitle}
                     </p>
                 </div>
 
-                <span className="text-muted-foreground group-hover:text-foreground mt-1 text-sm">
+                <span className="text-muted-foreground group-hover:text-foreground mt-1 shrink-0 text-sm">
                     View &rarr;
                 </span>
             </div>
@@ -284,7 +270,7 @@ function StepRow({
               : 'bg-muted/50 border-border';
 
     return (
-        <div className="relative flex items-center gap-4 rounded-lg p-2 sm:p-0">
+        <div className="relative flex items-center gap-4 rounded-lg py-2 sm:p-0">
             <div className="relative z-10 hidden w-10 justify-center sm:flex">
                 <div
                     className={cn(

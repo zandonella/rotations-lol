@@ -47,6 +47,10 @@ export default function Catalog() {
     }
 
     useEffect(() => {
+        scrollTo({ top: 0, behavior: 'smooth' });
+    }, [page]);
+
+    useEffect(() => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(filters));
     }, [filters]);
 

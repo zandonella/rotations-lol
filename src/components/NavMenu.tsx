@@ -23,7 +23,11 @@ export default function NavMenu({ links, className }: NavMenuProps) {
                 >
                     <div className="flex w-fit flex-col items-center gap-4 p-4">
                         {/* logo */}
-                        <NavLink to="/" className="text-2xl font-black">
+                        <NavLink
+                            to="/"
+                            className="text-2xl font-black"
+                            onClick={() => setOpen(false)}
+                        >
                             Rotations<span className="text-primary">.lol</span>
                         </NavLink>
                         <div className="flex w-fit flex-col items-center gap-4">

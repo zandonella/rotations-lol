@@ -11,7 +11,6 @@ export default function SkinSales() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Example fetch from supabase, adjust as needed
         async function fetchCatalogSales() {
             const { data, error } = await supabase
                 .from('CatalogSale')
@@ -91,7 +90,7 @@ export default function SkinSales() {
                 className="flex w-full flex-col items-center gap-4"
                 key={title}
             >
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center text-center">
                     <h2 className="text-2xl font-semibold">{title}</h2>
                     {subtitle && (
                         <p className="text-muted-foreground font-semibold">
@@ -165,8 +164,8 @@ export default function SkinSales() {
     }
     return (
         <>
-            <h1 className="text-2xl font-bold">Sale Rotations</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-center text-2xl font-bold">Sale Rotations</h1>
+            <p className="text-muted-foreground text-center">
                 View the current regular sale rotations
             </p>
             <div className="mt-4 flex w-full flex-col items-center gap-4">
