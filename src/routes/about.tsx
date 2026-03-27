@@ -97,6 +97,15 @@ export default function About() {
                         className="hover:text-foreground underline underline-offset-4"
                     >
                         contact@rotations.lol
+                    </a>{' '}
+                    or join the{' '}
+                    <a
+                        href="https://discord.com/invite/Fpzg57GMDR"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-foreground underline underline-offset-4"
+                    >
+                        Discord server
                     </a>
                     .
                 </p>

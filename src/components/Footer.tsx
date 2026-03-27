@@ -30,6 +30,14 @@ export default function Footer() {
                                 >
                                     About
                                 </NavLink>
+                                <a
+                                    href="https://discord.gg/Fpzg57GMDR"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-muted-foreground hover:text-foreground transition-colors"
+                                >
+                                    Discord
+                                </a>
                             </div>
                         </div>
 
