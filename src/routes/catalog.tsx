@@ -11,7 +11,7 @@ const PAGE_SIZE = 20;
 export const DEFAULT_FILTERS: CatalogFilters = {
     championIDs: [],
     skinlineIDs: [],
-    itemTypeIDs: [1],
+    itemTypeIDs: [1, 2, 3, 4, 5, 6],
     search: '',
 };
 
@@ -83,10 +83,11 @@ export default function Catalog() {
             let query = supabase
                 .from('CatalogItem')
                 .select('*, Champion(Name), Skinline(Name)', { count: 'exact' })
-                .order('Champion(Name)', {
-                    ascending: true,
-                })
-                .order('RiotItemID', { ascending: false });
+                .order('SortSection', { ascending: true })
+                .order('Champion(Name)', { ascending: true })
+                .order('ParentItemID', { ascending: true })
+                .order('ItemType', { ascending: true })
+                .order('Name', { ascending: true });
 
             if (filters.championIDs.length > 0) {
                 query = query.in('ChampionID', filters.championIDs);
