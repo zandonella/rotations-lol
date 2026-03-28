@@ -15,8 +15,8 @@ export default function About() {
 
                 <p className="text-muted-foreground leading-relaxed">
                     Rotations.lol is an independent project built to track
-                    League of Legends shop rotations and provide notifications
-                    when specific items become available.
+                    League of Legends shop rotations and provide email
+                    notifications when specific items become available.
                 </p>
 
                 <p className="text-muted-foreground leading-relaxed">
@@ -35,7 +35,7 @@ export default function About() {
                     The site maintains a structured catalog of supported items
                     and monitors eligible shop rotations. Users can wishlist
                     items, and when those items appear in a tracked rotation,
-                    notifications are sent automatically.
+                    email notifications are sent automatically.
                 </p>
 
                 <p className="text-muted-foreground leading-relaxed">
