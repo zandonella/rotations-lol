@@ -9,7 +9,7 @@ export default function Home() {
                 <div className="flex flex-col items-start gap-4">
                     <h1 className="text-2xl font-bold sm:text-3xl">
                         Wishlist any item. <br />
-                        Get notified when it shows up.
+                        Get an email when it shows up.
                     </h1>
 
                     <p className="text-muted-foreground max-w-xl text-sm sm:text-base">
@@ -18,8 +18,8 @@ export default function Home() {
                         </span>{' '}
                         monitors both regular sale and mythic shop rotations.
                         Wishlist any supported item, and if it appears in a
-                        tracked rotation, you'll be notified shortly after it
-                        goes live.
+                        tracked rotation, you'll get an email notification
+                        shortly after it goes live.
                     </p>
 
                     <div className="flex flex-wrap gap-3 pt-2">
@@ -64,7 +64,7 @@ export default function Home() {
                     <PreviewBlock
                         title="Wishlist Notifications"
                         badge="Account feature"
-                        body="Wishlist items from the catalog and get notified when they appear in either rotation."
+                        body="Wishlist items from the catalog and get email notifications when they appear in either rotation."
                         tone="primary"
                     />
                 </div>
@@ -76,7 +76,8 @@ export default function Home() {
                         <h2 className="text-2xl font-semibold">Explore</h2>
                         <p className="text-muted-foreground">
                             See what's available now, or use the catalog to
-                            wishlist items for email notifications.
+                            wishlist items and get email notifications when they
+                            appear.
                         </p>
                     </div>
 
@@ -107,8 +108,8 @@ export default function Home() {
                         <NavTile
                             to="/wishlist"
                             title="Wishlist"
-                            subtitle="Get notified when items are available"
-                            body="Manage your wishlist, and get notified when wishlisted items appear in either rotations."
+                            subtitle="Email alerts for tracked items"
+                            body="Manage your wishlist, and get email notifications when wishlisted items appear in either rotations."
                         />
                     </div>
                 </section>
@@ -136,7 +137,7 @@ export default function Home() {
                         <StepRow
                             step="3"
                             title="Get notified when it rotates in"
-                            body="When a wishlisted item appears in either rotation, you'll get an email shortly after it goes live."
+                            body="When a wishlisted item appears in either rotation, you'll get an email notification shortly after it goes live."
                             tone="primary"
                         />
                     </div>
