@@ -37,7 +37,18 @@ export function calculateTimeUntilEnd(endDateStr: string): string {
 }
 
 export function getPacificResetLabel() {
-    const date = new Date("2026-03-24T00:00:00.000Z") // arbitrary date that is at midnight UTC
+    const date = new Date('2026-03-24T00:00:00.000Z'); // arbitrary date that is at midnight UTC
+    return date.toLocaleTimeString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+        timeZoneName: 'short',
+    });
+}
+
+export function getSalesPacificResetLabel() {
+    const date = new Date('2026-04-15 18:00:00+00'); // arbitrary date that is a sale date
     return date.toLocaleTimeString('en-US', {
         timeZone: 'America/Los_Angeles',
         hour: 'numeric',
