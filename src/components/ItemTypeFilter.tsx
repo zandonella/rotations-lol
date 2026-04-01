@@ -23,7 +23,10 @@ export default function ItemTypeFilter({
 
     useEffect(() => {
         async function fetchTypes() {
-            const { data, error } = await supabase.from('ItemType').select('*');
+            const { data, error } = await supabase
+                .from('ItemType')
+                .select('*')
+                .in('id', [1, 2, 3, 4, 5, 6]);
 
             if (error) {
                 console.error('Failed to fetch item types', error);

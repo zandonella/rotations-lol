@@ -75,10 +75,15 @@ export default function MythicShop() {
                                 className="max-w-[250px]"
                                 key={sale.OfferID}
                                 name={item.Name}
+                                itemType={item.ItemType}
                                 imageUrl={item.ImageURL}
                                 wishlisted={isWishlisted(item.ItemID)}
                                 onToggleWishlist={() =>
-                                    toggleWishlist(item.ItemID, item.Name)
+                                    toggleWishlist(
+                                        item.ItemID,
+                                        item.Name,
+                                        item.ItemType <= 6,
+                                    )
                                 }
                                 sale={{
                                     SaleEndAt: calculateTimeUntilEnd(

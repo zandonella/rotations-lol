@@ -1,11 +1,22 @@
-import { IoAdd, IoLockClosedOutline, IoCloseOutline } from 'react-icons/io5';
+import {
+    IoAdd,
+    IoLockClosedOutline,
+    IoCloseOutline,
+    IoHelp,
+} from 'react-icons/io5';
 import { useAuth } from '@/providers/AuthContext';
 import { cn } from '@/lib/utils';
 import RPIcon from '@/assets/RPIcon.png';
 import MEIcon from '@/assets/MEIcon.png';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface ItemCardProps {
     name: string;
+    itemType?: number;
     imageUrl: string;
     skinline?: string | null;
     wishlisted: boolean;
@@ -31,6 +42,7 @@ export default function ItemCard({
     sale,
     badgeSize = 4,
     className,
+    itemType,
 }: ItemCardProps) {
     const { session } = useAuth();
     const authed = !!session;
@@ -62,6 +74,22 @@ export default function ItemCard({
     function getIcon() {
         if (!authed) return <IoLockClosedOutline size={24} />;
         if (wishlisted) return <IoCloseOutline size={32} />;
+        if (!itemType || itemType > 6)
+            return (
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <span>
+                            <IoHelp size={32} />
+                        </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p className="max-w-xs text-center text-sm">
+                            This item isn't eligible for wishlisting, but is
+                            included to reflect the current shop rotation
+                        </p>
+                    </TooltipContent>
+                </Tooltip>
+            );
         return <IoAdd size={32} />;
     }
 
@@ -79,6 +107,7 @@ export default function ItemCard({
                     alt={name}
                     className="h-full w-full object-cover"
                 />
+
                 <button
                     className={cn(
                         'bg-card hover:bg-primary text-primary hover:text-card absolute right-0 bottom-0 m-1.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 shadow-sm transition duration-300 hover:scale-110',
@@ -90,6 +119,7 @@ export default function ItemCard({
                 >
                     {getIcon()}
                 </button>
+
                 {sale?.SaleEndAt && (
                     <span className="bg-primary dark:text-card absolute top-0 left-0 m-1.5 rounded-full px-2 py-1 text-xs font-bold">
                         {sale.SaleEndAt}

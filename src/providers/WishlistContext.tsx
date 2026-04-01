@@ -11,7 +11,11 @@ type WishlistContextType = {
     wishlistIDs: Set<number>;
     wishlistItems: WishlistWithItemRecord[];
     isWishlisted: (itemId: number) => boolean;
-    toggleWishlist: (itemId: number, itemName: string) => Promise<void>;
+    toggleWishlist: (
+        itemId: number,
+        itemName: string,
+        canWishlist?: boolean,
+    ) => Promise<void>;
     refreshWishlist: () => Promise<void>;
     loading: boolean;
 };
@@ -75,9 +79,17 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
         return wishlistIDs.has(itemId);
     }
 
-    async function toggleWishlist(itemId: number, itemName: string) {
+    async function toggleWishlist(
+        itemId: number,
+        itemName: string,
+        canWishlist = true,
+    ) {
         if (!authed) {
             openModal();
+            return;
+        }
+
+        if (!canWishlist) {
             return;
         }
 

@@ -113,10 +113,15 @@ export default function SkinSales() {
                                 className="max-w-[250px]"
                                 key={sale.SaleID}
                                 name={item.Name}
+                                itemType={item.ItemType}
                                 imageUrl={item.ImageURL}
                                 wishlisted={isWishlisted(item.ItemID)}
                                 onToggleWishlist={() =>
-                                    toggleWishlist(item.ItemID, item.Name)
+                                    toggleWishlist(
+                                        item.ItemID,
+                                        item.Name,
+                                        item.ItemType <= 6,
+                                    )
                                 }
                                 sale={{
                                     SaleEndAt: calculateTimeUntilEnd(

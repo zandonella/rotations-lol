@@ -137,6 +137,7 @@ export default function Catalog() {
                     <ItemCard
                         key={item.ItemID}
                         name={item.Name}
+                        itemType={item.ItemType}
                         imageUrl={item.ImageURL}
                         skinline={item.Skinline?.Name}
                         wishlisted={isWishlisted(item.ItemID)}
