@@ -138,8 +138,8 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
                 return;
             }
 
-            if ((count ?? 0) >= 25) {
-                toast.error('Wishlist limit of 25 items reached.');
+            if ((count ?? 0) >= 50) {
+                toast.error('Wishlist limit of 50 items reached.');
                 await refreshWishlist();
                 return;
             }
