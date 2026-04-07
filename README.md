@@ -1,73 +1,132 @@
-# React + TypeScript + Vite
+# Rotations.lol
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Wishlist any League of Legends cosmetic and get notified when it shows up.**
 
-Currently, two official plugins are available:
+Rotations.lol tracks live shop rotations (weekly sales and Mythic Shop) and sends email notifications when items on your wishlist become available. It eliminates the need to constantly check the in-game store, especially for limited or infrequent rotations.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Live site:** [https://rotations.lol](https://rotations.lol)
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Overview
 
-## Expanding the ESLint configuration
+Rotations.lol is a full-stack application that:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* Tracks **weekly sale rotations** and **Mythic Shop rotations**
+* Maintains a **normalized catalog of ~16,000+ cosmetics**
+* Allows users to **wishlist items**
+* Sends **batched email notifications** when items appear in a rotation
 
-```js
-export default defineConfig([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
+The system is designed for reliability and timeliness, staying in sync with the live League client shop so users are notified shortly after rotations go live.
 
-            // Remove tseslint.configs.recommended and replace with this
-            tseslint.configs.recommendedTypeChecked,
-            // Alternatively, use this for stricter rules
-            tseslint.configs.strictTypeChecked,
-            // Optionally, add this for stylistic rules
-            tseslint.configs.stylisticTypeChecked,
 
-            // Other configs...
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
+## Features
+
+* **Sale Rotation Tracking**
+
+  * Weekly discounted skins
+  * Limited-time availability items
+
+* **Mythic Shop Tracking**
+
+  * Daily refresh tracking
+  * Prestige skins, chromas, and accessories
+
+* **Full Cosmetic Catalog**
+
+  * Skins, chromas, emotes, icons, and more
+  * ~16,000+ items indexed
+
+* **Wishlist System**
+
+  * Track any supported item
+
+* **Email Notifications**
+
+  * Batched daily emails (one per user)
+  * Deduplicated to avoid spam
+  * Sent shortly after rotations update
+
+
+## Architecture
+
+The system is split into three main components:
+
+### 1. Frontend (this repo)
+
+* React + Vite
+* Tailwind CSS
+* Supabase client for data access
+
+Responsible for:
+
+* UI (catalog, wishlist, rotations)
+* Querying and displaying rotation data
+* User interaction
+
+
+### 2. Ingestion Pipeline (separate repo)
+
+> [rotations-ingestion](https://github.com/zandonella/rotations-ingestion)
+
+Handles:
+
+* Pulling live data from the League Client (LCU APIs)
+* Fetching static assets (Community Dragon)
+* Normalizing and upserting into Postgres (Supabase)
+
+Key characteristics:
+
+* Runs on a scheduled system (distributed across machines)
+* Handles patch updates automatically
+* Designed to be resilient to API inconsistencies
+
+
+### 3. Email Pipeline (separate repo)
+
+> [rotations-email](https://github.com/zandonella/rotations-email)
+
+Handles:
+
+* Matching wishlist items against new rotations
+* Batching notifications (1 email per user per day)
+* Sending via AWS SES
+
+## Scheduling & Timing
+
+* Daily ingestion aligned with Mythic Shop daily refresh (00:00 UTC)
+* Weekly rotation updates handled automatically via scheduler
+* All timestamps normalized to **UTC** to avoid DST issues
+
+
+## Local Development
+
+```bash
+# install dependencies
+npm install
+
+# run dev server
+npm run dev
+
+# build for production
+npm run build
+
+# preview build
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Make sure to set up your `.env` with your Supabase keys:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default defineConfig([
-    globalIgnores(['dist']),
-    {
-        files: ['**/*.{ts,tsx}'],
-        extends: [
-            // Other configs...
-            // Enable lint rules for React
-            reactX.configs['recommended-typescript'],
-            // Enable lint rules for React DOM
-            reactDom.configs.recommended,
-        ],
-        languageOptions: {
-            parserOptions: {
-                project: ['./tsconfig.node.json', './tsconfig.app.json'],
-                tsconfigRootDir: import.meta.dirname,
-            },
-            // other options...
-        },
-    },
-]);
 ```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY=
+```
+
+## Disclaimer
+
+Rotations.lol is not endorsed by or affiliated with Riot Games.
+League of Legends and all associated properties are trademarks of Riot Games.
+
+
+## Feedback
+
+If you have suggestions or run into issues, feel free to open an issue or reach out. The project is actively being improved.
