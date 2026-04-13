@@ -48,7 +48,7 @@ export function getPacificResetLabel() {
 }
 
 export function getSalesPacificResetLabel() {
-    const date = new Date('2026-04-15 18:00:00+00'); // arbitrary date that is a sale date
+    const date = new Date('2026-04-15 17:00:00+00'); // arbitrary date that is a sale date
     return date.toLocaleTimeString('en-US', {
         timeZone: 'America/Los_Angeles',
         hour: 'numeric',
