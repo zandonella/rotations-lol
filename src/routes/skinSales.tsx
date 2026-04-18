@@ -172,9 +172,47 @@ export default function SkinSales() {
     }
     return (
         <>
-            <h1 className="text-center text-2xl font-bold">Sale Rotations</h1>
-            <p className="text-muted-foreground text-center">
-                View the current regular sale rotations
+            <title>
+                League of Legends Current Skin Sales and Limited-Time Skins |
+                Rotations.lol
+            </title>
+
+            <meta
+                name="description"
+                content="View current League of Legends skin sales, discounted skins, and limited-time skins available today. Track the latest League of Legends skin rotation and wishlist skins you want to watch."
+            />
+
+            <link rel="canonical" href="https://rotations.lol/sales" />
+
+            <meta
+                property="og:title"
+                content="League of Legends Current Skin Sales and Limited-Time Skins"
+            />
+            <meta
+                property="og:description"
+                content="Track current League of Legends skin sales, discounted skins, and limited-time skins."
+            />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://rotations.lol/sales" />
+
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta
+                name="twitter:title"
+                content="League of Legends Current Skin Sales and Limited-Time Skins"
+            />
+            <meta
+                name="twitter:description"
+                content="Track current League of Legends skin sales, discounted skins, and limited-time skins."
+            />
+            <h1 className="text-center text-2xl font-bold">
+                {' '}
+                Current League of Legends Skin Sales and Limited-Time Skins
+            </h1>
+            <p className="text-muted-foreground max-w-3xl text-center">
+                View current League of Legends skin sales, including discounted
+                skins and limited-time skins available in the live rotation.
+                This page updates automatically so you can track what is
+                currently available and wishlist skins you want to watch.
             </p>
             <div className="mt-4 flex w-full flex-col items-center gap-4">
                 {skinContent}

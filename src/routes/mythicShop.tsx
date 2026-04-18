@@ -135,9 +135,47 @@ export default function MythicShop() {
 
     return (
         <>
-            <h1 className="text-center text-2xl font-bold">Mythic Rotations</h1>
-            <p className="text-muted-foreground text-center">
-                View the current mythic shop rotations
+            <title>
+                League of Legends Current Mythic Shop Rotation | Rotations.lol
+            </title>
+
+            <meta
+                name="description"
+                content="View the current League of Legends Mythic Shop rotation, including mythic skins, prestige skins, chromas, and other limited-time content."
+            />
+
+            <link rel="canonical" href="https://rotations.lol/mythic" />
+
+            <meta
+                property="og:title"
+                content="League of Legends Current Mythic Shop Rotation"
+            />
+            <meta
+                property="og:description"
+                content="Track the current League of Legends Mythic Shop rotation."
+            />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://rotations.lol/mythic" />
+
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta
+                name="twitter:title"
+                content="League of Legends Current Mythic Shop Rotation"
+            />
+            <meta
+                name="twitter:description"
+                content="Track the current League of Legends Mythic Shop rotation."
+            />
+
+            <h1 className="text-center text-2xl font-bold">
+                Current League of Legends Mythic Shop Rotation
+            </h1>
+            <p className="text-muted-foreground max-w-3xl text-center">
+                View the current League of Legends Mythic Shop rotation,
+                including featured mythic skins, prestige skins, chromas, and
+                other limited-time mythic content. This page updates
+                automatically so you can track the latest League of Legends
+                mythic sales and wishlist items you want to watch.
             </p>
             <div className="flex w-full flex-col items-center gap-6 p-4 pb-0">
                 {content}
