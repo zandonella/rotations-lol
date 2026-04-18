@@ -4,6 +4,50 @@ import type { MythicSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
 import { calculateTimeUntilEnd, getPacificResetLabel } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
+import FAQAccordion from '@/components/FAQAccordion.tsx';
+
+const mythicFAQs = [
+    {
+        title: 'What is the League of Legends Mythic Shop?',
+        content:
+            'The Mythic Shop is a rotating store in League of Legends that offers exclusive mythic skins, prestige skins, chromas, and other limited-time content that is not always available in the standard store.',
+    },
+    {
+        title: 'What is the current Mythic Shop rotation?',
+        content:
+            'This page shows the current League of Legends Mythic Shop rotation, including featured, weekly, and daily mythic items. It updates automatically to reflect the latest rotation.',
+    },
+    {
+        title: 'How often does the Mythic Shop rotation update?',
+        content:
+            'Different sections of the Mythic Shop update on different schedules. Some items rotate daily, while others rotate weekly or as part of featured rotations.',
+    },
+    {
+        title: 'What items appear in the Mythic Shop?',
+        content:
+            'The Mythic Shop includes mythic skins, prestige skins, chromas, and other exclusive cosmetics that are not always available through regular store purchases.',
+    },
+    {
+        title: 'Can I track Mythic Shop skins?',
+        content:
+            'Yes. You can wishlist supported items and receive an email notification when they appear in the Mythic Shop rotation.',
+    },
+    {
+        title: 'Do Mythic Shop items come back?',
+        content:
+            'Some Mythic Shop items can return in future rotations, but availability is controlled by Riot and not guaranteed. Some items may appear rarely.',
+    },
+    {
+        title: 'Does the Mythic Shop include discounted skins?',
+        content:
+            'No. The Mythic Shop uses a separate system from regular skin sales and does not typically include discounted skins. You can view discounted skins on the sales page.',
+    },
+    {
+        title: 'Do I need an account to track Mythic Shop items?',
+        content:
+            'No account is required to browse the Mythic Shop rotation. An account is only needed if you want to create a wishlist and receive notifications.',
+    },
+];
 
 export default function MythicShop() {
     const { isWishlisted, toggleWishlist } = useWishlist();
@@ -179,6 +223,10 @@ export default function MythicShop() {
             </p>
             <div className="flex w-full flex-col items-center gap-6 p-4 pb-0">
                 {content}
+            </div>
+
+            <div className="mx-auto mt-6 w-full max-w-3xl rounded-lg">
+                <FAQAccordion FAQs={mythicFAQs} />
             </div>
         </>
     );

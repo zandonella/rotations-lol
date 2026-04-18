@@ -3,8 +3,73 @@ import { cn } from '@/lib/utils';
 import FAQAccordion from '@/components/FAQAccordion';
 
 export default function Home() {
+    const homeFAQs = [
+        {
+            title: 'What does Rotations.lol track?',
+            content:
+                'Rotations.lol tracks the current League of Legends skin sales and the Mythic Shop rotation. You can view discounted skins, limited-time skins, and mythic items all in one place.',
+        },
+        {
+            title: 'Does the catalog include every League of Legends skin?',
+            content:
+                'The catalog is intended to include every League of Legends cosmetic item, including skins, chromas, emotes, icons, wards, and more, even if they are not currently available in a sale or the Mythic Shop.',
+        },
+        {
+            title: 'Can every item appear in a skin sale or the Mythic Shop?',
+            content:
+                'No. League of Legends skin sales and the Mythic Shop use limited item pools controlled by Riot. Some items appear frequently, some rarely, and some may never be included.',
+        },
+        {
+            title: 'How do I track when a skin goes on sale?',
+            content:
+                'You can wishlist supported skins and receive an email notification when they appear in a League of Legends skin sale or the Mythic Shop rotation.',
+        },
+        {
+            title: 'Do I need an account to use Rotations.lol?',
+            content:
+                'No account is required to browse current League of Legends skin sales or the Mythic Shop. An account is only needed if you want to create a wishlist and receive notifications.',
+        },
+        {
+            title: 'Will my wishlist update after I buy a skin in League of Legends?',
+            content:
+                'No. Rotations.lol is independent from Riot and does not have access to your account. Purchasing a skin in League of Legends will not update your wishlist automatically.',
+        },
+    ];
+
     return (
         <>
+            <title>
+                League of Legends Skin Sales and Mythic Shop Tracker |
+                Rotations.lol
+            </title>
+
+            <meta
+                name="description"
+                content="Track League of Legends skin sales and the Mythic Shop rotation. Wishlist skins and get notified when they become available in current League of Legends rotations."
+            />
+
+            <link rel="canonical" href="https://rotations.lol/" />
+
+            <meta
+                property="og:title"
+                content="League of Legends Skin Sales and Mythic Shop Tracker"
+            />
+            <meta
+                property="og:description"
+                content="Track current League of Legends skin sales and the Mythic Shop rotation. Wishlist skins and get notified."
+            />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://rotations.lol/" />
+
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta
+                name="twitter:title"
+                content="League of Legends Skin Sales and Mythic Shop Tracker"
+            />
+            <meta
+                name="twitter:description"
+                content="Track current League of Legends skin sales and the Mythic Shop rotation."
+            />
             <div className="relative flex max-w-6xl flex-col gap-8 p-4 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex flex-col items-start gap-4">
                     <h1 className="text-2xl font-bold sm:text-3xl">
@@ -149,7 +214,7 @@ export default function Home() {
                     </div>
 
                     <div className="mx-auto max-w-2xl rounded-lg">
-                        <FAQAccordion />
+                        <FAQAccordion FAQs={homeFAQs} />
                     </div>
 
                     <div className="mt-6 flex justify-center">

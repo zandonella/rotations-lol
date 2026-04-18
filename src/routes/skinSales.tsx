@@ -7,6 +7,50 @@ import {
     getSalesPacificResetLabel,
 } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
+import FAQAccordion from '@/components/FAQAccordion.tsx';
+
+const salesFAQs = [
+    {
+        title: 'What are the current League of Legends skin sales?',
+        content:
+            'This page shows the current League of Legends skin sales, including discounted skins and limited-time skins that are available in the live rotation. It updates automatically to reflect the latest changes.',
+    },
+    {
+        title: 'How often do League of Legends skin sales update?',
+        content:
+            'League of Legends skin sales update on a regular schedule. This page refreshes automatically so you can track the current sale rotation without checking the in-game store manually.',
+    },
+    {
+        title: 'Does this page only show discounted skins?',
+        content:
+            'No. In addition to discounted skins, this page may also include limited-time skins that are currently available for purchase but are not part of the standard store rotation.',
+    },
+    {
+        title: 'What is the League of Legends skin sale rotation?',
+        content:
+            'The skin sale rotation refers to the set of skins that are currently discounted or available for a limited time in League of Legends. The rotation changes over time as different skins become available.',
+    },
+    {
+        title: 'Can I track when a skin goes on sale?',
+        content:
+            'Yes. You can wishlist supported skins and receive an email notification when they appear in a sale rotation or become available again.',
+    },
+    {
+        title: 'Do all skins go on sale in League of Legends?',
+        content:
+            'No. Not all skins are included in the sale rotation. Riot selects specific skins for discounts or limited-time availability, and some skins may appear rarely or never.',
+    },
+    {
+        title: 'Does this include Mythic Shop skins?',
+        content:
+            'No. Mythic Shop skins are tracked separately. You can view the current Mythic Shop rotation on the Mythic page.',
+    },
+    {
+        title: 'Do I need an account to track skin sales?',
+        content:
+            'No account is required to browse current skin sales. An account is only needed if you want to create a wishlist and receive notifications.',
+    },
+];
 
 export default function SkinSales() {
     const { isWishlisted, toggleWishlist } = useWishlist();
@@ -216,6 +260,9 @@ export default function SkinSales() {
             </p>
             <div className="mt-4 flex w-full flex-col items-center gap-4">
                 {skinContent}
+            </div>
+            <div className="mx-auto mt-6 w-full max-w-3xl rounded-lg">
+                <FAQAccordion FAQs={salesFAQs} />
             </div>
         </>
     );

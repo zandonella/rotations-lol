@@ -57,9 +57,10 @@ export default function Wishlist() {
             <div className="flex flex-col items-center">
                 <h1 className="text-2xl font-bold">Wishlist</h1>
                 <p className="text-muted-foreground max-w-xl text-center">
-                    We'll send you an email when a wishlisted item appears in a
-                    supported shop rotation. Some limited or exclusive items may
-                    never appear in a rotation.
+                    Track the League of Legends skins and cosmetics you want
+                    most. We will send you an email when a wishlisted item
+                    appears in a supported skin sale or the Mythic Shop. Some
+                    limited or exclusive items may never return.
                 </p>
                 <span className="bg-card text-muted-foreground mt-2 rounded-full px-3 py-1 text-sm font-medium">
                     {wishlistItems.length} / 50

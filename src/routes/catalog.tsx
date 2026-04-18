@@ -152,11 +152,45 @@ export default function Catalog() {
 
     return (
         <>
-            <h1 className="text-2xl font-bold">Catalog</h1>
+            <title>
+                League of Legends Skins and Cosmetics Catalog | Rotations.lol
+            </title>
+
+            <meta
+                name="description"
+                content="Browse the full League of Legends catalog, including skins, chromas, emotes, icons, wards, and other cosmetic items. Search and explore every League of Legends cosmetic in one place."
+            />
+
+            <link rel="canonical" href="https://rotations.lol/catalog" />
+
+            <meta
+                property="og:title"
+                content="League of Legends Skins and Cosmetics Catalog"
+            />
+            <meta
+                property="og:description"
+                content="Browse every League of Legends skin, chroma, emote, icon, and cosmetic item."
+            />
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://rotations.lol/catalog" />
+
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta
+                name="twitter:title"
+                content="League of Legends Skins and Cosmetics Catalog"
+            />
+            <meta
+                name="twitter:description"
+                content="Browse every League of Legends cosmetic item including skins, chromas, emotes, and more."
+            />
+            <h1 className="text-2xl font-bold">
+                League of Legends Skins and Cosmetics Catalog
+            </h1>
             <p className="text-muted-foreground max-w-xl text-center">
-                View every League item in one place. Add anything to your
-                wishlist and we'll notify you if it ever appears in a supported
-                shop rotation
+                Search the full League of Legends cosmetics catalog and add
+                items to your wishlist. Track skins, chromas, emotes, icons, and
+                more, and get notified when they appear in a sale or the Mythic
+                Shop.
             </p>
             <div className="mt-4 flex w-full flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
                 <CatalogSearch
