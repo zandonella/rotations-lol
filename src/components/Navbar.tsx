@@ -5,6 +5,7 @@ import NavMenu from './NavMenu';
 import { Button } from './ui/button';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import { useAuth } from '@/providers/AuthContext';
+import AnnouncementBanner from './AnnouncementBanner';
 
 const LINKS = [
     { to: '/sales', text: 'Sales' },
@@ -50,6 +51,7 @@ export default function Navbar() {
                     </div>
                 </div>
             </nav>
+            <AnnouncementBanner />
         </div>
     );
 }
