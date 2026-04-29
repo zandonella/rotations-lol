@@ -178,14 +178,14 @@ export default function Home() {
                 content="Sign up for wishlist alerts and keep up with current League skin sales and Mythic Shop rotations."
             />
 
-            <div className="mx-auto flex max-w-6xl flex-col gap-12 p-4 sm:p-8">
+            <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-2 sm:px-8 lg:py-4">
                 <section className="dark:border-border grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-start">
                     <div className="flex flex-col items-start">
                         <span className="text-muted-foreground mb-5 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] uppercase">
                             Track League shop rotations automatically
                         </span>
 
-                        <h1 className="max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
+                        <h1 className="max-w-2xl text-4xl font-bold tracking-tight xl:text-5xl">
                             Sign up once, then let the skins come to you.
                         </h1>
 
