@@ -27,32 +27,32 @@ const homeFAQs = [
     {
         title: 'What does Rotations.lol track?',
         content:
-            'Rotations.lol tracks the current League of Legends skin sales and the Mythic Shop rotation. You can view discounted skins, limited-time skins, and mythic items all in one place.',
+            'Rotations.lol is a League of Legends shop tracker that shows the current Mythic Shop, live skin sales, and rotating store content. You can view discounted skins, limited-time offers, and Mythic items in one place without opening the LoL client.',
     },
     {
         title: 'Does the catalog include every League of Legends skin?',
         content:
-            'The catalog is intended to include every League of Legends cosmetic item, including skins, chromas, emotes, icons, wards, and more, even if they are not currently available in a sale or the Mythic Shop.',
+            'The catalog is designed to include every League of Legends cosmetic, including skins, chromas, emotes, icons, and wards. You can search the full LoL catalog even if items are not currently available in the Mythic Shop or active skin sales.',
     },
     {
         title: 'Can every item appear in a skin sale or the Mythic Shop?',
         content:
-            'No. League of Legends skin sales and the Mythic Shop use limited item pools controlled by Riot. Some items appear frequently, some rarely, and some may never be included.',
+            'No. League of Legends skin sales and the Mythic Shop use limited rotation pools controlled by Riot Games. Some skins appear frequently, some rarely, and others may never return in a sale or Mythic Shop rotation.',
     },
     {
-        title: 'How do I track when a skin goes on sale?',
+        title: 'How do I track when a skin goes on sale in League of Legends?',
         content:
-            'You can wishlist supported skins and receive an email notification when they appear in a League of Legends skin sale or the Mythic Shop rotation.',
+            'You can wishlist skins and get notified when they appear in a League of Legends skin sale or the Mythic Shop. Rotations.lol automatically tracks these rotations so you do not have to check the LoL store manually.',
     },
     {
         title: 'Do I need an account to use Rotations.lol?',
         content:
-            'No account is required to browse current League of Legends skin sales or the Mythic Shop. An account is only needed if you want to create a wishlist and receive notifications.',
+            'No. You can browse the current Mythic Shop, today’s League of Legends skin sales, and live store rotations without an account. An account is only required if you want to create a wishlist and receive notifications.',
     },
     {
         title: 'Will my wishlist update after I buy a skin in League of Legends?',
         content:
-            'No. Rotations.lol is independent from Riot and does not have access to your account. Purchasing a skin in League of Legends will not update your wishlist automatically.',
+            'No. Rotations.lol is not connected to your Riot account and cannot detect purchases. If you buy a skin in League of Legends, it will not be removed from your wishlist automatically.',
     },
 ];
 
@@ -182,7 +182,7 @@ export default function Home() {
                 <section className="border-border grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-start">
                     <div className="flex flex-col items-start">
                         <span className="text-muted-foreground mb-5 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] uppercase">
-                            Track the shop without checking every reset
+                            Track League shop rotations automatically
                         </span>
 
                         <h1 className="max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
@@ -190,11 +190,10 @@ export default function Home() {
                         </h1>
 
                         <p className="text-muted-foreground mt-5 max-w-2xl text-base leading-7">
-                            Rotations.lol helps you stop manually checking the
-                            League store. Browse what is live today, wishlist
-                            the cosmetics you care about, and get an email when
-                            they finally return in a sale or Mythic Shop
-                            rotation.
+                            Rotations.lol watches League of Legends skin sales,
+                            Mythic Shop rotations, and live store offers for
+                            you. Wishlist the cosmetics you care about and get
+                            an email when they show up.
                         </p>
 
                         <div className="mt-7 flex flex-wrap gap-3">
@@ -240,9 +239,9 @@ export default function Home() {
                         </div>
 
                         <div className="mt-8 max-w-xl space-y-3">
-                            <BenefitLine text="Wishlist supported skins, chromas, emotes, icons, wards, and more." />
-                            <BenefitLine text="Get alerted shortly after a tracked item rotates in." />
-                            <BenefitLine text="Use live sales as proof, not as homework." />
+                            <BenefitLine text="Track skins, chromas, emotes, icons, wards, and more." />
+                            <BenefitLine text="Get notified when wishlisted items rotate into the shop." />
+                            <BenefitLine text="Check current sales and Mythic Shop offers without opening the client." />
                         </div>
                     </div>
 
@@ -258,21 +257,21 @@ export default function Home() {
                         label="Items tracked"
                         value={`${Math.floor(liveData.catalogCount / 1000) * 1000}+`}
                         loading={loading}
-                        detail="A large catalog of League cosmetics you can search and wishlist."
+                        detail="Full League of Legends cosmetics catalog, searchable and wishlist-ready."
                     />
 
                     <BigStat
                         label="Live sale items"
                         value={String(liveData.liveSaleCount)}
                         loading={loading}
-                        detail="Current store sales, updated with the live rotation."
+                        detail="Skins currently on sale, pulled from the live store rotation."
                     />
 
                     <BigStat
                         label="Mythic offers"
                         value={String(liveData.liveMythicCount)}
                         loading={loading}
-                        detail="Featured and rotating Mythic Shop content in one place."
+                        detail="Current Mythic Shop offerings, including Prestige and daily rotating content."
                     />
                 </section>
 
@@ -282,28 +281,26 @@ export default function Home() {
                             Why people use Rotations.lol
                         </p>
                         <h2 className="mt-2 text-3xl font-bold tracking-tight">
-                            Built for collectors, not for endless checking.
+                            Built for people tired of checking the shop.
                         </h2>
                         <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
-                            The point of the site is simple: check what is live,
-                            save what you want, and let the notification system
-                            handle the waiting. You should not need to remember
-                            every reset or reopen the client just to see if a
-                            skin is back.
+                            Stop checking the shop "just in case." See what's
+                            live, wishlist what you want from the catalog, and
+                            let notifications handle the rest.
                         </p>
 
                         <div className="mt-8 grid gap-6 sm:grid-cols-3">
                             <ValueColumn
                                 title="Browse the catalog"
-                                body="Search through a broad catalog of League cosmetics, even when they are not live today."
+                                body="Find skins, chromas, and cosmetics even when they are not in the current rotation."
                             />
                             <ValueColumn
-                                title="Save what matters"
-                                body="Build a wishlist around the cosmetics you actually care about instead of checking everything manually."
+                                title="Build your wishlist"
+                                body="Track only what you care about instead of scanning the entire store every time."
                             />
                             <ValueColumn
-                                title="Get the alert"
-                                body="Receive an email when a wishlisted item shows up in a supported rotation."
+                                title="Get notified"
+                                body="Receive an email when a wishlisted item shows up in a sale or Mythic Shop rotation."
                             />
                         </div>
                     </div>
@@ -318,14 +315,12 @@ export default function Home() {
                                 Live now
                             </p>
                             <h2 className="mt-2 text-3xl font-bold tracking-tight">
-                                A few current items, just so you know it is
-                                real.
+                                See what is currently in rotation.
                             </h2>
                         </div>
                         <p className="text-muted-foreground max-w-xl text-sm leading-6">
-                            The homepage is here to introduce the product, but
-                            it still helps to show a small slice of what is live
-                            right now.
+                            A small preview of live sales and Mythic Shop items,
+                            pulled from the current League store rotation.
                         </p>
                     </div>
 
@@ -337,7 +332,7 @@ export default function Home() {
                         <div className="grid gap-4 md:grid-cols-2">
                             <FeatureShowcase
                                 title="Current Sale Rotation"
-                                subtitle={`Weekly discounts and limited-time offers. Sale reset every Monday at ${getSalesPacificResetLabel()}.`}
+                                subtitle={`Weekly discounts and limited-time offers. Sales reset every Monday at ${getSalesPacificResetLabel()}.`}
                                 href="/sales"
                                 tone="gold"
                                 loading={loading}
@@ -346,7 +341,7 @@ export default function Home() {
                             />
                             <FeatureShowcase
                                 title="Current Mythic Shop"
-                                subtitle={`Featured mythic content and prestige offerings. Daily sales reset at ${getPacificResetLabel()}.`}
+                                subtitle={`Mythic skins, Prestige skins, and rotating offers. Daily sales reset at ${getPacificResetLabel()}.`}
                                 href="/mythic"
                                 tone="violet"
                                 loading={loading}
@@ -392,10 +387,10 @@ function HeroPreview({
     return (
         <div className="border-border border-t pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
             <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
-                What you will be tracking
+                Live from the current rotation
             </p>
             <h2 className="mt-2 text-2xl font-bold tracking-tight">
-                Live sales and current mythic items.
+                What's in the shop right now.
             </h2>
 
             <div className="mt-6 grid grid-cols-2 gap-3">
@@ -482,20 +477,20 @@ function ConversionPanel({ sessionActive }: { sessionActive: boolean }) {
     return (
         <div className="border-border border-t pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
             <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
-                Why make an account
+                Why create an account
             </p>
             <h2 className="mt-2 text-2xl font-bold tracking-tight">
-                Turn browsing into alerts.
+                Stop checking. Start getting notified.
             </h2>
             <p className="text-muted-foreground mt-3 text-sm leading-6">
-                Browsing is useful for today. An account is useful for every
-                future reset after today.
+                Browsing shows you what is live today. An account makes sure you
+                don't miss what shows up next.
             </p>
 
             <div className="mt-5 space-y-3">
-                <BenefitRow text="Save the cosmetics you are waiting on." />
-                <BenefitRow text="Get an email when they return in a supported rotation." />
-                <BenefitRow text="Stop checking the store manually every week." />
+                <BenefitRow text="Wishlist the skins and cosmetics you are waiting on." />
+                <BenefitRow text="Get an email when they show up in a sale or Mythic Shop rotation." />
+                <BenefitRow text="Never check the store manually again." />
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -506,7 +501,7 @@ function ConversionPanel({ sessionActive }: { sessionActive: boolean }) {
                 ) : (
                     <Button className="cursor-pointer px-5" onClick={openModal}>
                         <LuBell className="size-4" />
-                        Create Free Account
+                        Get Notified for Free
                     </Button>
                 )}
 
