@@ -1,6 +1,7 @@
 import { LuSun, LuMoon } from 'react-icons/lu';
 import type { Theme } from '../lib/types';
 import { useEffect, useState } from 'react';
+import { Switch } from '@/components/ui/switch';
 
 export default function ThemeButton() {
     const [theme, setTheme] = useState<Theme>('dark');
@@ -12,7 +13,7 @@ export default function ThemeButton() {
         }
     }, []);
 
-    function toggle() {
+    function updateTheme(checked: boolean) {
         const newTheme: Theme = theme === 'dark' ? 'light' : 'dark';
 
         setTheme(newTheme);
@@ -21,11 +22,16 @@ export default function ThemeButton() {
     }
 
     return (
-        <button
-            className="dark:hover:text-primary hover:text-muted-foreground cursor-pointer px-1 transition-colors duration-200 ease-in-out"
-            onClick={toggle}
-        >
-            {theme === 'dark' ? <LuSun size={28} /> : <LuMoon size={28} />}
-        </button>
+        <div className="flex items-center gap-3">
+            <LuSun className="text-primary dark:text-muted-foreground size-4" />
+
+            <Switch
+                checked={theme === 'dark'}
+                onCheckedChange={updateTheme}
+                aria-label="Toggle dark mode"
+            />
+
+            <LuMoon className="text-muted-foreground dark:text-chart-5 size-4" />
+        </div>
     );
 }

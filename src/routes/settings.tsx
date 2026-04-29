@@ -1,6 +1,7 @@
 import PasswordResetForm from '@/components/PasswordResetForm';
-import { Separator } from '@/components/ui/separator';
+import ThemeButton from '@/components/ThemeButton';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { useAuth } from '@/providers/AuthContext';
 import {
     AlertDialog,
@@ -14,24 +15,159 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { useState } from 'react';
-import { Input } from '@/components/ui/input';
+import {
+    LuKeyRound,
+    LuLogOut,
+    LuPalette,
+    LuTrash2,
+    LuUser,
+} from 'react-icons/lu';
 
 export default function Settings() {
+    const { session } = useAuth();
+
     return (
         <>
-            <div className="flex w-full max-w-xl flex-col items-center">
-                <h1 className="text-2xl font-bold">Settings</h1>
-                <Separator className="my-4 w-full" />
-                <PasswordResetForm />
+            <title>Settings | Rotations.lol</title>
 
-                <h1 className="mt-4 text-2xl font-bold">Danger Zone</h1>
-                <Separator className="my-4 w-full" />
-                <div className="flex w-full flex-col items-center space-y-4">
-                    <SignOutDialog />
-                    <DeleteAccountDialog />
-                </div>
+            <div className="mx-auto flex max-w-6xl flex-col gap-2 p-4 sm:p-8">
+                <section className="dark:border-border border-b pb-4">
+                    <h1 className="mt-2 max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
+                        Settings
+                    </h1>
+
+                    <p className="text-muted-foreground mt-2 max-w-2xl text-base leading-7">
+                        Manage your account, password, and display preference.
+                    </p>
+                </section>
+
+                <section className="grid gap-8 lg:grid-cols-2">
+                    <div className="space-y-6">
+                        <div className="border-border bg-card border p-5">
+                            <h2 className="text-2xl font-bold tracking-tight">
+                                Account
+                            </h2>
+
+                            <div className="mt-5 flex items-start gap-4">
+                                <span className="bg-primary/15 flex size-10 shrink-0 items-center justify-center rounded-full">
+                                    <LuUser className="text-primary size-5" />
+                                </span>
+
+                                <div className="min-w-0">
+                                    <p className="font-semibold break-all">
+                                        {session?.user?.email ??
+                                            'Not signed in'}
+                                    </p>
+                                    <p className="text-muted-foreground mt-1 text-sm leading-6">
+                                        This email is used for your wishlist
+                                        alerts.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <SettingsPanel
+                            icon={
+                                <LuKeyRound className="text-primary size-4" />
+                            }
+                            eyebrow="Security"
+                            title="Reset password"
+                            description="Enter a new password for your account."
+                        >
+                            <div className="border-border border-t pt-5">
+                                <PasswordResetForm />
+                            </div>
+                        </SettingsPanel>
+                    </div>
+                    <div className="space-y-6">
+                        <SettingsPanel
+                            icon={<LuPalette className="text-primary size-4" />}
+                            eyebrow="Appearance"
+                            title="Theme"
+                            description="Switch between light and dark mode."
+                        >
+                            <div className="border-border flex items-center justify-between border-t pt-5">
+                                <p className="text-sm font-semibold">
+                                    Theme preference
+                                </p>
+                                <ThemeButton />
+                            </div>
+                        </SettingsPanel>
+                        <SettingsPanel
+                            icon={<LuLogOut className="text-primary size-4" />}
+                            eyebrow="Session"
+                            title="Sign out"
+                            description="Sign out of your Rotations.lol account on this device."
+                        >
+                            <div className="border-border border-t pt-5">
+                                <SignOutDialog />
+                            </div>
+                        </SettingsPanel>
+
+                        <SettingsPanel
+                            icon={
+                                <LuTrash2 className="text-destructive size-4" />
+                            }
+                            eyebrow="Danger zone"
+                            title="Delete account"
+                            description="Permanently delete your account and wishlist data."
+                            danger
+                        >
+                            <div className="border-border border-t pt-5">
+                                <DeleteAccountDialog />
+                            </div>
+                        </SettingsPanel>
+                    </div>
+                </section>
             </div>
         </>
+    );
+}
+
+function SettingsPanel({
+    icon,
+    eyebrow,
+    title,
+    description,
+    children,
+    danger = false,
+}: {
+    icon: React.ReactNode;
+    eyebrow: string;
+    title: string;
+    description: string;
+    children: React.ReactNode;
+    danger?: boolean;
+}) {
+    return (
+        <section className="border-border bg-card border p-5">
+            <div className="flex items-start gap-3">
+                <span
+                    className={
+                        danger
+                            ? 'bg-destructive/15 mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full'
+                            : 'bg-primary/15 mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full'
+                    }
+                >
+                    {icon}
+                </span>
+
+                <div>
+                    <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
+                        {eyebrow}
+                    </p>
+
+                    <h2 className="mt-2 text-2xl font-bold tracking-tight">
+                        {title}
+                    </h2>
+
+                    <p className="text-muted-foreground mt-3 text-sm leading-6">
+                        {description}
+                    </p>
+                </div>
+            </div>
+
+            <div className="mt-5">{children}</div>
+        </section>
     );
 }
 
@@ -80,8 +216,6 @@ function DeleteAccountDialog() {
     const [error, setError] = useState<string | null>(null);
     const [typedConfirmation, setTypedConfirmation] = useState('');
 
-    // TODO: Add a confirmation step where the user has to type "DELETE" to confirm account deletion
-
     async function handleDeleteAccount() {
         if (typedConfirmation !== 'DELETE') {
             setError('You must type "DELETE" to confirm account deletion.');
@@ -116,7 +250,10 @@ function DeleteAccountDialog() {
                     <Input
                         placeholder="Type 'DELETE' to confirm"
                         value={typedConfirmation}
-                        onChange={(e) => setTypedConfirmation(e.target.value)}
+                        onChange={(e) => {
+                            setTypedConfirmation(e.target.value);
+                            setError(null);
+                        }}
                     />
 
                     {error && (
@@ -127,10 +264,12 @@ function DeleteAccountDialog() {
                         </div>
                     )}
                 </AlertDialogHeader>
+
                 <AlertDialogFooter>
                     <AlertDialogCancel className="cursor-pointer">
                         Cancel
                     </AlertDialogCancel>
+
                     <AlertDialogAction
                         onClick={handleDeleteAccount}
                         variant="destructive"
