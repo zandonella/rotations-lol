@@ -10,42 +10,47 @@ const mythicFAQs = [
     {
         title: 'What is the League of Legends Mythic Shop?',
         content:
-            'The Mythic Shop is a rotating store in League of Legends that offers exclusive mythic skins, prestige skins, chromas, and other limited-time content that is not always available in the standard store.',
+            'The Mythic Shop is a rotating store in League of Legends (LoL) that offers Mythic skins, Prestige skins, chromas, and other exclusive cosmetics. These items are not always available in the standard store and rotate in on a schedule.',
     },
     {
-        title: 'What is the current Mythic Shop rotation?',
+        title: 'What is the current Mythic Shop in LoL?',
         content:
-            'This page shows the current League of Legends Mythic Shop rotation, including featured, weekly, and daily mythic items. It updates automatically to reflect the latest rotation.',
+            'This page shows the current League of Legends Mythic Shop, including today’s Mythic skins, Prestige skins, and rotating content. It updates automatically so you can always see the latest Mythic Shop rotation.',
     },
     {
-        title: 'How often does the Mythic Shop rotation update?',
+        title: 'How often does the Mythic Shop update?',
         content:
-            'Different sections of the Mythic Shop update on different schedules. Some items rotate daily, while others rotate weekly or as part of featured rotations.',
+            'The League of Legends Mythic Shop updates on multiple schedules. Some items rotate daily, while others rotate weekly or as part of featured Mythic Shop rotations.',
     },
     {
         title: 'What items appear in the Mythic Shop?',
         content:
-            'The Mythic Shop includes mythic skins, prestige skins, chromas, and other exclusive cosmetics that are not always available through regular store purchases.',
+            'The Mythic Shop includes Mythic skins, Prestige skins, chromas, and other limited-time cosmetics. These are often older or exclusive items that return through the Mythic Shop rotation.',
     },
     {
         title: 'Can I track Mythic Shop skins?',
         content:
-            'Yes. You can wishlist supported items and receive an email notification when they appear in the Mythic Shop rotation.',
+            'Yes. You can wishlist Mythic Shop skins and receive an email notification when they appear in the League of Legends Mythic Shop rotation.',
     },
     {
-        title: 'Do Mythic Shop items come back?',
+        title: 'Do Mythic Shop skins come back?',
         content:
-            'Some Mythic Shop items can return in future rotations, but availability is controlled by Riot and not guaranteed. Some items may appear rarely.',
+            'Some Mythic Shop skins return in future rotations, but availability is controlled by Riot Games and is not guaranteed. Certain Mythic and Prestige skins may only appear rarely.',
     },
     {
         title: 'Does the Mythic Shop include discounted skins?',
         content:
-            'No. The Mythic Shop uses a separate system from regular skin sales and does not typically include discounted skins. You can view discounted skins on the sales page.',
+            'No. The Mythic Shop uses a separate system from League of Legends skin sales and does not typically include discounted skins. For discounts, check the current LoL skin sales rotation.',
     },
     {
-        title: 'Do I need an account to track Mythic Shop items?',
+        title: 'Do I need an account to track the Mythic Shop?',
         content:
-            'No account is required to browse the Mythic Shop rotation. An account is only needed if you want to create a wishlist and receive notifications.',
+            'No account is required to view the current Mythic Shop in League of Legends. An account is only needed if you want to wishlist items and get notifications when they return.',
+    },
+    {
+        title: 'Where can I check the Mythic Shop today in LoL?',
+        content:
+            'You can check the current Mythic Shop for League of Legends on this page. It shows today’s Mythic Shop rotation, including live Mythic skins, Prestige skins, and rotating offers.',
     },
 ];
 

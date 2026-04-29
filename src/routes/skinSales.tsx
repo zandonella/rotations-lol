@@ -13,42 +13,47 @@ const salesFAQs = [
     {
         title: 'What are the current League of Legends skin sales?',
         content:
-            'This page shows the current League of Legends skin sales, including discounted skins and limited-time skins that are available in the live rotation. It updates automatically to reflect the latest changes.',
+            'This page shows the current League of Legends skin sales, including discounted skins and limited-time offers in the live LoL store rotation. It updates automatically so you can always see what is on sale right now.',
     },
     {
         title: 'How often do League of Legends skin sales update?',
         content:
-            'League of Legends skin sales update on a regular schedule. This page refreshes automatically so you can track the current sale rotation without checking the in-game store manually.',
+            'League of Legends skin sales update on a regular weekly schedule. Rotations.lol tracks these updates automatically so you can follow the current sale rotation without checking the LoL client.',
     },
     {
         title: 'Does this page only show discounted skins?',
         content:
-            'No. In addition to discounted skins, this page may also include limited-time skins that are currently available for purchase but are not part of the standard store rotation.',
+            'No. In addition to discounted skins, this page may include limited-time skins that are currently available in the League of Legends store but are not part of the permanent catalog.',
     },
     {
         title: 'What is the League of Legends skin sale rotation?',
         content:
-            'The skin sale rotation refers to the set of skins that are currently discounted or available for a limited time in League of Legends. The rotation changes over time as different skins become available.',
+            'The skin sale rotation is the set of skins that are currently discounted or featured in the League of Legends store. The rotation changes regularly as different skins go on sale.',
     },
     {
-        title: 'Can I track when a skin goes on sale?',
+        title: 'Can I track when a skin goes on sale in LoL?',
         content:
-            'Yes. You can wishlist supported skins and receive an email notification when they appear in a sale rotation or become available again.',
+            'Yes. You can wishlist skins and receive an email notification when they appear in a League of Legends skin sale. Rotations.lol tracks the sale rotation automatically so you do not have to check manually.',
     },
     {
         title: 'Do all skins go on sale in League of Legends?',
         content:
-            'No. Not all skins are included in the sale rotation. Riot selects specific skins for discounts or limited-time availability, and some skins may appear rarely or never.',
+            'No. Not all skins are included in the League of Legends sale rotation. Riot selects specific skins for discounts, and some may appear rarely or never go on sale.',
     },
     {
         title: 'Does this include Mythic Shop skins?',
         content:
-            'No. Mythic Shop skins are tracked separately. You can view the current Mythic Shop rotation on the Mythic page.',
+            'No. Mythic Shop skins are part of a separate rotation. You can view the current Mythic Shop in League of Legends on the Mythic page.',
     },
     {
         title: 'Do I need an account to track skin sales?',
         content:
-            'No account is required to browse current skin sales. An account is only needed if you want to create a wishlist and receive notifications.',
+            'No account is required to browse current League of Legends skin sales. An account is only needed if you want to create a wishlist and get notified when skins go on sale.',
+    },
+    {
+        title: 'What skins are on sale in LoL right now?',
+        content:
+            'This page shows what skins are on sale in League of Legends right now, including current discounts and limited-time offers. It updates automatically with the latest LoL sale rotation.',
     },
 ];
 
