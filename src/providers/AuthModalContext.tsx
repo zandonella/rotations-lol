@@ -1,10 +1,13 @@
+import type { ModalMode } from '@/lib/types';
 import { createContext, useContext, useState } from 'react';
 
 interface AuthModalContextType {
     open: boolean;
-    openModal: () => void;
+    mode: ModalMode;
+    openModal: (mode?: ModalMode) => void;
     closeModal: () => void;
     setOpen: (open: boolean) => void;
+    setMode: (mode: ModalMode) => void;
 }
 
 const AuthModalContext = createContext<AuthModalContextType | undefined>(
@@ -17,8 +20,12 @@ interface AuthModalProviderProps {
 
 export function AuthModalProvider({ children }: AuthModalProviderProps) {
     const [open, setOpen] = useState(false);
+    const [mode, setMode] = useState<ModalMode>('sign-up');
 
-    function openModal() {
+    function openModal(newMode?: ModalMode) {
+        if (newMode) {
+            setMode(newMode);
+        }
         setOpen(true);
     }
     function closeModal() {
@@ -27,7 +34,7 @@ export function AuthModalProvider({ children }: AuthModalProviderProps) {
 
     return (
         <AuthModalContext.Provider
-            value={{ open, openModal, closeModal, setOpen }}
+            value={{ open, mode, openModal, closeModal, setOpen, setMode }}
         >
             {children}
         </AuthModalContext.Provider>

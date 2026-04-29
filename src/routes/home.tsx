@@ -205,7 +205,7 @@ export default function Home() {
                                 <Button
                                     size="lg"
                                     className="cursor-pointer px-6"
-                                    onClick={openModal}
+                                    onClick={() => openModal('sign-up')}
                                 >
                                     Create Free Account
                                 </Button>
@@ -499,7 +499,10 @@ function ConversionPanel({ sessionActive }: { sessionActive: boolean }) {
                         <Link to="/wishlist">Go to Wishlist</Link>
                     </Button>
                 ) : (
-                    <Button className="cursor-pointer px-5" onClick={openModal}>
+                    <Button
+                        className="cursor-pointer px-5"
+                        onClick={() => openModal('sign-up')}
+                    >
                         <LuBell className="size-4" />
                         Get Notified for Free
                     </Button>

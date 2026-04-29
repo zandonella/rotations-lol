@@ -7,7 +7,7 @@ export default function NavLayout() {
         <div className="flex min-h-screen flex-col">
             <Navbar />
             <main className="grow">
-                <div className="container mx-auto mt-6 flex flex-col items-center justify-center px-2 pb-8 sm:px-4">
+                <div className="container mx-auto mt-4 flex flex-col items-center justify-center px-2 pb-8 sm:px-4">
                     <Outlet />
                 </div>
             </main>

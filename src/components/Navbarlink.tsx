@@ -15,7 +15,7 @@ export default function NavbarLink({
     onClick,
 }: NavbarLinkProps) {
     const baseClasses =
-        'font-bold transition-colors duration-200 ease-in-out rounded-lg px-2 py-2';
+        'font-bold transition-colors duration-200 ease-in-out rounded-lg px-2 py-2 text-lg';
 
     return (
         <NavLink

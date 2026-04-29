@@ -14,8 +14,7 @@ import { Link } from 'react-router';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 export default function AuthModal() {
-    const { open, setOpen } = useAuthModal();
-    const [mode, setMode] = useState<ModalMode>('sign-up');
+    const { open, setOpen, mode, setMode } = useAuthModal();
     const [errors, setErrors] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -191,7 +190,7 @@ export default function AuthModal() {
                         <Button
                             size="lg"
                             variant="default"
-                            className="text-md cursor-pointer px-4 font-bold"
+                            className="text-md cursor-pointer font-bold"
                         >
                             Sign Up
                         </Button>
