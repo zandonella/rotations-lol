@@ -179,7 +179,7 @@ export default function Home() {
             />
 
             <div className="mx-auto flex max-w-6xl flex-col gap-12 p-4 sm:p-8">
-                <section className="border-border grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-start">
+                <section className="dark:border-border grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-start">
                     <div className="flex flex-col items-start">
                         <span className="text-muted-foreground mb-5 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] uppercase">
                             Track League shop rotations automatically
@@ -252,7 +252,7 @@ export default function Home() {
                     />
                 </section>
 
-                <section className="border-border grid gap-6 border-b pb-8 sm:grid-cols-3">
+                <section className="dark:border-border grid gap-6 border-b pb-8 sm:grid-cols-3">
                     <BigStat
                         label="Items tracked"
                         value={`${Math.floor(liveData.catalogCount / 1000) * 1000}+`}
@@ -275,7 +275,7 @@ export default function Home() {
                     />
                 </section>
 
-                <section className="border-border grid gap-10 border-b pb-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
+                <section className="dark:border-border grid gap-10 border-b pb-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
                     <div>
                         <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
                             Why people use Rotations.lol
@@ -308,7 +308,7 @@ export default function Home() {
                     <ConversionPanel sessionActive={!!session} />
                 </section>
 
-                <section className="border-border border-b pb-14">
+                <section className="dark:border-border border-b pb-14">
                     <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                         <div>
                             <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
@@ -385,7 +385,7 @@ function HeroPreview({
     items: { name: string; imageUrl: string; label: string }[];
 }) {
     return (
-        <div className="border-border border-t pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        <div className="dark:border-border border-t pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
             <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
                 Live from the current rotation
             </p>
@@ -401,7 +401,7 @@ function HeroPreview({
                     : items.map((item) => (
                           <div
                               key={item.name}
-                              className="group border-border/70 relative aspect-[1.15/1] overflow-hidden border"
+                              className="group dark:border-border/70 relative aspect-[1.15/1] overflow-hidden border"
                           >
                               <img
                                   src={item.imageUrl}
@@ -440,7 +440,7 @@ function BigStat({
     loading: boolean;
 }) {
     return (
-        <div className="border-border border-t pt-4">
+        <div className="dark:border-border border-t pt-4">
             <p className="text-muted-foreground text-xs font-semibold tracking-[0.18em] uppercase">
                 {label}
             </p>
@@ -462,7 +462,7 @@ function BigStat({
 
 function ValueColumn({ title, body }: { title: string; body: string }) {
     return (
-        <div className="border-border border-t pt-4">
+        <div className="dark:border-border border-t pt-4">
             <h3 className="text-lg font-semibold">{title}</h3>
             <p className="text-muted-foreground mt-3 text-sm leading-6">
                 {body}
@@ -475,7 +475,7 @@ function ConversionPanel({ sessionActive }: { sessionActive: boolean }) {
     const { openModal } = useAuthModal();
 
     return (
-        <div className="border-border border-t pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+        <div className="dark:border-border border-t pt-6 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
             <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
                 Why create an account
             </p>
@@ -529,7 +529,7 @@ function BenefitLine({ text }: { text: string }) {
 
 function BenefitRow({ text }: { text: string }) {
     return (
-        <div className="border-border flex items-start gap-3 border-b py-3">
+        <div className="dark:border-border flex items-start gap-3 border-b py-3">
             <span className="bg-primary/15 mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full">
                 <LuBell className="text-primary size-3.5" />
             </span>
@@ -596,7 +596,7 @@ function FeatureShowcase({
                     : items.slice(0, 4).map((item) => (
                           <div
                               key={item.CatalogItem.Name}
-                              className="border-border/70 bg-card overflow-hidden border"
+                              className="dark:border-border/70 bg-card overflow-hidden border"
                           >
                               <img
                                   src={item.CatalogItem.ImageURL}
