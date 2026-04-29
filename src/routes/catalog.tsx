@@ -6,6 +6,7 @@ import type { CatalogItemRecord, CatalogFilters } from '@/lib/types.ts';
 import CatalogSearch from '../components/CatalogSearch.tsx';
 import { useWishlist } from '@/providers/WishlistContext';
 import { Skeleton } from '@/components/ui/skeleton.tsx';
+import PageTitle from '@/components/PageTitle.tsx';
 
 const PAGE_SIZE = 20;
 
@@ -184,16 +185,12 @@ export default function Catalog() {
                 name="twitter:description"
                 content="Browse every League of Legends cosmetic item including skins, chromas, emotes, and more."
             />
-            <h1 className="text-2xl font-bold">
-                League of Legends Skins and Cosmetics Catalog
-            </h1>
-            <p className="text-muted-foreground max-w-xl text-center">
-                Search the full League of Legends cosmetics catalog and add
-                items to your wishlist. Track skins, chromas, emotes, icons, and
-                more, and get notified when they appear in a sale or the Mythic
-                Shop.
-            </p>
+
             <div className="mt-4 flex w-full flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+                <PageTitle
+                    title="League of Legends skins and cosmetics catalog"
+                    description="Search the full League of Legends cosmetics catalog, wishlist the items you want, and get notified when skins, chromas, emotes, icons, wards, and more appear in a sale or the Mythic Shop."
+                />
                 <CatalogSearch
                     searchQuery={searchQuery}
                     setSearchQuery={setSearchQuery}

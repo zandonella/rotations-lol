@@ -8,6 +8,7 @@ import {
 } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
 import FAQAccordion from '@/components/FAQAccordion.tsx';
+import PageTitle from '@/components/PageTitle.tsx';
 
 const salesFAQs = [
     {
@@ -142,10 +143,13 @@ export default function SkinSales() {
                 className="flex w-full flex-col items-center gap-4"
                 key={title}
             >
-                <div className="flex flex-col items-center text-center">
-                    <h2 className="text-2xl font-semibold">{title}</h2>
+                <div className="mt-2 w-full text-center md:text-left">
+                    <h2 className="text-3xl font-bold tracking-tight">
+                        {title}
+                    </h2>
+
                     {subtitle && (
-                        <p className="text-muted-foreground font-semibold">
+                        <p className="text-muted-foreground mt-1 max-w-xl text-sm leading-6">
                             {subtitle}
                         </p>
                     )}
@@ -253,17 +257,15 @@ export default function SkinSales() {
                 name="twitter:description"
                 content="Track current League of Legends skin sales, discounted skins, and limited-time skins."
             />
-            <h1 className="text-center text-2xl font-bold">
-                {' '}
-                Current League of Legends Skin Sales and Limited-Time Skins
-            </h1>
-            <p className="text-muted-foreground max-w-3xl text-center">
-                View current League of Legends skin sales, including discounted
+
+            <div className="mt-4 flex w-full max-w-7xl flex-col items-center gap-4">
+                <PageTitle
+                    title="Current League of Legends Skin Sales and Limited-Time Skins"
+                    description="View current League of Legends skin sales, including discounted
                 skins and limited-time skins available in the live rotation.
                 This page updates automatically so you can track what is
-                currently available and wishlist skins you want to watch.
-            </p>
-            <div className="mt-4 flex w-full flex-col items-center gap-4">
+                currently available and wishlist skins you want to watch."
+                />
                 {skinContent}
             </div>
             <div className="mx-auto mt-6 w-full max-w-3xl rounded-lg">

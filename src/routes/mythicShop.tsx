@@ -5,6 +5,7 @@ import ItemCard from '@/components/itemCard';
 import { calculateTimeUntilEnd, getPacificResetLabel } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
 import FAQAccordion from '@/components/FAQAccordion.tsx';
+import PageTitle from '@/components/PageTitle.tsx';
 
 const mythicFAQs = [
     {
@@ -108,10 +109,13 @@ export default function MythicShop() {
         if (sales.length === 0) return null;
         return (
             <div className="flex w-full flex-col items-center gap-4">
-                <div className="flex flex-col items-center text-center">
-                    <h2 className="text-2xl font-semibold">{title}</h2>
+                <div className="mt-2 w-full text-center md:text-left">
+                    <h2 className="text-3xl font-bold tracking-tight">
+                        {title}
+                    </h2>
+
                     {subtitle && (
-                        <p className="text-muted-foreground font-semibold">
+                        <p className="text-muted-foreground mt-1 max-w-xl text-sm leading-6">
                             {subtitle}
                         </p>
                     )}
@@ -216,17 +220,15 @@ export default function MythicShop() {
                 content="Track the current League of Legends Mythic Shop rotation."
             />
 
-            <h1 className="text-center text-2xl font-bold">
-                Current League of Legends Mythic Shop Rotation
-            </h1>
-            <p className="text-muted-foreground max-w-3xl text-center">
-                View the current League of Legends Mythic Shop rotation,
-                including featured mythic skins, prestige skins, chromas, and
-                other limited-time mythic content. This page updates
-                automatically so you can track the latest League of Legends
-                mythic sales and wishlist items you want to watch.
-            </p>
-            <div className="flex w-full flex-col items-center gap-6 p-4 pb-0">
+            <div className="flex flex-col items-center gap-6 py-4 pb-0">
+                <PageTitle
+                    title="Current League of Legends Mythic Shop Rotation"
+                    description="View the current League of Legends Mythic Shop rotation,
+                    including featured mythic skins, prestige skins, chromas,
+                    and other limited-time mythic content. This page updates
+                    automatically so you can track the latest League of Legends
+                    mythic sales and wishlist items you want to watch."
+                />
                 {content}
             </div>
 

@@ -4,6 +4,7 @@ import { useAuth } from '@/providers/AuthContext';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import ItemCard from '@/components/itemCard';
 import type { WishlistWithItemRecord } from '@/lib/types';
+import PageTitle from '@/components/PageTitle';
 
 export default function Wishlist() {
     const { wishlistItems, loading, toggleWishlist } = useWishlist();
@@ -35,38 +36,55 @@ export default function Wishlist() {
         content = <p>No items found.</p>;
     } else {
         content = (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {wishlistItems.map((item: WishlistWithItemRecord) => (
-                    <ItemCard
-                        key={item.ItemID}
-                        name={item.CatalogItem.Name}
-                        imageUrl={item.CatalogItem.ImageURL}
-                        skinline={item.CatalogItem.Skinline?.Name}
-                        wishlisted={true}
-                        onToggleWishlist={() =>
-                            toggleWishlist(item.ItemID, item.CatalogItem.Name)
-                        }
-                    />
-                ))}
+            <div className="flex w-full flex-col items-center gap-4">
+                <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {wishlistItems.map((item: WishlistWithItemRecord) => (
+                        <ItemCard
+                            key={item.ItemID}
+                            name={item.CatalogItem.Name}
+                            imageUrl={item.CatalogItem.ImageURL}
+                            skinline={item.CatalogItem.Skinline?.Name}
+                            wishlisted={true}
+                            onToggleWishlist={() =>
+                                toggleWishlist(
+                                    item.ItemID,
+                                    item.CatalogItem.Name,
+                                )
+                            }
+                        />
+                    ))}
+                </div>
             </div>
         );
     }
 
     return (
         <>
-            <div className="flex flex-col items-center">
-                <h1 className="text-2xl font-bold">Wishlist</h1>
-                <p className="text-muted-foreground max-w-xl text-center">
-                    Track the League of Legends skins and cosmetics you want
+            <div className="mt-6 flex w-full flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+                <div className="flex w-full flex-col items-center">
+                    <PageTitle
+                        title="Wishlist"
+                        description="Track the League of Legends skins and cosmetics you want
                     most. We will send you an email when a wishlisted item
                     appears in a supported skin sale or the Mythic Shop. Some
-                    limited or exclusive items may never return.
-                </p>
-                <span className="bg-card text-muted-foreground mt-2 rounded-full px-3 py-1 text-sm font-medium">
-                    {wishlistItems.length} / 50
-                </span>
-            </div>
-            <div className="mt-6 flex w-full max-w-3xs flex-col items-center gap-6 pt-0 sm:max-w-lg lg:max-w-5xl">
+                    limited or exclusive items may never return."
+                    />
+
+                    <div className="border-border bg-card mt-5 flex items-center gap-3 rounded-2xl border px-4 py-3">
+                        <div className="min-w-0">
+                            <p className="text-sm font-semibold">
+                                Wishlist usage
+                            </p>
+                            <p className="text-muted-foreground text-xs">
+                                {wishlistItems.length} of 50 items tracked
+                            </p>
+                        </div>
+
+                        <span className="bg-primary/15 text-primary ml-auto rounded-full px-3 py-1 text-sm font-bold">
+                            {wishlistItems.length}/50
+                        </span>
+                    </div>
+                </div>
                 {content}
             </div>
         </>
