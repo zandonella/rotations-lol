@@ -5,7 +5,6 @@ import supabase from '../lib/supabase.ts';
 import type { CatalogItemRecord, CatalogFilters } from '@/lib/types.ts';
 import CatalogSearch from '../components/CatalogSearch.tsx';
 import { useWishlist } from '@/providers/WishlistContext';
-import { Skeleton } from '@/components/ui/skeleton.tsx';
 import PageTitle from '@/components/PageTitle.tsx';
 
 const PAGE_SIZE = 20;

@@ -13,7 +13,7 @@ export default function ThemeButton() {
         }
     }, []);
 
-    function updateTheme(checked: boolean) {
+    function updateTheme() {
         const newTheme: Theme = theme === 'dark' ? 'light' : 'dark';
 
         setTheme(newTheme);
