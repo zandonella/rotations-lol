@@ -5,6 +5,7 @@ import supabase from '../lib/supabase.ts';
 import type { CatalogItemRecord, CatalogFilters } from '@/lib/types.ts';
 import CatalogSearch from '../components/CatalogSearch.tsx';
 import { useWishlist } from '@/providers/WishlistContext';
+import { Skeleton } from '@/components/ui/skeleton.tsx';
 
 const PAGE_SIZE = 20;
 
@@ -125,7 +126,7 @@ export default function Catalog() {
     let content;
 
     if (loading) {
-        content = <p>Loading...</p>;
+        content = <CatalogSkeletonGrid />;
     } else if (error) {
         content = <p className="text-red-500">Error: {error}</p>;
     } else if (items.length === 0) {
@@ -207,5 +208,18 @@ export default function Catalog() {
                 />
             </div>
         </>
+    );
+}
+
+function CatalogSkeletonGrid() {
+    return (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                <div
+                    key={i}
+                    className="bg-muted h-[330px] w-[250px] animate-pulse rounded-lg"
+                />
+            ))}
+        </div>
     );
 }

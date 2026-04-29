@@ -197,7 +197,7 @@ export default function SkinSales() {
     let skinContent;
 
     if (loading) {
-        skinContent = <p>Loading...</p>;
+        skinContent = <WeeklySkinSalesSkeleton />;
     } else {
         skinContent = (
             <>
@@ -265,5 +265,29 @@ export default function SkinSales() {
                 <FAQAccordion FAQs={salesFAQs} />
             </div>
         </>
+    );
+}
+
+function WeeklySkinSalesSkeleton() {
+    return (
+        <div className="flex w-full flex-col items-center gap-4">
+            <div className="flex flex-col items-center text-center">
+                <h2 className="text-2xl font-semibold">
+                    Current Weekly Skin Sales
+                </h2>
+                <p className="text-muted-foreground font-semibold">
+                    Resets every Monday at {getSalesPacificResetLabel()}
+                </p>
+            </div>
+
+            <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                {Array.from({ length: 15 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="bg-muted h-[310px] w-[250px] animate-pulse rounded-lg"
+                    />
+                ))}
+            </div>
+        </div>
     );
 }

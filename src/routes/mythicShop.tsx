@@ -147,7 +147,7 @@ export default function MythicShop() {
     let content: React.ReactNode;
 
     if (loading) {
-        content = <p>Loading...</p>;
+        content = <FeaturedSkeleton />;
     } else if (errorMsg) {
         content = (
             <p className="text-foreground bg-destructive/30 border-destructive rounded border-2 p-2 text-sm">
@@ -229,5 +229,23 @@ export default function MythicShop() {
                 <FAQAccordion FAQs={mythicFAQs} />
             </div>
         </>
+    );
+}
+function FeaturedSkeleton() {
+    return (
+        <div className="flex w-full flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-2">
+                <h2 className="text-2xl font-semibold">Featured</h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {Array.from({ length: 20 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="bg-muted h-[330px] w-[250px] animate-pulse rounded-lg"
+                    />
+                ))}
+            </div>
+        </div>
     );
 }
