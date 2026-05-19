@@ -8,6 +8,7 @@ import { useAuth } from '@/providers/AuthContext';
 import { cn } from '@/lib/utils';
 import RPIcon from '@/assets/RPIcon.png';
 import MEIcon from '@/assets/MEIcon.png';
+import BEIcon from '@/assets/BEIcon.png';
 import {
     Tooltip,
     TooltipContent,
@@ -55,6 +56,8 @@ export default function ItemCard({
                 return RPIcon;
             case 'ME':
                 return MEIcon;
+            case 'IP':
+                return BEIcon;
             default:
                 return RPIcon;
         }
@@ -66,6 +69,8 @@ export default function ItemCard({
                 return 'text-primary';
             case 'ME':
                 return 'text-chart-5';
+            case 'IP':
+                return 'text-chart-4';
             default:
                 return 'text-primary';
         }

@@ -79,58 +79,70 @@ export default function SkinSales() {
         fetchCatalogSales();
     }, []);
 
-    const { weekly, limited, chromas, otherItems } = useMemo(() => {
-        const weekly = skinSales.filter((sale) => sale.Limited === false);
+    const { weekly, limited, blueEssence, chromas, otherItems } =
+        useMemo(() => {
+            const weekly = skinSales.filter((sale) => sale.Limited === false);
 
-        const limitedSales = skinSales.filter((sale) => sale.Limited === true);
+            const limitedSales = skinSales.filter(
+                (sale) => sale.Limited === true,
+            );
 
-        const limited = limitedSales.reduce(
-            (
-                accumulator: Record<string, CatalogSaleWithItemRecord[]>,
-                currentSale,
-            ) => {
-                if (currentSale.CatalogItem.ItemType > 1) {
+            const blueEssence = skinSales.filter(
+                (sale) => sale.Currency === 'IP',
+            );
+
+            const limited = limitedSales.reduce(
+                (
+                    accumulator: Record<string, CatalogSaleWithItemRecord[]>,
+                    currentSale,
+                ) => {
+                    if (currentSale.CatalogItem.ItemType > 1) {
+                        return accumulator;
+                    }
+
+                    if (currentSale.Currency === 'IP') {
+                        return accumulator;
+                    }
+
+                    let collection = 'Other Skins';
+                    if (currentSale.CatalogItem.Skinline?.UniverseID === 0) {
+                        collection = currentSale.CatalogItem.Skinline?.Name;
+                    } else if (currentSale.CatalogItem.Skinline?.UniverseID) {
+                        collection =
+                            currentSale.CatalogItem.Skinline?.Universe?.Name ||
+                            collection;
+                    }
+                    const skinline = collection;
+
+                    if (!accumulator[skinline]) {
+                        accumulator[skinline] = [];
+                    }
+
+                    accumulator[skinline].push(currentSale);
+
                     return accumulator;
-                }
+                },
+                {} as Record<string, CatalogSaleWithItemRecord[]>,
+            );
 
-                let collection = 'Other Skins';
-                if (currentSale.CatalogItem.Skinline?.UniverseID === 0) {
-                    collection = currentSale.CatalogItem.Skinline?.Name;
-                } else if (currentSale.CatalogItem.Skinline?.UniverseID) {
-                    collection =
-                        currentSale.CatalogItem.Skinline?.Universe?.Name ||
-                        collection;
-                }
-                const skinline = collection;
+            const chromas = limitedSales
+                .filter((sale) => sale.CatalogItem.ItemType === 2)
+                .sort((a, b) => {
+                    const itemA = a.CatalogItem.Name;
+                    const itemB = b.CatalogItem.Name;
+                    return itemA.localeCompare(itemB);
+                });
 
-                if (!accumulator[skinline]) {
-                    accumulator[skinline] = [];
-                }
-
-                accumulator[skinline].push(currentSale);
-
-                return accumulator;
-            },
-            {} as Record<string, CatalogSaleWithItemRecord[]>,
-        );
-
-        const chromas = limitedSales
-            .filter((sale) => sale.CatalogItem.ItemType === 2)
-            .sort((a, b) => {
-                const itemA = a.CatalogItem.Name;
-                const itemB = b.CatalogItem.Name;
-                return itemA.localeCompare(itemB);
-            });
-
-        return {
-            weekly,
-            limited,
-            chromas,
-            otherItems: skinSales.filter(
-                (sale) => sale.CatalogItem.ItemType > 2,
-            ),
-        };
-    }, [skinSales]);
+            return {
+                weekly,
+                blueEssence,
+                limited,
+                chromas,
+                otherItems: skinSales.filter(
+                    (sale) => sale.CatalogItem.ItemType > 2,
+                ),
+            };
+        }, [skinSales]);
 
     function renderSection(
         title: string,
@@ -219,6 +231,7 @@ export default function SkinSales() {
                     renderSection(skinline, sortSalesBySkinline(sales)),
                 )}
                 {renderSection('Chroma Sales', chromas)}
+                {renderSection('Blue Essence Sales', blueEssence)}
                 {renderSection('Other Items', otherItems)}
             </>
         );
