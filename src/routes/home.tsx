@@ -77,7 +77,8 @@ export default function Home() {
                 supabase
                     .from('CatalogSale')
                     .select('*, CatalogItem(*, Skinline(*, Universe(*)))')
-                    .eq('IsActive', true),
+                    .eq('IsActive', true)
+                    .eq('Currency', 'RP'),
                 supabase
                     .from('MythicSale')
                     .select('*, CatalogItem(*)')
