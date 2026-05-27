@@ -27,6 +27,7 @@ type SaleSectionState = {
     loading: boolean;
     loadingMore: boolean;
     error: string | null;
+    blueEssence?: BlueEssencePagination;
 };
 
 type SaleSectionConfig = {
@@ -36,6 +37,19 @@ type SaleSectionConfig = {
     sortSales?: (
         sales: CatalogSaleWithItemRecord[],
     ) => CatalogSaleWithItemRecord[];
+};
+
+type BlueEssencePagination = {
+    nonChromaLoaded: number;
+    nonChromaTotal: number | null;
+    chromaLoaded: number;
+    chromaTotal: number | null;
+};
+
+type SaleSectionPage = {
+    data: CatalogSaleWithItemRecord[];
+    total: number;
+    blueEssence?: BlueEssencePagination;
 };
 
 const saleSectionIds: SaleSectionId[] = [
@@ -54,10 +68,23 @@ const initialSectionState: SaleSectionState = {
     error: null,
 };
 
+const initialBlueEssencePagination: BlueEssencePagination = {
+    nonChromaLoaded: 0,
+    nonChromaTotal: null,
+    chromaLoaded: 0,
+    chromaTotal: null,
+};
+
 const initialSections = saleSectionIds.reduce(
     (sections, sectionId) => ({
         ...sections,
-        [sectionId]: initialSectionState,
+        [sectionId]: {
+            ...initialSectionState,
+            blueEssence:
+                sectionId === 'blueEssence'
+                    ? initialBlueEssencePagination
+                    : undefined,
+        },
     }),
     {} as Record<SaleSectionId, SaleSectionState>,
 );
@@ -116,7 +143,10 @@ export default function SkinSales() {
         useState<Record<SaleSectionId, SaleSectionState>>(initialSections);
 
     const fetchSalesPage = useCallback(
-        async (sectionId: SaleSectionId, from: number) => {
+        async (
+            sectionId: SaleSectionId,
+            from: number,
+        ): Promise<SaleSectionPage> => {
             const to = from + PAGE_SIZE - 1;
             let query = supabase
                 .from('CatalogSale')
@@ -141,27 +171,72 @@ export default function SkinSales() {
                         .neq('Currency', 'IP')
                         .eq('CatalogItem.ItemType', 2);
                     break;
-                case 'blueEssence':
-                    query = query.eq('Currency', 'IP');
-                    break;
                 case 'otherItems':
                     query = query
                         .neq('Currency', 'IP')
                         .gt('CatalogItem.ItemType', 2);
                     break;
+                case 'blueEssence':
+                    break;
             }
 
-            if (sectionId === 'blueEssence') {
-                query = query
-                    .order('CatalogItem(ItemType)', { ascending: true })
-                    .order('SalePrice', { ascending: false })
-                    .order('CatalogItem(Name)', { ascending: true })
-                    .order('SaleID', { ascending: true });
-            } else {
-                query = query
-                    .order('SaleEndAt', { ascending: true })
-                    .order('SaleID', { ascending: true });
-            }
+            query = query
+                .order('SaleEndAt', { ascending: true })
+                .order('SaleID', { ascending: true });
+
+            const { data, error, count } = await query.range(from, to);
+
+            if (error) throw error;
+
+            return {
+                data: (data || []) as CatalogSaleWithItemRecord[],
+                total: count || 0,
+            } satisfies SaleSectionPage;
+        },
+        [],
+    );
+
+    const fetchBlueEssenceCount = useCallback(async (chroma: boolean) => {
+        let query = supabase
+            .from('CatalogSale')
+            .select(CATALOG_SALE_SELECT, { count: 'exact', head: true })
+            .eq('IsActive', true)
+            .eq('Currency', 'IP');
+
+        query = chroma
+            ? query.eq('CatalogItem.ItemType', 2)
+            : query.neq('CatalogItem.ItemType', 2);
+
+        const { error, count } = await query;
+
+        if (error) throw error;
+
+        return count || 0;
+    }, []);
+
+    const fetchBlueEssenceItems = useCallback(
+        async (chroma: boolean, from: number, limit: number) => {
+            const to = from + limit - 1;
+            let query = supabase
+                .from('CatalogSale')
+                .select(CATALOG_SALE_SELECT, { count: 'exact' })
+                .eq('IsActive', true)
+                .eq('Currency', 'IP');
+
+            query = chroma
+                ? query.eq('CatalogItem.ItemType', 2)
+                : query.neq('CatalogItem.ItemType', 2);
+
+            query = chroma
+                ? query
+                      .order('SalePrice', { ascending: false })
+                      .order('CatalogItem(Name)', { ascending: true })
+                      .order('SaleID', { ascending: true })
+                : query
+                      .order('SalePrice', { ascending: false })
+                      .order('CatalogItem(ItemType)', { ascending: true })
+                      .order('CatalogItem(Name)', { ascending: true })
+                      .order('SaleID', { ascending: true });
 
             const { data, error, count } = await query.range(from, to);
 
@@ -175,9 +250,69 @@ export default function SkinSales() {
         [],
     );
 
+    const fetchBlueEssencePage = useCallback(
+        async (currentState: SaleSectionState): Promise<SaleSectionPage> => {
+            const pagination = {
+                ...initialBlueEssencePagination,
+                ...currentState.blueEssence,
+            };
+            const sales: CatalogSaleWithItemRecord[] = [];
+            let remainingSlots = PAGE_SIZE;
+            let { nonChromaLoaded, nonChromaTotal, chromaLoaded, chromaTotal } =
+                pagination;
+
+            if (
+                remainingSlots > 0 &&
+                (nonChromaTotal === null || nonChromaLoaded < nonChromaTotal)
+            ) {
+                const nonChromaResult = await fetchBlueEssenceItems(
+                    false,
+                    nonChromaLoaded,
+                    remainingSlots,
+                );
+
+                sales.push(...nonChromaResult.data);
+                nonChromaTotal = nonChromaResult.total;
+                nonChromaLoaded += nonChromaResult.data.length;
+                remainingSlots -= nonChromaResult.data.length;
+            }
+
+            if (chromaTotal === null && remainingSlots === 0) {
+                chromaTotal = await fetchBlueEssenceCount(true);
+            }
+
+            if (
+                remainingSlots > 0 &&
+                (chromaTotal === null || chromaLoaded < chromaTotal)
+            ) {
+                const chromaResult = await fetchBlueEssenceItems(
+                    true,
+                    chromaLoaded,
+                    remainingSlots,
+                );
+
+                sales.push(...chromaResult.data);
+                chromaTotal = chromaResult.total;
+                chromaLoaded += chromaResult.data.length;
+            }
+
+            return {
+                data: sales,
+                total: (nonChromaTotal || 0) + (chromaTotal || 0),
+                blueEssence: {
+                    nonChromaLoaded,
+                    nonChromaTotal,
+                    chromaLoaded,
+                    chromaTotal,
+                },
+            } satisfies SaleSectionPage;
+        },
+        [fetchBlueEssenceCount, fetchBlueEssenceItems],
+    );
+
     const loadSectionPage = useCallback(
-        async (sectionId: SaleSectionId, from: number) => {
-            const append = from > 0;
+        async (sectionId: SaleSectionId, currentState: SaleSectionState) => {
+            const append = currentState.sales.length > 0;
 
             setSections((previous) => ({
                 ...previous,
@@ -190,15 +325,25 @@ export default function SkinSales() {
             }));
 
             try {
-                const { data, total } = await fetchSalesPage(sectionId, from);
+                const page =
+                    sectionId === 'blueEssence'
+                        ? await fetchBlueEssencePage(currentState)
+                        : await fetchSalesPage(
+                              sectionId,
+                              currentState.sales.length,
+                          );
 
                 setSections((previous) => ({
                     ...previous,
                     [sectionId]: {
                         sales: append
-                            ? [...previous[sectionId].sales, ...data]
-                            : data,
-                        total,
+                            ? [...previous[sectionId].sales, ...page.data]
+                            : page.data,
+                        total: page.total,
+                        blueEssence:
+                            sectionId === 'blueEssence'
+                                ? page.blueEssence
+                                : previous[sectionId].blueEssence,
                         loading: false,
                         loadingMore: false,
                         error: null,
@@ -221,12 +366,12 @@ export default function SkinSales() {
                 }));
             }
         },
-        [fetchSalesPage],
+        [fetchBlueEssencePage, fetchSalesPage],
     );
 
     useEffect(() => {
         saleSectionIds.forEach((sectionId) => {
-            loadSectionPage(sectionId, 0);
+            loadSectionPage(sectionId, initialSections[sectionId]);
         });
     }, [loadSectionPage]);
 
@@ -338,10 +483,7 @@ export default function SkinSales() {
                                     variant="outline"
                                     size="sm"
                                     onClick={() =>
-                                        loadSectionPage(
-                                            config.id,
-                                            state.sales.length,
-                                        )
+                                        loadSectionPage(config.id, state)
                                     }
                                 >
                                     Retry
@@ -353,10 +495,7 @@ export default function SkinSales() {
                             <Button
                                 variant="outline"
                                 onClick={() =>
-                                    loadSectionPage(
-                                        config.id,
-                                        state.sales.length,
-                                    )
+                                    loadSectionPage(config.id, state)
                                 }
                                 disabled={state.loadingMore}
                             >
@@ -451,13 +590,19 @@ function sortSalesByName(sales: CatalogSaleWithItemRecord[]) {
 
 function sortBlueEssenceSales(sales: CatalogSaleWithItemRecord[]) {
     return [...sales].sort((a, b) => {
-        const itemTypeSort = a.CatalogItem.ItemType - b.CatalogItem.ItemType;
+        const chromaSort =
+            Number(a.CatalogItem.ItemType === 2) -
+            Number(b.CatalogItem.ItemType === 2);
 
-        if (itemTypeSort !== 0) return itemTypeSort;
+        if (chromaSort !== 0) return chromaSort;
 
         const priceSort = b.SalePrice - a.SalePrice;
 
         if (priceSort !== 0) return priceSort;
+
+        const itemTypeSort = a.CatalogItem.ItemType - b.CatalogItem.ItemType;
+
+        if (itemTypeSort !== 0) return itemTypeSort;
 
         return a.CatalogItem.Name.localeCompare(b.CatalogItem.Name);
     });
