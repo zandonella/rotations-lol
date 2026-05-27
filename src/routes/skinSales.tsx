@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import supabase from '../lib/supabase.ts';
 import type { CatalogSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
@@ -9,6 +9,58 @@ import {
 import { useWishlist } from '@/providers/WishlistContext.tsx';
 import FAQAccordion from '@/components/FAQAccordion.tsx';
 import PageTitle from '@/components/PageTitle.tsx';
+import { Button } from '@/components/ui/button.tsx';
+
+const PAGE_SIZE = 100;
+const CATALOG_SALE_SELECT = '*, CatalogItem!inner(*, Skinline(*, Universe(*)))';
+
+type SaleSectionId =
+    | 'weekly'
+    | 'limited'
+    | 'chromas'
+    | 'blueEssence'
+    | 'otherItems';
+
+type SaleSectionState = {
+    sales: CatalogSaleWithItemRecord[];
+    total: number;
+    loading: boolean;
+    loadingMore: boolean;
+    error: string | null;
+};
+
+type SaleSectionConfig = {
+    id: SaleSectionId;
+    title: string;
+    subtitle?: string;
+    sortSales?: (
+        sales: CatalogSaleWithItemRecord[],
+    ) => CatalogSaleWithItemRecord[];
+};
+
+const saleSectionIds: SaleSectionId[] = [
+    'weekly',
+    'limited',
+    'chromas',
+    'blueEssence',
+    'otherItems',
+];
+
+const initialSectionState: SaleSectionState = {
+    sales: [],
+    total: 0,
+    loading: true,
+    loadingMore: false,
+    error: null,
+};
+
+const initialSections = saleSectionIds.reduce(
+    (sections, sectionId) => ({
+        ...sections,
+        [sectionId]: initialSectionState,
+    }),
+    {} as Record<SaleSectionId, SaleSectionState>,
+);
 
 const salesFAQs = [
     {
@@ -60,182 +112,273 @@ const salesFAQs = [
 
 export default function SkinSales() {
     const { isWishlisted, toggleWishlist } = useWishlist();
-    const [skinSales, setSkinSales] = useState<CatalogSaleWithItemRecord[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [sections, setSections] =
+        useState<Record<SaleSectionId, SaleSectionState>>(initialSections);
 
-    useEffect(() => {
-        async function fetchCatalogSales() {
-            const { data, error } = await supabase
+    const fetchSalesPage = useCallback(
+        async (sectionId: SaleSectionId, from: number) => {
+            const to = from + PAGE_SIZE - 1;
+            let query = supabase
                 .from('CatalogSale')
-                .select('*, CatalogItem(*, Skinline(*, Universe(*)))')
+                .select(CATALOG_SALE_SELECT, { count: 'exact' })
                 .eq('IsActive', true);
-            if (error) {
-                console.error('Error fetching skin sales:', error);
-            } else {
-                setSkinSales(data || []);
+
+            switch (sectionId) {
+                case 'weekly':
+                    query = query
+                        .eq('Limited', false)
+                        .neq('Currency', 'IP')
+                        .eq('CatalogItem.ItemType', 1);
+                    break;
+                case 'limited':
+                    query = query
+                        .eq('Limited', true)
+                        .neq('Currency', 'IP')
+                        .eq('CatalogItem.ItemType', 1);
+                    break;
+                case 'chromas':
+                    query = query
+                        .neq('Currency', 'IP')
+                        .eq('CatalogItem.ItemType', 2);
+                    break;
+                case 'blueEssence':
+                    query = query.eq('Currency', 'IP');
+                    break;
+                case 'otherItems':
+                    query = query
+                        .neq('Currency', 'IP')
+                        .gt('CatalogItem.ItemType', 2);
+                    break;
             }
-            setLoading(false);
-        }
-        fetchCatalogSales();
-    }, []);
 
-    const { weekly, limited, blueEssence, chromas, otherItems } =
-        useMemo(() => {
-            const weekly = skinSales.filter((sale) => sale.Limited === false);
+            if (sectionId === 'blueEssence') {
+                query = query
+                    .order('CatalogItem(ItemType)', { ascending: true })
+                    .order('SalePrice', { ascending: false })
+                    .order('CatalogItem(Name)', { ascending: true })
+                    .order('SaleID', { ascending: true });
+            } else {
+                query = query
+                    .order('SaleEndAt', { ascending: true })
+                    .order('SaleID', { ascending: true });
+            }
 
-            const limitedSales = skinSales.filter(
-                (sale) => sale.Limited === true,
-            );
+            const { data, error, count } = await query.range(from, to);
 
-            const blueEssence = skinSales.filter(
-                (sale) => sale.Currency === 'IP',
-            );
-
-            const limited = limitedSales.reduce(
-                (
-                    accumulator: Record<string, CatalogSaleWithItemRecord[]>,
-                    currentSale,
-                ) => {
-                    if (currentSale.CatalogItem.ItemType > 1) {
-                        return accumulator;
-                    }
-
-                    if (currentSale.Currency === 'IP') {
-                        return accumulator;
-                    }
-
-                    let collection = 'Other Skins';
-                    if (currentSale.CatalogItem.Skinline?.UniverseID === 0) {
-                        collection = currentSale.CatalogItem.Skinline?.Name;
-                    } else if (currentSale.CatalogItem.Skinline?.UniverseID) {
-                        collection =
-                            currentSale.CatalogItem.Skinline?.Universe?.Name ||
-                            collection;
-                    }
-                    const skinline = collection;
-
-                    if (!accumulator[skinline]) {
-                        accumulator[skinline] = [];
-                    }
-
-                    accumulator[skinline].push(currentSale);
-
-                    return accumulator;
-                },
-                {} as Record<string, CatalogSaleWithItemRecord[]>,
-            );
-
-            const chromas = limitedSales
-                .filter((sale) => sale.CatalogItem.ItemType === 2)
-                .sort((a, b) => {
-                    const itemA = a.CatalogItem.Name;
-                    const itemB = b.CatalogItem.Name;
-                    return itemA.localeCompare(itemB);
-                });
+            if (error) throw error;
 
             return {
-                weekly,
-                blueEssence,
-                limited,
-                chromas,
-                otherItems: skinSales.filter(
-                    (sale) => sale.CatalogItem.ItemType > 2,
-                ),
+                data: (data || []) as CatalogSaleWithItemRecord[],
+                total: count || 0,
             };
-        }, [skinSales]);
+        },
+        [],
+    );
 
-    function renderSection(
-        title: string,
-        sales: CatalogSaleWithItemRecord[],
-        subtitle?: string,
-    ) {
-        if (sales.length === 0) return null;
+    const loadSectionPage = useCallback(
+        async (sectionId: SaleSectionId, from: number) => {
+            const append = from > 0;
+
+            setSections((previous) => ({
+                ...previous,
+                [sectionId]: {
+                    ...previous[sectionId],
+                    loading: !append,
+                    loadingMore: append,
+                    error: null,
+                },
+            }));
+
+            try {
+                const { data, total } = await fetchSalesPage(sectionId, from);
+
+                setSections((previous) => ({
+                    ...previous,
+                    [sectionId]: {
+                        sales: append
+                            ? [...previous[sectionId].sales, ...data]
+                            : data,
+                        total,
+                        loading: false,
+                        loadingMore: false,
+                        error: null,
+                    },
+                }));
+            } catch (error) {
+                const message =
+                    error instanceof Error
+                        ? error.message
+                        : 'Failed to load this section.';
+
+                setSections((previous) => ({
+                    ...previous,
+                    [sectionId]: {
+                        ...previous[sectionId],
+                        loading: false,
+                        loadingMore: false,
+                        error: message,
+                    },
+                }));
+            }
+        },
+        [fetchSalesPage],
+    );
+
+    useEffect(() => {
+        saleSectionIds.forEach((sectionId) => {
+            loadSectionPage(sectionId, 0);
+        });
+    }, [loadSectionPage]);
+
+    const sectionConfigs = useMemo<SaleSectionConfig[]>(
+        () => [
+            {
+                id: 'weekly',
+                title: 'Current Weekly Skin Sales',
+                subtitle: `Resets every Monday at ${getSalesPacificResetLabel()}`,
+                sortSales: sortSalesBySkinlineAndName,
+            },
+            {
+                id: 'limited',
+                title: 'Limited Skin Sales',
+                sortSales: sortSalesBySkinlineAndName,
+            },
+            {
+                id: 'chromas',
+                title: 'Chroma Sales',
+                sortSales: sortSalesByName,
+            },
+            {
+                id: 'blueEssence',
+                title: 'Blue Essence Sales',
+                sortSales: sortBlueEssenceSales,
+            },
+            {
+                id: 'otherItems',
+                title: 'Other Items',
+            },
+        ],
+        [],
+    );
+
+    function renderSection(config: SaleSectionConfig, state: SaleSectionState) {
+        const sales = config.sortSales
+            ? config.sortSales(state.sales)
+            : state.sales;
+        const remaining = Math.max(state.total - state.sales.length, 0);
+
+        if (!state.loading && sales.length === 0 && !state.error) return null;
+
         return (
             <div
                 className="flex w-full flex-col items-center gap-4"
-                key={title}
+                key={config.id}
             >
                 <div className="mt-2 w-full text-center md:text-left">
                     <h2 className="text-3xl font-bold tracking-tight">
-                        {title}
+                        {config.title}
                     </h2>
 
-                    {subtitle && (
+                    {config.subtitle && (
                         <p className="text-muted-foreground mt-1 max-w-xl text-sm leading-6">
-                            {subtitle}
+                            {config.subtitle}
                         </p>
                     )}
                 </div>
-                <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                    {sales.map((sale) => {
-                        const item = sale.CatalogItem;
-                        let showSalePrice = true;
-                        if (sale.SalePrice === sale.NormalPrice) {
-                            showSalePrice = false;
-                        }
-                        return (
-                            <ItemCard
-                                className="max-w-[250px]"
-                                key={sale.SaleID}
-                                name={item.Name}
-                                itemType={item.ItemType}
-                                imageUrl={item.ImageURL}
-                                wishlisted={isWishlisted(item.ItemID)}
-                                onToggleWishlist={() =>
-                                    toggleWishlist(
-                                        item.ItemID,
-                                        item.Name,
-                                        item.ItemType <= 6,
+
+                {state.loading ? (
+                    <SalesSectionSkeleton />
+                ) : (
+                    <>
+                        {sales.length > 0 && (
+                            <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                                {sales.map((sale) => {
+                                    const item = sale.CatalogItem;
+                                    const showSalePrice =
+                                        sale.SalePrice !== sale.NormalPrice;
+                                    return (
+                                        <ItemCard
+                                            className="max-w-[250px]"
+                                            key={sale.SaleID}
+                                            name={item.Name}
+                                            itemType={item.ItemType}
+                                            imageUrl={item.ImageURL}
+                                            wishlisted={isWishlisted(
+                                                item.ItemID,
+                                            )}
+                                            onToggleWishlist={() =>
+                                                toggleWishlist(
+                                                    item.ItemID,
+                                                    item.Name,
+                                                    item.ItemType <= 6,
+                                                )
+                                            }
+                                            sale={{
+                                                SaleEndAt:
+                                                    calculateTimeUntilEnd(
+                                                        sale.SaleEndAt,
+                                                    ),
+                                                SalePrice: sale.SalePrice,
+                                                NormalPrice: showSalePrice
+                                                    ? sale.NormalPrice
+                                                    : undefined,
+                                                Currency: sale.Currency,
+                                                PercentOff: sale.PercentOff,
+                                            }}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        )}
+
+                        {state.error && (
+                            <div className="border-destructive bg-destructive/10 text-foreground flex flex-col items-center gap-3 rounded-md border p-3 text-center text-sm">
+                                <p>{state.error}</p>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() =>
+                                        loadSectionPage(
+                                            config.id,
+                                            state.sales.length,
+                                        )
+                                    }
+                                >
+                                    Retry
+                                </Button>
+                            </div>
+                        )}
+
+                        {!state.error && remaining > 0 && (
+                            <Button
+                                variant="outline"
+                                onClick={() =>
+                                    loadSectionPage(
+                                        config.id,
+                                        state.sales.length,
                                     )
                                 }
-                                sale={{
-                                    SaleEndAt: calculateTimeUntilEnd(
-                                        sale.SaleEndAt,
-                                    ),
-                                    SalePrice: sale.SalePrice,
-                                    NormalPrice: showSalePrice
-                                        ? sale.NormalPrice
-                                        : undefined,
-                                    Currency: sale.Currency,
-                                    PercentOff: sale.PercentOff,
-                                }}
-                            />
-                        );
-                    })}
-                </div>
+                                disabled={state.loadingMore}
+                            >
+                                {state.loadingMore
+                                    ? 'Loading...'
+                                    : `Load more, ${remaining.toLocaleString()} remaining`}
+                            </Button>
+                        )}
+                    </>
+                )}
             </div>
         );
     }
 
-    function sortSalesBySkinline(sales: CatalogSaleWithItemRecord[]) {
-        return sales.sort((a, b) => {
-            const skinlineA = a.CatalogItem.Skinline?.Name || '';
-            const skinlineB = b.CatalogItem.Skinline?.Name || '';
-            return skinlineA.localeCompare(skinlineB);
-        });
-    }
+    const skinContent = (
+        <>
+            {sectionConfigs.map((config) =>
+                renderSection(config, sections[config.id]),
+            )}
+        </>
+    );
 
-    let skinContent;
-
-    if (loading) {
-        skinContent = <WeeklySkinSalesSkeleton />;
-    } else {
-        skinContent = (
-            <>
-                {renderSection(
-                    'Current Weekly Skin Sales',
-                    sortSalesBySkinline(weekly),
-                    `Resets every Monday at ${getSalesPacificResetLabel()}`,
-                )}
-                {Object.entries(limited).map(([skinline, sales]) =>
-                    renderSection(skinline, sortSalesBySkinline(sales)),
-                )}
-                {renderSection('Chroma Sales', chromas)}
-                {renderSection('Blue Essence Sales', blueEssence)}
-                {renderSection('Other Items', otherItems)}
-            </>
-        );
-    }
     return (
         <>
             <title>
@@ -288,26 +431,47 @@ export default function SkinSales() {
     );
 }
 
-function WeeklySkinSalesSkeleton() {
-    return (
-        <div className="flex w-full flex-col items-center gap-4">
-            <div className="flex flex-col items-center text-center">
-                <h2 className="text-2xl font-semibold">
-                    Current Weekly Skin Sales
-                </h2>
-                <p className="text-muted-foreground font-semibold">
-                    Resets every Monday at {getSalesPacificResetLabel()}
-                </p>
-            </div>
+function sortSalesBySkinlineAndName(sales: CatalogSaleWithItemRecord[]) {
+    return [...sales].sort((a, b) => {
+        const skinlineA = a.CatalogItem.Skinline?.Name || '';
+        const skinlineB = b.CatalogItem.Skinline?.Name || '';
+        const skinlineSort = skinlineA.localeCompare(skinlineB);
 
-            <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                {Array.from({ length: 15 }).map((_, i) => (
-                    <div
-                        key={i}
-                        className="bg-muted h-[310px] w-[250px] animate-pulse rounded-lg"
-                    />
-                ))}
-            </div>
+        if (skinlineSort !== 0) return skinlineSort;
+
+        return a.CatalogItem.Name.localeCompare(b.CatalogItem.Name);
+    });
+}
+
+function sortSalesByName(sales: CatalogSaleWithItemRecord[]) {
+    return [...sales].sort((a, b) =>
+        a.CatalogItem.Name.localeCompare(b.CatalogItem.Name),
+    );
+}
+
+function sortBlueEssenceSales(sales: CatalogSaleWithItemRecord[]) {
+    return [...sales].sort((a, b) => {
+        const itemTypeSort = a.CatalogItem.ItemType - b.CatalogItem.ItemType;
+
+        if (itemTypeSort !== 0) return itemTypeSort;
+
+        const priceSort = b.SalePrice - a.SalePrice;
+
+        if (priceSort !== 0) return priceSort;
+
+        return a.CatalogItem.Name.localeCompare(b.CatalogItem.Name);
+    });
+}
+
+function SalesSectionSkeleton() {
+    return (
+        <div className="grid w-fit grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            {Array.from({ length: 15 }).map((_, i) => (
+                <div
+                    key={i}
+                    className="bg-muted h-[310px] w-[250px] animate-pulse rounded-lg"
+                />
+            ))}
         </div>
     );
 }
