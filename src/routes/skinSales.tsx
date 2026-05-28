@@ -395,7 +395,8 @@ export default function SkinSales() {
             },
             {
                 id: 'blueEssence',
-                title: 'Blue Essence Sales',
+                title: 'Blue Essence Emporium',
+                subtitle: 'Ends June 10th at 11:00 AM PDT',
                 sortSales: sortBlueEssenceSales,
             },
             {
