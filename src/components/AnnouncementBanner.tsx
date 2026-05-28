@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LuX } from 'react-icons/lu';
 
-const ANNOUNCEMENT_ID = 'discord-v1';
+const ANNOUNCEMENT_ID = 'blue-essence-emporium-v1';
 
 export default function AnnouncementBanner() {
     const [visible, setVisible] = useState(false);
@@ -27,19 +27,27 @@ export default function AnnouncementBanner() {
     if (!visible) return null;
 
     return (
-        <div className="bg-chart-5 text-white">
+        <div className="bg-chart-4 text-white">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
                 <p className="text-sm">
-                    Suggestions? Feedback? Join the{' '}
+                    The Blue Essence Emporium is here! Check out the latest
+                    cosmetics for sale on the
+                    <a
+                        href="/sales"
+                        className="hover:text-primary ml-1 font-bold underline"
+                    >
+                        Sales
+                    </a>{' '}
+                    page. Questions or feedback? Join our
                     <a
                         href="https://discord.com/invite/Fpzg57GMDR"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-foreground underline underline-offset-3"
+                        className="hover:text-primary ml-1 font-bold underline"
                     >
                         Discord
-                    </a>{' '}
-                    to get updates, ask questions, and see what's coming next.
+                    </a>
+                    !
                 </p>
 
                 <button
