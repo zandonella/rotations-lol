@@ -1,12 +1,14 @@
+import type { ReactNode } from 'react';
+
 interface PageTitleProps {
-    title: string;
+    title: ReactNode;
     description?: string;
 }
 
 export default function PageTitle({ title, description }: PageTitleProps) {
     return (
         <section className="border-border w-full border-b px-2 pb-4">
-            <h1 className="mt-2 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">
+            <h1 className="mt-2 max-w-2xl text-4xl font-bold tracking-tight sm:text-5xl">
                 {title}
             </h1>
 

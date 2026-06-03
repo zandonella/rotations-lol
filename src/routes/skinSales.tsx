@@ -91,9 +91,14 @@ const initialSections = saleSectionIds.reduce(
 
 const salesFAQs = [
     {
-        title: 'What are the current League of Legends skin sales?',
+        title: 'What is the League of Legends skin sale rotation?',
         content:
-            'This page shows the current League of Legends skin sales, including discounted skins and limited-time offers in the live LoL store rotation. It updates automatically so you can always see what is on sale right now.',
+            'The skin sale rotation is the set of discounted skins and limited-time store content currently available in League of Legends. These items rotate on a schedule as different skins go on sale.',
+    },
+    {
+        title: 'What skins are on sale in LoL right now?',
+        content:
+            'This page shows the current LoL skin sales, including discounted skins, sale prices, percent off, and rotating store content. It updates automatically so you can always see the latest skin sale rotation.',
     },
     {
         title: 'How often do League of Legends skin sales update?',
@@ -101,29 +106,24 @@ const salesFAQs = [
             'League of Legends skin sales update on a regular weekly schedule. Rotations.lol tracks these updates automatically so you can follow the current sale rotation without checking the LoL client.',
     },
     {
-        title: 'Does this page only show discounted skins?',
+        title: 'What items appear in League of Legends skin sales?',
         content:
-            'No. In addition to discounted skins, this page may include limited-time skins that are currently available in the League of Legends store but are not part of the permanent catalog.',
+            'League of Legends skin sales include discounted skins, chromas, and other limited-time store content. Some items may be part of weekly sales, special rotations, or Blue Essence Emporium offers.',
     },
     {
-        title: 'What is the League of Legends skin sale rotation?',
+        title: 'Can I track LoL skin sales?',
         content:
-            'The skin sale rotation is the set of skins that are currently discounted or featured in the League of Legends store. The rotation changes regularly as different skins go on sale.',
+            'Yes. You can wishlist skins and receive an email notification when they appear in a League of Legends skin sale rotation.',
     },
     {
-        title: 'Can I track when a skin goes on sale in LoL?',
+        title: 'Do League of Legends skin sales come back?',
         content:
-            'Yes. You can wishlist skins and receive an email notification when they appear in a League of Legends skin sale. Rotations.lol tracks the sale rotation automatically so you do not have to check manually.',
+            'Some League of Legends skin sales return in future rotations, but availability is controlled by Riot Games and is not guaranteed. Certain skins may appear rarely or never go on sale.',
     },
     {
-        title: 'Do all skins go on sale in League of Legends?',
+        title: 'Does the skin sale rotation include Mythic Shop skins?',
         content:
-            'No. Not all skins are included in the League of Legends sale rotation. Riot selects specific skins for discounts, and some may appear rarely or never go on sale.',
-    },
-    {
-        title: 'Does this include Mythic Shop skins?',
-        content:
-            'No. Mythic Shop skins are part of a separate rotation. You can view the current Mythic Shop in League of Legends on the Mythic page.',
+            'No. Mythic Shop skins are part of a separate League of Legends rotation. For Mythic skins, Prestige skins, and mythic content, check the current Mythic Shop rotation.',
     },
     {
         title: 'Do I need an account to track skin sales?',
@@ -131,9 +131,9 @@ const salesFAQs = [
             'No account is required to browse current League of Legends skin sales. An account is only needed if you want to create a wishlist and get notified when skins go on sale.',
     },
     {
-        title: 'What skins are on sale in LoL right now?',
+        title: 'Where can I check LoL skin sales today?',
         content:
-            'This page shows what skins are on sale in League of Legends right now, including current discounts and limited-time offers. It updates automatically with the latest LoL sale rotation.',
+            "You can check the current LoL skin sales on this page. It shows today's League of Legends skin sale rotation, including live discounted skins, chromas, and other rotating offers.",
     },
 ];
 
@@ -401,7 +401,7 @@ export default function SkinSales() {
             },
             {
                 id: 'otherItems',
-                title: 'Other Items',
+                title: 'Other Sale Items',
             },
         ],
         [],
@@ -522,24 +522,23 @@ export default function SkinSales() {
     return (
         <>
             <title>
-                League of Legends Current Skin Sales and Limited-Time Skins |
-                Rotations.lol
+                League of Legends Current Skin Sale Rotation | Rotations.lol
             </title>
 
             <meta
                 name="description"
-                content="View current League of Legends skin sales, discounted skins, and limited-time skins available today. Track the latest League of Legends skin rotation and wishlist skins you want to watch."
+                content="View the current League of Legends skin sale rotation, including discounted skins, sale prices, percent off, and limited-time store content."
             />
 
             <link rel="canonical" href="https://rotations.lol/sales" />
 
             <meta
                 property="og:title"
-                content="League of Legends Current Skin Sales and Limited-Time Skins"
+                content="League of Legends Current Skin Sale Rotation"
             />
             <meta
                 property="og:description"
-                content="Track current League of Legends skin sales, discounted skins, and limited-time skins."
+                content="Track the current League of Legends skin sale rotation."
             />
             <meta property="og:type" content="website" />
             <meta property="og:url" content="https://rotations.lol/sales" />
@@ -547,20 +546,21 @@ export default function SkinSales() {
             <meta name="twitter:card" content="summary_large_image" />
             <meta
                 name="twitter:title"
-                content="League of Legends Current Skin Sales and Limited-Time Skins"
+                content="League of Legends Current Skin Sale Rotation"
             />
             <meta
                 name="twitter:description"
-                content="Track current League of Legends skin sales, discounted skins, and limited-time skins."
+                content="Track the current League of Legends skin sale rotation."
             />
 
             <div className="mt-4 flex w-full max-w-7xl flex-col items-center gap-4">
                 <PageTitle
-                    title="Current League of Legends Skin Sales and Limited-Time Skins"
-                    description="View current League of Legends skin sales, including discounted
-                skins and limited-time skins available in the live rotation.
-                This page updates automatically so you can track what is
-                currently available and wishlist skins you want to watch."
+                    title="Current League of Legends Skin Sale Rotation"
+                    description="View the current League of Legends skin sale rotation,
+                    including discounted skins, limited-time skins, chromas,
+                    and other store content. This page updates automatically
+                    so you can track the latest League of Legends skin sales
+                    and wishlist items you want to watch."
                 />
                 {skinContent}
             </div>
