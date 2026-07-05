@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { useAuthModal } from '@/providers/AuthModalContext';
 import { useAuth } from '@/providers/AuthContext';
 import AnnouncementBanner from './AnnouncementBanner';
+import NavDropdown from './NavDropdown';
 
 const LINKS = [
     { to: '/sales', text: 'Sales' },
@@ -13,6 +14,13 @@ const LINKS = [
     { to: '/catalog', text: 'Catalog' },
     { to: '/wishlist', text: 'Wishlist' },
     { to: '/about', text: 'About' },
+];
+
+const TOOL_LINKS = [
+    { to: '/game', text: 'Guess the Skin' },
+    { to: '/leaderboard', text: 'Most Wishlisted' },
+    { to: '/your-shop', text: 'Your Shop Dates' },
+    { to: '/sanctum-calculator', text: 'Sanctum Calculator' },
 ];
 
 export default function Navbar() {
@@ -34,8 +42,12 @@ export default function Navbar() {
                         {LINKS.map(({ to, text }) => (
                             <NavbarLink key={to} to={to} text={text} />
                         ))}
+                        <NavDropdown text="Tools" links={TOOL_LINKS} />
                     </div>
-                    <NavMenu className="md:hidden" links={LINKS} />
+                    <NavMenu
+                        className="md:hidden"
+                        links={[...LINKS, ...TOOL_LINKS]}
+                    />
                     <div className="flex gap-2">
                         {!session && (
                             <Button

@@ -97,6 +97,11 @@ export type MythicSaleWithItemRecord = MythicSaleRecord & {
     CatalogItem: CatalogItemRecord;
 };
 
+export type TopWishlistedRecord = {
+    ItemID: number;
+    WishlistCount: number;
+};
+
 export type WishlistItemRecord = {
     UserID: string;
     ItemID: number;

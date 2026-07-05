@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { NavLink } from 'react-router';
 import supabase from '../lib/supabase.ts';
 import type { MythicSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
@@ -233,6 +234,16 @@ export default function MythicShop() {
             </div>
 
             <div className="mx-auto mt-6 w-full max-w-3xl rounded-lg">
+                <p className="text-muted-foreground mb-4 text-center text-sm">
+                    Eyeing an Exalted skin? Work out the real cost with the{' '}
+                    <NavLink
+                        to="/sanctum-calculator"
+                        className="text-primary underline underline-offset-4"
+                    >
+                        Sanctum pity calculator
+                    </NavLink>
+                    .
+                </p>
                 <FAQAccordion FAQs={mythicFAQs} />
             </div>
         </>

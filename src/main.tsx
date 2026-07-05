@@ -18,6 +18,10 @@ import NotFound from './routes/NotFound.tsx';
 import Settings from './routes/settings.tsx';
 import Privacy from './routes/privacy.tsx';
 import Terms from './routes/terms.tsx';
+import YourShop from './routes/YourShop.tsx';
+import SanctumCalculator from './routes/SanctumCalculator.tsx';
+import Leaderboard from './routes/Leaderboard.tsx';
+import Game from './routes/Game.tsx';
 import ScrollToTop from './lib/ScrollToTop.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -46,6 +50,19 @@ createRoot(document.getElementById('root')!).render(
                                     <Route
                                         path="/wishlist"
                                         element={<Wishlist />}
+                                    />
+                                    <Route
+                                        path="/leaderboard"
+                                        element={<Leaderboard />}
+                                    />
+                                    <Route path="/game" element={<Game />} />
+                                    <Route
+                                        path="/your-shop"
+                                        element={<YourShop />}
+                                    />
+                                    <Route
+                                        path="/sanctum-calculator"
+                                        element={<SanctumCalculator />}
                                     />
                                     <Route path="/about" element={<About />} />
                                     <Route
