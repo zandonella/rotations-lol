@@ -16,7 +16,7 @@ const LINKS = [
     { to: '/about', text: 'About' },
 ];
 
-const TOOL_LINKS = [
+const OTHER_LINKS = [
     { to: '/game', text: 'Guess the Skin' },
     { to: '/leaderboard', text: 'Most Wishlisted' },
     { to: '/your-shop', text: 'Your Shop Dates' },
@@ -42,11 +42,11 @@ export default function Navbar() {
                         {LINKS.map(({ to, text }) => (
                             <NavbarLink key={to} to={to} text={text} />
                         ))}
-                        <NavDropdown text="Tools" links={TOOL_LINKS} />
+                        <NavDropdown text="Other" links={OTHER_LINKS} />
                     </div>
                     <NavMenu
                         className="md:hidden"
-                        links={[...LINKS, ...TOOL_LINKS]}
+                        links={[...LINKS, ...OTHER_LINKS]}
                     />
                     <div className="flex gap-2">
                         {!session && (

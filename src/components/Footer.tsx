@@ -21,7 +21,7 @@ export default function Footer() {
                     <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
                         <div className="space-y-3">
                             <p className="text-foreground font-semibold">
-                                Tools
+                                Other
                             </p>
                             <div className="flex flex-col gap-2">
                                 <NavLink

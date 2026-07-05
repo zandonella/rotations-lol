@@ -13,7 +13,11 @@ interface NavDropdownProps {
 export default function NavDropdown({ text, links }: NavDropdownProps) {
     const [open, setOpen] = useState(false);
     const location = useLocation();
-    const active = links.some((link) => link.to === location.pathname);
+    const active = links.some(
+        (link) =>
+            location.pathname === link.to ||
+            location.pathname.startsWith(`${link.to}/`),
+    );
 
     return (
         <div className="group relative" onMouseLeave={() => setOpen(false)}>
