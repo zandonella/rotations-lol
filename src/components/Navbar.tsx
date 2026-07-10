@@ -13,13 +13,13 @@ const LINKS = [
     { to: '/mythic', text: 'Mythic' },
     { to: '/catalog', text: 'Catalog' },
     { to: '/wishlist', text: 'Wishlist' },
-    { to: '/about', text: 'About' },
 ];
 
 const OTHER_LINKS = [
     { to: '/leaderboard', text: 'Most Wishlisted' },
     { to: '/your-shop', text: 'Your Shop Dates' },
     { to: '/sanctum-calculator', text: 'Sanctum Calculator' },
+    { to: '/about', text: 'About' },
 ];
 
 export default function Navbar() {

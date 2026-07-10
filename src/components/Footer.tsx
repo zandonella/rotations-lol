@@ -18,33 +18,7 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
-                        <div className="space-y-3">
-                            <p className="text-foreground font-semibold">
-                                Other
-                            </p>
-                            <div className="flex flex-col gap-2">
-                                <NavLink
-                                    to="/leaderboard"
-                                    className="text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    Most Wishlisted
-                                </NavLink>
-                                <NavLink
-                                    to="/your-shop"
-                                    className="text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    Your Shop Dates
-                                </NavLink>
-                                <NavLink
-                                    to="/sanctum-calculator"
-                                    className="text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    Sanctum Calculator
-                                </NavLink>
-                            </div>
-                        </div>
-
+                    <div className="grid grid-cols-2 gap-8 text-sm">
                         <div className="space-y-3">
                             <p className="text-foreground font-semibold">
                                 General
