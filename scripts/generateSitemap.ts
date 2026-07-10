@@ -22,7 +22,6 @@ const STATIC_ROUTES: SitemapEntry[] = [
     { path: '/mythic', priority: '0.90' },
     { path: '/catalog', priority: '0.80' },
     { path: '/leaderboard', priority: '0.80' },
-    { path: '/game', priority: '0.80' },
     { path: '/your-shop', priority: '0.70' },
     { path: '/sanctum-calculator', priority: '0.70' },
     { path: '/about', priority: '0.50' },

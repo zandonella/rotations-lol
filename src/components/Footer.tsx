@@ -25,12 +25,6 @@ export default function Footer() {
                             </p>
                             <div className="flex flex-col gap-2">
                                 <NavLink
-                                    to="/game"
-                                    className="text-muted-foreground hover:text-foreground transition-colors"
-                                >
-                                    Guess the Skin
-                                </NavLink>
-                                <NavLink
                                     to="/leaderboard"
                                     className="text-muted-foreground hover:text-foreground transition-colors"
                                 >

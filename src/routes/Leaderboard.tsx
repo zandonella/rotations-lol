@@ -55,7 +55,7 @@ export default function Leaderboard() {
 
             const { data: topItems, error: rpcError } = await supabase.rpc(
                 'get_top_wishlisted_items',
-                { limit_count: 25 },
+                { limit_count: 20 },
             );
 
             if (rpcError || !topItems) {

@@ -17,7 +17,6 @@ const LINKS = [
 ];
 
 const OTHER_LINKS = [
-    { to: '/game', text: 'Guess the Skin' },
     { to: '/leaderboard', text: 'Most Wishlisted' },
     { to: '/your-shop', text: 'Your Shop Dates' },
     { to: '/sanctum-calculator', text: 'Sanctum Calculator' },
