@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LuX } from 'react-icons/lu';
 
-const ANNOUNCEMENT_ID = 'discord-v2';
+const ANNOUNCEMENT_ID = 'discord-improving-v1';
 
 export default function AnnouncementBanner() {
     const [visible, setVisible] = useState(false);
@@ -30,7 +30,10 @@ export default function AnnouncementBanner() {
         <div className="bg-chart-5 text-white">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
                 <p className="text-sm">
-                    Suggestions? Feedback? Join the{' '}
+                    <span className="font-bold">
+                        Rotations.lol is constantly improving.
+                    </span>{' '}
+                    Join the{' '}
                     <a
                         href="https://discord.com/invite/Fpzg57GMDR"
                         target="_blank"
@@ -38,8 +41,9 @@ export default function AnnouncementBanner() {
                         className="hover:text-primary font-bold underline"
                     >
                         Discord
-                    </a>
-                    {' '} to get updates, ask questions, and see what's coming next.
+                    </a>{' '}
+                    to share feedback, report bugs, request features, and
+                    follow new updates.
                 </p>
 
                 <button
