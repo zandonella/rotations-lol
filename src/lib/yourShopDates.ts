@@ -16,13 +16,12 @@ export const YOUR_SHOP_WINDOWS: YourShopWindow[] = [
     {
         start: '2025-12-09',
         end: '2026-01-09',
-        note: 'Holiday window, included a Legendary-tier discount.',
+        note: 'Holiday sale, included a Legendary-tier discount.',
     },
     { start: '2026-02-10', end: '2026-03-10' },
     {
         start: '2026-05-05',
         end: '2026-06-02',
-        note: 'End date approximate.',
     },
 ];
 
