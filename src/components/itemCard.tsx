@@ -1,19 +1,8 @@
-import {
-    IoAdd,
-    IoLockClosedOutline,
-    IoCloseOutline,
-    IoHelp,
-} from 'react-icons/io5';
-import { useAuth } from '@/providers/AuthContext';
 import { cn } from '@/lib/utils';
 import RPIcon from '@/assets/RPIcon.png';
 import MEIcon from '@/assets/MEIcon.png';
 import BEIcon from '@/assets/BEIcon.png';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+import WishlistButton from '@/components/WishlistButton';
 
 interface ItemCardProps {
     name: string;
@@ -45,9 +34,6 @@ export default function ItemCard({
     className,
     itemType,
 }: ItemCardProps) {
-    const { session } = useAuth();
-    const authed = !!session;
-
     const skinlineText = skinline ? skinline : 'None';
 
     function getCurrencyIcon(currency: string) {
@@ -76,28 +62,6 @@ export default function ItemCard({
         }
     }
 
-    function getIcon() {
-        if (!authed) return <IoLockClosedOutline size={24} />;
-        if (wishlisted) return <IoCloseOutline size={32} />;
-        if (!itemType || itemType > 6)
-            return (
-                <Tooltip>
-                    <TooltipTrigger asChild>
-                        <span>
-                            <IoHelp size={32} />
-                        </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p className="max-w-xs text-center text-sm">
-                            This item isn't eligible for wishlisting, but is
-                            included to reflect the current shop rotation
-                        </p>
-                    </TooltipContent>
-                </Tooltip>
-            );
-        return <IoAdd size={32} />;
-    }
-
     return (
         <div
             className={cn(
@@ -113,17 +77,11 @@ export default function ItemCard({
                     className="h-full w-full object-cover"
                 />
 
-                <button
-                    className={cn(
-                        'bg-card hover:bg-primary text-primary hover:text-card absolute right-0 bottom-0 m-1.5 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full p-1 shadow-sm transition duration-300 hover:scale-110',
-                        wishlisted
-                            ? 'hover:bg-destructive hover:text-primary'
-                            : '',
-                    )}
-                    onClick={onToggleWishlist}
-                >
-                    {getIcon()}
-                </button>
+                <WishlistButton
+                    wishlisted={wishlisted}
+                    itemType={itemType}
+                    onToggleWishlist={onToggleWishlist}
+                />
 
                 {sale?.SaleEndAt && (
                     <span className="bg-primary dark:text-card absolute top-0 left-0 m-1.5 rounded-full px-2 py-1 text-xs font-bold">

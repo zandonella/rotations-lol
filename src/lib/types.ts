@@ -89,11 +89,27 @@ export type MythicSaleRecord = {
     BundleType: string | null;
 };
 
+export type SanctumSaleRecord = {
+    RiotItemID: number;
+    ItemType: number;
+    SaleID: string;
+    SaleStartAt: string;
+    SaleEndAt: string;
+    Rarity: 'EXALTED' | 'MYTHIC_VARIANT';
+    ChasePityThreshold: number;
+    BannerImageURL: string | null;
+    IsActive: boolean;
+};
+
 export type CatalogSaleWithItemRecord = CatalogSaleRecord & {
     CatalogItem: CatalogItemRecord;
 };
 
 export type MythicSaleWithItemRecord = MythicSaleRecord & {
+    CatalogItem: CatalogItemRecord;
+};
+
+export type SanctumSaleWithItemRecord = SanctumSaleRecord & {
     CatalogItem: CatalogItemRecord;
 };
 

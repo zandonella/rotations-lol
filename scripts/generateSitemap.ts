@@ -23,7 +23,7 @@ const STATIC_ROUTES: SitemapEntry[] = [
     { path: '/catalog', priority: '0.80' },
     { path: '/leaderboard', priority: '0.80' },
     { path: '/your-shop', priority: '0.70' },
-    { path: '/sanctum-calculator', priority: '0.70' },
+    { path: '/sanctum-calculator', priority: '0.90' },
     { path: '/about', priority: '0.50' },
     { path: '/privacy', priority: '0.30' },
     { path: '/terms', priority: '0.30' },
