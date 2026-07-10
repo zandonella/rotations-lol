@@ -27,12 +27,12 @@ const homeFAQs = [
     {
         title: 'What does Rotations.lol track?',
         content:
-            'Rotations.lol is a League of Legends shop tracker that shows the current Mythic Shop, live skin sales, and rotating store content. You can view discounted skins, limited-time offers, and Mythic items in one place without opening the LoL client.',
+            'Rotations.lol is a League of Legends shop tracker that follows live skin sales, the Mythic Shop, and rotating store content for most cosmetics, not just skins. It also covers Your Shop dates, a most wishlisted leaderboard, and a Sanctum pity calculator, all in one place without opening the LoL client.',
     },
     {
         title: 'Does the catalog include every League of Legends skin?',
         content:
-            'The catalog is designed to include every League of Legends cosmetic, including skins, chromas, emotes, icons, and wards. You can search the full LoL catalog even if items are not currently available in the Mythic Shop or active skin sales.',
+            'The catalog includes over 16,000 League of Legends cosmetics, including skins, chromas, emotes, icons, and wards. You can search the full LoL catalog and wishlist items even when they are not currently available in the Mythic Shop or active skin sales.',
     },
     {
         title: 'Can every item appear in a skin sale or the Mythic Shop?',
@@ -42,7 +42,7 @@ const homeFAQs = [
     {
         title: 'How do I track when a skin goes on sale in League of Legends?',
         content:
-            'You can wishlist skins and get notified when they appear in a League of Legends skin sale or the Mythic Shop. Rotations.lol automatically tracks these rotations so you do not have to check the LoL store manually.',
+            'Wishlist any cosmetic in the catalog and you will get an email when it appears in a League of Legends skin sale or the Mythic Shop. Rotations.lol checks these rotations automatically so you do not have to check the LoL store manually.',
     },
     {
         title: 'Do I need an account to use Rotations.lol?',
@@ -163,7 +163,7 @@ export default function Home() {
 
             <meta
                 name="description"
-                content="Track current League of Legends skin sales, watch the Mythic Shop, and sign up for wishlist alerts when the cosmetics you want finally come back."
+                content="Track current League of Legends skin sales, the Mythic Shop, and Your Shop dates. Wishlist any cosmetic and get an email alert the moment it comes back."
             />
 
             <link rel="canonical" href="https://rotations.lol/" />
@@ -174,7 +174,7 @@ export default function Home() {
             />
             <meta
                 property="og:description"
-                content="A simple way to watch live League rotations and get email alerts when the skins you want show up."
+                content="A simple way to watch live League rotations and get email alerts when the cosmetics you want show up."
             />
             <meta property="og:type" content="website" />
             <meta property="og:url" content="https://rotations.lol/" />
@@ -198,18 +198,19 @@ export default function Home() {
                 <section className="dark:border-border grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:items-start">
                     <div className="flex flex-col items-start">
                         <span className="text-muted-foreground mb-5 inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] uppercase">
-                            Track League shop rotations automatically
+                            The League of Legends shop tracker
                         </span>
 
                         <h1 className="max-w-2xl text-4xl font-bold tracking-tight xl:text-5xl">
-                            Sign up once, then let the skins come to you.
+                            Never miss the skin you've been waiting for.
                         </h1>
 
                         <p className="text-muted-foreground mt-5 max-w-2xl text-base leading-7">
-                            Rotations.lol watches League of Legends skin sales,
-                            Mythic Shop rotations, and live store offers for
-                            you. Wishlist the cosmetics you care about and get
-                            an email when they show up.
+                            Rotations.lol watches the League of Legends store so
+                            you don't have to. Skins, chromas, emotes, and
+                            nearly every other cosmetic are tracked across sales
+                            and the Mythic Shop. Wishlist what you want and
+                            we'll email you the moment it shows up.
                         </p>
 
                         <div className="mt-7 flex flex-wrap gap-3">
@@ -255,9 +256,9 @@ export default function Home() {
                         </div>
 
                         <div className="mt-8 max-w-xl space-y-3">
-                            <BenefitLine text="Track skins, chromas, emotes, icons, wards, and more." />
-                            <BenefitLine text="Get notified when wishlisted items rotate into the shop." />
-                            <BenefitLine text="Check current sales and Mythic Shop offers without opening the client." />
+                            <BenefitLine text="Wishlist skins, chromas, emotes, icons, wards, and more." />
+                            <BenefitLine text="Get an email the moment a wishlisted item rotates into the shop." />
+                            <BenefitLine text="Check live sales without opening the client." />
                         </div>
                     </div>
 
@@ -368,6 +369,38 @@ export default function Home() {
                     )}
                 </section>
 
+                <section className="dark:border-border border-b pb-14">
+                    <p className="text-muted-foreground text-xs font-semibold tracking-[0.22em] uppercase">
+                        More tools
+                    </p>
+                    <h2 className="mt-2 text-3xl font-bold tracking-tight">
+                        Go beyond the current rotation.
+                    </h2>
+                    <p className="text-muted-foreground mt-4 max-w-2xl text-base leading-7">
+                        Rotations.lol also answers the questions players ask
+                        between rotations, from when Your Shop returns to what
+                        Sanctum pulls actually cost.
+                    </p>
+
+                    <div className="mt-8 grid gap-6 sm:grid-cols-3">
+                        <ToolColumn
+                            title="Most Wishlisted"
+                            href="/leaderboard"
+                            body="The top 20 skins the community is waiting on, ranked by live wishlist counts."
+                        />
+                        <ToolColumn
+                            title="Your Shop Dates"
+                            href="/your-shop"
+                            body="See if Your Shop is live right now, plus every confirmed and expected date."
+                        />
+                        <ToolColumn
+                            title="Sanctum Calculator"
+                            href="/sanctum-calculator"
+                            body="Estimate your odds, pity, and expected cost before rolling on a Sanctum banner."
+                        />
+                    </div>
+                </section>
+
                 <section className="w-full">
                     <div className="mb-3 text-center">
                         <h2 className="text-xl font-semibold">FAQ</h2>
@@ -473,6 +506,31 @@ function BigStat({
                 {detail}
             </p>
         </div>
+    );
+}
+
+function ToolColumn({
+    title,
+    href,
+    body,
+}: {
+    title: string;
+    href: string;
+    body: string;
+}) {
+    return (
+        <Link
+            to={href}
+            className="dark:border-border group border-t pt-4 transition-colors"
+        >
+            <h3 className="group-hover:text-primary inline-flex items-center gap-2 text-lg font-semibold transition-colors">
+                {title}
+                <LuArrowRight className="size-4" />
+            </h3>
+            <p className="text-muted-foreground mt-3 text-sm leading-6">
+                {body}
+            </p>
+        </Link>
     );
 }
 
