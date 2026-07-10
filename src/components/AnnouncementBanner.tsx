@@ -27,7 +27,7 @@ export default function AnnouncementBanner() {
     if (!visible) return null;
 
     return (
-        <div className="bg-chart-5 text-white">
+        <div className="bg-chart-5 text-white" data-og-hide>
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
                 <p className="text-sm">
                     <span className="font-bold">

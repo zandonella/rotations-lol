@@ -1,0 +1,30 @@
+name: Refresh OG images
+
+on:
+    repository_dispatch:
+        types: [og-refresh] # fired by the Supabase trigger when new sale rows land
+    workflow_dispatch: {} # manual refresh, e.g. after a layout deploy
+
+# One data-pipeline run touches several sale tables in quick succession and
+# each statement fires a dispatch; cancel-in-progress collapses the burst so
+# the surviving run starts after the last upsert.
+concurrency:
+    group: og-images
+    cancel-in-progress: true
+
+jobs:
+    screenshots:
+        runs-on: ubuntu-latest
+        timeout-minutes: 15
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - run: npx playwright install --with-deps chromium
+            - run: npm run og-images -- --upload
+              env:
+                  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+                  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

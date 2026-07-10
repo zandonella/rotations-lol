@@ -8,6 +8,9 @@
     "sitemap": "node --experimental-strip-types scripts/generateSitemap.ts",
     "prebuild": "npm run sitemap",
     "build": "tsc -b && vite build",
+    "postbuild": "npm run og-html",
+    "og-html": "node --experimental-strip-types scripts/generateRouteHtml.ts",
+    "og-images": "node --experimental-strip-types scripts/generateOgImages.ts",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -45,6 +48,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "playwright": "^1.61.1",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
