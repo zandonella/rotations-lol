@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router';
+import { Button } from '@/components/ui/button';
 import supabase from '../lib/supabase.ts';
 import type {
     CatalogItemRecord,
@@ -29,17 +31,42 @@ const leaderboardFAQs = [
     {
         title: 'What is the most wishlisted skin in League of Legends?',
         content:
-            'This leaderboard ranks the League of Legends skins and cosmetics that Rotations.lol users have wishlisted the most. It updates live as players add and remove items from their wishlists.',
+            'The number one item on this leaderboard is the most wishlisted skin on Rotations.lol right now. The top 20 ranks the League of Legends skins and cosmetics that players are waiting on most, and it updates live as wishlists change.',
+    },
+    {
+        title: 'What are the most popular LoL skins?',
+        content:
+            'Popularity is usually measured by ownership or play rate, which only Riot can see. This leaderboard measures demand instead, meaning the skins players want next. Highly wishlisted skins tend to be fan-favorite thematics, older skins that rarely go on sale, and skins for heavily played champions.',
     },
     {
         title: 'Where does this data come from?',
         content:
-            'The ranking is built from anonymous wishlist counts on Rotations.lol. No account information is shown - only how many players are waiting for each item to go on sale.',
+            'The ranking is built from anonymous wishlist counts on Rotations.lol. No account information is shown, only how many players are waiting for each item to go on sale.',
+    },
+    {
+        title: 'How often does the leaderboard update?',
+        content:
+            'The leaderboard is computed live from current wishlist counts every time the page loads, so it always reflects what the community wants right now rather than a weekly or monthly snapshot.',
     },
     {
         title: 'Does wishlisting a skin help it go on sale?',
         content:
             'No. Sale rotations are controlled entirely by Riot Games. Wishlisting just means you get an email from us the moment the item appears in a sale or the Mythic Shop.',
+    },
+    {
+        title: 'How often do League of Legends skins go on sale?',
+        content:
+            'Riot rotates a new batch of discounted skins into the store every week, typically at 20% to 60% off. Most regular skins go on sale a few times a year, though there is no published schedule for when a specific skin will be discounted.',
+    },
+    {
+        title: 'How do I get notified when a skin goes on sale?',
+        content:
+            'Create a free Rotations.lol account, browse the catalog, and wishlist the skins you want. We check the store rotations daily and email you the moment one of your wishlisted items appears in a sale or the Mythic Shop.',
+    },
+    {
+        title: 'Do Mythic and Prestige skins appear on this leaderboard?',
+        content:
+            'Yes. The leaderboard covers everything in the catalog, including Mythic Shop content and Prestige skins. When a ranked item is currently available in a sale or the Mythic Shop, its card shows the live price and time remaining.',
     },
 ];
 
@@ -186,7 +213,7 @@ export default function Leaderboard() {
     } else if (entries.length === 0) {
         content = (
             <p className="text-muted-foreground text-sm">
-                Not enough wishlist data yet - check back soon!
+                Not enough wishlist data yet. Check back soon!
             </p>
         );
     } else {
@@ -231,24 +258,24 @@ export default function Leaderboard() {
     return (
         <>
             <title>
-                Most Wishlisted LoL Skins - Community Leaderboard |
+                Most Wishlisted LoL Skins - Top 20 Most Wanted League Skins |
                 Rotations.lol
             </title>
 
             <meta
                 name="description"
-                content="The most wishlisted League of Legends skins and cosmetics, ranked by the Rotations.lol community. See which skins players are waiting to go on sale."
+                content="The top 20 most wishlisted League of Legends skins, ranked by live community wishlist counts. See the most wanted LoL skins and which are on sale right now."
             />
 
             <link rel="canonical" href="https://rotations.lol/leaderboard" />
 
             <meta
                 property="og:title"
-                content="Most Wishlisted LoL Skins - Community Leaderboard"
+                content="Most Wishlisted LoL Skins - Top 20 Most Wanted League Skins"
             />
             <meta
                 property="og:description"
-                content="The most wishlisted League of Legends skins, ranked by the Rotations.lol community."
+                content="The top 20 most wishlisted League of Legends skins, ranked by live community wishlist counts."
             />
             <meta property="og:type" content="website" />
             <meta
@@ -259,11 +286,11 @@ export default function Leaderboard() {
             <meta name="twitter:card" content="summary_large_image" />
             <meta
                 name="twitter:title"
-                content="Most Wishlisted LoL Skins - Community Leaderboard"
+                content="Most Wishlisted LoL Skins - Top 20 Most Wanted League Skins"
             />
             <meta
                 name="twitter:description"
-                content="The most wishlisted League of Legends skins, ranked by the Rotations.lol community."
+                content="The top 20 most wishlisted League of Legends skins, ranked by live community wishlist counts."
             />
 
             <script
@@ -273,16 +300,68 @@ export default function Leaderboard() {
 
             <div className="flex flex-col items-center gap-6 py-4">
                 <PageTitle
-                    title="Most Wishlisted Skins"
-                    description="The League of Legends skins and cosmetics the
-                    Rotations.lol community wants most, ranked by live wishlist
-                    counts. Wishlist an item and you'll get an email the moment
-                    it hits a sale or the Mythic Shop."
+                    title="Most Wishlisted LoL Skins"
+                    description="The top 20 League of Legends skins and
+                    cosmetics the Rotations.lol community wants most, ranked by
+                    live wishlist counts. Wishlist an item and you'll get an
+                    email the moment it hits a sale or the Mythic Shop."
                 />
                 {content}
 
-                <div className="mx-auto mt-2 w-full max-w-3xl rounded-lg">
-                    <FAQAccordion FAQs={leaderboardFAQs} />
+                <div className="mx-auto mt-2 flex w-full max-w-3xl flex-col gap-6 px-2">
+                    <section className="space-y-3">
+                        <h2 className="text-2xl font-bold tracking-tight">
+                            How this ranking works
+                        </h2>
+                        <div className="text-muted-foreground space-y-3 leading-relaxed">
+                            <p>
+                                Every skin, chroma, and cosmetic in the
+                                Rotations.lol catalog can be wishlisted, and
+                                this leaderboard counts how many players
+                                currently have each item on their wishlist. The
+                                top 20 most wanted items are shown here, ranked
+                                by live counts, so the order shifts as the
+                                community's taste changes.
+                            </p>
+                            <p>
+                                Unlike ownership or play-rate stats, wishlist
+                                counts measure demand, meaning the skins
+                                players are actively waiting to buy. That makes this list a
+                                good preview of which skins the community will
+                                grab the next time they are discounted, and a
+                                useful watchlist if you are deciding what to
+                                pick up in the next sale.
+                            </p>
+                            <p>
+                                If a ranked item is in the current sale
+                                rotation or the Mythic Shop, its card shows the
+                                live price and how long the offer lasts, so you
+                                can buy it before the rotation ends.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section className="border-border bg-card flex flex-col items-start gap-3 rounded-lg border p-5">
+                        <h2 className="text-xl font-semibold">
+                            Want a skin on this list?
+                        </h2>
+                        <p className="text-muted-foreground text-sm leading-relaxed">
+                            Wishlist the skins you're waiting for and they
+                            count toward the leaderboard. More importantly,
+                            you'll get an email the moment they appear in a
+                            sale or the Mythic Shop.
+                        </p>
+                        <Button asChild>
+                            <NavLink to="/catalog">Browse the catalog</NavLink>
+                        </Button>
+                    </section>
+
+                    <section className="space-y-3">
+                        <h2 className="text-2xl font-bold tracking-tight">
+                            Most Wishlisted FAQ
+                        </h2>
+                        <FAQAccordion FAQs={leaderboardFAQs} />
+                    </section>
                 </div>
             </div>
         </>
