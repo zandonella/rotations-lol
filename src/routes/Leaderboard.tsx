@@ -43,6 +43,16 @@ const leaderboardFAQs = [
     },
 ];
 
+const faqJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: leaderboardFAQs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.title,
+        acceptedAnswer: { '@type': 'Answer', text: faq.content },
+    })),
+});
+
 export default function Leaderboard() {
     const { isWishlisted, toggleWishlist } = useWishlist();
     const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
@@ -254,6 +264,11 @@ export default function Leaderboard() {
             <meta
                 name="twitter:description"
                 content="The most wishlisted League of Legends skins, ranked by the Rotations.lol community."
+            />
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: faqJsonLd }}
             />
 
             <div className="flex flex-col items-center gap-6 py-4">

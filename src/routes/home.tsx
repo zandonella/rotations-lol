@@ -56,6 +56,16 @@ const homeFAQs = [
     },
 ];
 
+const faqJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: homeFAQs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.title,
+        acceptedAnswer: { '@type': 'Answer', text: faq.content },
+    })),
+});
+
 export default function Home() {
     const { session } = useAuth();
     const { openModal } = useAuthModal();
@@ -177,6 +187,11 @@ export default function Home() {
             <meta
                 name="twitter:description"
                 content="Sign up for wishlist alerts and keep up with current League skin sales and Mythic Shop rotations."
+            />
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: faqJsonLd }}
             />
 
             <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 py-2 sm:px-8 lg:py-4">

@@ -56,6 +56,16 @@ const mythicFAQs = [
     },
 ];
 
+const faqJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: mythicFAQs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.title,
+        acceptedAnswer: { '@type': 'Answer', text: faq.content },
+    })),
+});
+
 export default function MythicShop() {
     const { isWishlisted, toggleWishlist } = useWishlist();
     const [mythicSales, setMythicSales] = useState<MythicSaleWithItemRecord[]>(
@@ -219,6 +229,11 @@ export default function MythicShop() {
             <meta
                 name="twitter:description"
                 content="Track the current League of Legends Mythic Shop rotation."
+            />
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: faqJsonLd }}
             />
 
             <div className="flex flex-col items-center gap-6 py-4 pb-0">

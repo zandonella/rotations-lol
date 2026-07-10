@@ -42,6 +42,16 @@ const sanctumFAQs = [
     },
 ];
 
+const faqJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: sanctumFAQs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.title,
+        acceptedAnswer: { '@type': 'Answer', text: faq.content },
+    })),
+});
+
 function formatPercent(p: number): string {
     if (p >= 1) return '100%';
     const pct = p * 100;
@@ -122,6 +132,11 @@ export default function SanctumCalculator() {
             <meta
                 name="twitter:description"
                 content="Calculate your Sanctum odds, expected RP cost, and distance to pity."
+            />
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: faqJsonLd }}
             />
 
             <div className="mx-auto flex max-w-3xl flex-col gap-6 px-2 py-4">

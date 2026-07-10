@@ -137,6 +137,16 @@ const salesFAQs = [
     },
 ];
 
+const faqJsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: salesFAQs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.title,
+        acceptedAnswer: { '@type': 'Answer', text: faq.content },
+    })),
+});
+
 export default function SkinSales() {
     const { isWishlisted, toggleWishlist } = useWishlist();
     const [sections, setSections] =
@@ -551,6 +561,11 @@ export default function SkinSales() {
             <meta
                 name="twitter:description"
                 content="Track the current League of Legends skin sale rotation."
+            />
+
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: faqJsonLd }}
             />
 
             <div className="mt-4 flex w-full max-w-7xl flex-col items-center gap-4">
