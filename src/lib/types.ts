@@ -21,9 +21,9 @@ export type CatalogTypes = 'skins' | 'chromas' | 'icons' | 'emotes';
 
 // database types
 export type CatalogItemRecord = {
-    ItemID: number;
+    ItemID: string;
     ItemType: number;
-    RiotItemID: string;
+    RiotItemID: number;
     Name: string;
     ImageURL: string;
 
@@ -114,13 +114,13 @@ export type SanctumSaleWithItemRecord = SanctumSaleRecord & {
 };
 
 export type TopWishlistedRecord = {
-    ItemID: number;
+    ItemID: string;
     WishlistCount: number;
 };
 
 export type WishlistItemRecord = {
     UserID: string;
-    ItemID: number;
+    ItemID: string;
 };
 
 export type WishlistWithItemRecord = WishlistItemRecord & {

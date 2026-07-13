@@ -8,11 +8,11 @@ import { toast } from 'sonner';
 import { track } from '@/lib/umami.ts';
 
 type WishlistContextType = {
-    wishlistIDs: Set<number>;
+    wishlistIDs: Set<string>;
     wishlistItems: WishlistWithItemRecord[];
-    isWishlisted: (itemId: number) => boolean;
+    isWishlisted: (itemId: string) => boolean;
     toggleWishlist: (
-        itemId: number,
+        itemId: string,
         itemName: string,
         canWishlist?: boolean,
     ) => Promise<void>;
@@ -30,7 +30,7 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
     const { session } = useAuth();
     const { openModal } = useAuthModal();
 
-    const [wishlistIDs, setWishlistIDs] = useState<Set<number>>(
+    const [wishlistIDs, setWishlistIDs] = useState<Set<string>>(
         () => new Set(),
     );
     const [wishlistItems, setWishlistItems] = useState<
@@ -75,12 +75,12 @@ export function WishlistProvider({ children }: WishlistProviderProps) {
         refreshWishlist();
     }, [userID]);
 
-    function isWishlisted(itemId: number) {
+    function isWishlisted(itemId: string) {
         return wishlistIDs.has(itemId);
     }
 
     async function toggleWishlist(
-        itemId: number,
+        itemId: string,
         itemName: string,
         canWishlist = true,
     ) {

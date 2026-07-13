@@ -132,7 +132,7 @@ export default function Leaderboard() {
                 return;
             }
 
-            const itemsByID = new Map<number, CatalogItemRecord>(
+            const itemsByID = new Map<string, CatalogItemRecord>(
                 (itemsRes.data as CatalogItemRecord[]).map((item) => [
                     item.ItemID,
                     item,
@@ -150,13 +150,13 @@ export default function Leaderboard() {
 
                 const catalogSale = catalogSales.find(
                     (sale) =>
-                        sale.RiotItemID === Number(item.RiotItemID) &&
+                        sale.RiotItemID === item.RiotItemID &&
                         sale.ItemType === item.ItemType,
                 );
                 const mythicSale = catalogSale
                     ? undefined
                     : mythicSales.find((sale) =>
-                          sale.IncludedItems?.includes(String(item.ItemID)),
+                          sale.IncludedItems?.includes(item.ItemID),
                       );
 
                 built.push({
