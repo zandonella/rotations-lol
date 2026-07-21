@@ -69,9 +69,9 @@ export const ROUTES: RouteMeta[] = [
         path: '/your-shop',
         slug: 'your-shop',
         priority: '0.70',
-        title: 'LoL Your Shop Dates 2026 - When Is the Next Your Shop? | Rotations.lol',
+        title: 'LoL Your Shop Dates 2026 | Is Your Shop Live? | Rotations.lol',
         description:
-            'See if LoL Your Shop is live right now, when the next Your Shop starts, and all confirmed League of Legends Your Shop dates for 2026.',
+            'See if LoL Your Shop is live right now and view the latest confirmed League of Legends Your Shop dates for 2026.',
     },
     {
         path: '/sanctum-calculator',
