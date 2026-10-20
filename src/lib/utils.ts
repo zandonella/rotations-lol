@@ -36,24 +36,26 @@ export function calculateTimeUntilEnd(endDateStr: string): string {
     return result.trim();
 }
 
-export function getPacificResetLabel() {
-    const date = new Date('2026-03-24T00:00:00.000Z'); // arbitrary date that is at midnight UTC
-    return date.toLocaleTimeString('en-US', {
-        timeZone: 'America/Los_Angeles',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-        timeZoneName: 'short',
-    });
-}
+export function getNextOfferEndLabel(offers: { SaleEndAt: string }[]) {
+    const now = Date.now();
+    const endTimes = offers
+        .map((offer) => Date.parse(offer.SaleEndAt))
+        .filter((endTime) => Number.isFinite(endTime) && endTime > now);
 
-export function getSalesPacificResetLabel() {
-    const date = new Date('2026-04-15 17:00:00+00'); // arbitrary date that is a sale date
-    return date.toLocaleTimeString('en-US', {
+    if (endTimes.length === 0) return undefined;
+
+    const nextEnd = new Date(Math.min(...endTimes));
+    const label = nextEnd.toLocaleString('en-US', {
         timeZone: 'America/Los_Angeles',
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
         hour: 'numeric',
-        minute: 'numeric',
+        minute: '2-digit',
         hour12: true,
         timeZoneName: 'short',
     });
+
+    return `Next listed offer ends ${label}`;
 }

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router';
 import supabase from '../lib/supabase.ts';
 import type { MythicSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
-import { calculateTimeUntilEnd, getPacificResetLabel } from '@/lib/utils.ts';
+import { calculateTimeUntilEnd, getNextOfferEndLabel } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
 import FAQAccordion from '@/components/FAQAccordion.tsx';
 import PageTitle from '@/components/PageTitle.tsx';
@@ -22,7 +22,7 @@ const mythicFAQs = [
     {
         title: 'How often does the Mythic Shop update?',
         content:
-            'The League of Legends Mythic Shop updates on multiple schedules. Some items rotate daily, while others rotate weekly or as part of featured Mythic Shop rotations.',
+            'The League of Legends Mythic Shop updates on multiple schedules. Sections include daily, weekly, biweekly, and featured offers. Riot can adjust rotation timings; the dates and countdowns shown here use the current offers’ end times.',
     },
     {
         title: 'What items appear in the Mythic Shop?',
@@ -112,12 +112,9 @@ export default function MythicShop() {
         return { featured, biweekly, weekly, daily };
     }, [mythicSales]);
 
-    function renderSection(
-        title: string,
-        sales: MythicSaleWithItemRecord[],
-        subtitle?: string,
-    ) {
+    function renderSection(title: string, sales: MythicSaleWithItemRecord[]) {
         if (sales.length === 0) return null;
+        const subtitle = getNextOfferEndLabel(sales);
         return (
             <div className="flex w-full flex-col items-center gap-4">
                 <div className="mt-2 w-full text-center md:text-left">
@@ -178,21 +175,9 @@ export default function MythicShop() {
         content = (
             <>
                 {renderSection('Featured', featured)}
-                {renderSection(
-                    'Biweekly',
-                    biweekly,
-                    `Resets every other Wednesday at ${getPacificResetLabel()}`,
-                )}
-                {renderSection(
-                    'Weekly',
-                    weekly,
-                    `Resets every Wednesday at ${getPacificResetLabel()}`,
-                )}
-                {renderSection(
-                    'Daily',
-                    daily,
-                    `Resets daily at ${getPacificResetLabel()}`,
-                )}
+                {renderSection('Biweekly', biweekly)}
+                {renderSection('Weekly', weekly)}
+                {renderSection('Daily', daily)}
             </>
         );
     }

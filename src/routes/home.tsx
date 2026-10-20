@@ -11,12 +11,7 @@ import type {
     CatalogSaleWithItemRecord,
     MythicSaleWithItemRecord,
 } from '@/lib/types';
-import {
-    calculateTimeUntilEnd,
-    cn,
-    getPacificResetLabel,
-    getSalesPacificResetLabel,
-} from '@/lib/utils';
+import { calculateTimeUntilEnd, cn } from '@/lib/utils';
 
 type HomeSnapshot = {
     sales: CatalogSaleWithItemRecord[];
@@ -349,7 +344,7 @@ export default function Home() {
                         <div className="grid gap-4 md:grid-cols-2">
                             <FeatureShowcase
                                 title="Current Sale Rotation"
-                                subtitle={`Weekly discounts and limited-time offers. Sales reset every Monday at ${getSalesPacificResetLabel()}.`}
+                                subtitle="Weekly discounts and limited-time offers. See each offer for its time remaining."
                                 href="/sales"
                                 tone="gold"
                                 loading={loading}
@@ -358,7 +353,7 @@ export default function Home() {
                             />
                             <FeatureShowcase
                                 title="Current Mythic Shop"
-                                subtitle={`Mythic skins, Prestige skins, and rotating offers. Daily sales reset at ${getPacificResetLabel()}.`}
+                                subtitle="Mythic skins, Prestige skins, and rotating offers. End times vary by offer."
                                 href="/mythic"
                                 tone="violet"
                                 loading={loading}

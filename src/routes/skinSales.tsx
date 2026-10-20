@@ -2,10 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import supabase from '../lib/supabase.ts';
 import type { CatalogSaleWithItemRecord } from '@/lib/types';
 import ItemCard from '@/components/itemCard';
-import {
-    calculateTimeUntilEnd,
-    getSalesPacificResetLabel,
-} from '@/lib/utils.ts';
+import { calculateTimeUntilEnd } from '@/lib/utils.ts';
 import { useWishlist } from '@/providers/WishlistContext.tsx';
 import FAQAccordion from '@/components/FAQAccordion.tsx';
 import PageTitle from '@/components/PageTitle.tsx';
@@ -390,7 +387,7 @@ export default function SkinSales() {
             {
                 id: 'weekly',
                 title: 'Current Weekly Skin Sales',
-                subtitle: `Resets every Monday at ${getSalesPacificResetLabel()}`,
+                subtitle: 'See each offer for its time remaining.',
                 sortSales: sortSalesBySkinlineAndName,
             },
             {
@@ -406,7 +403,7 @@ export default function SkinSales() {
             {
                 id: 'blueEssence',
                 title: 'Blue Essence Emporium',
-                subtitle: 'Ends June 10th at 11:00 AM PDT',
+                subtitle: 'See each offer for its time remaining.',
                 sortSales: sortBlueEssenceSales,
             },
             {
