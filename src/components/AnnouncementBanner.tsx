@@ -1,27 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { LuX } from 'react-icons/lu';
-
-const ANNOUNCEMENT_ID = 'discord-improving-v1';
+import { Link } from 'react-router';
+import { useMythicStatus } from '@/lib/mythicStatus';
 
 export default function AnnouncementBanner() {
-    const [visible, setVisible] = useState(false);
-
-    useEffect(() => {
-        const dismissed = localStorage.getItem(
-            `announcement-dismissed-${ANNOUNCEMENT_ID}`,
-        );
-
-        if (!dismissed) {
-            setVisible(true);
+    const { paused } = useMythicStatus();
+    const ANNOUNCEMENT_ID = `mythic-26-22-${paused ? 'review' : 'upcoming'}-v1`;
+    const [dismissedIds, setDismissedIds] = useState(() => {
+        const ids = ['mythic-26-22-upcoming-v1', 'mythic-26-22-review-v1'];
+        try {
+            return new Set(
+                ids.filter((id) =>
+                    localStorage.getItem(`announcement-dismissed-${id}`),
+                ),
+            );
+        } catch {
+            return new Set<string>();
         }
-    }, []);
-
+    });
+    const visible = !dismissedIds.has(ANNOUNCEMENT_ID);
     const handleDismiss = () => {
-        localStorage.setItem(
-            `announcement-dismissed-${ANNOUNCEMENT_ID}`,
-            'true',
-        );
-        setVisible(false);
+        try {
+            localStorage.setItem(
+                `announcement-dismissed-${ANNOUNCEMENT_ID}`,
+                'true',
+            );
+        } catch {
+            /* In-memory dismissal still works. */
+        }
+        setDismissedIds((previous) => new Set([...previous, ANNOUNCEMENT_ID]));
     };
 
     if (!visible) return null;
@@ -31,9 +38,17 @@ export default function AnnouncementBanner() {
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
                 <p className="text-sm">
                     <span className="font-bold">
-                        Rotations.lol is constantly improving.
+                        {paused
+                            ? 'Mythic Shop tracking is temporarily paused.'
+                            : 'Mythic Shop changes are coming.'}
                     </span>{' '}
-                    Join the{' '}
+                    {paused
+                        ? 'We’re reviewing Riot’s personalized offers. Mythic listings and emails are on hold; regular sale alerts continue. '
+                        : 'Riot is adjusting rotation timings and plans personalized offers during Patch 26.22, scheduled for November 4. We’ll pause Mythic tracking and emails when the patch is detected live. '}
+                    <Link to="/mythic" className="font-bold underline">
+                        View Mythic Shop status
+                    </Link>
+                    . Follow{' '}
                     <a
                         href="https://discord.com/invite/Fpzg57GMDR"
                         target="_blank"
@@ -42,8 +57,7 @@ export default function AnnouncementBanner() {
                     >
                         Discord
                     </a>{' '}
-                    to share feedback, report bugs, request features, and
-                    follow new updates.
+                    for updates.
                 </p>
 
                 <button

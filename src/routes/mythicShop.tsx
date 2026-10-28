@@ -1,3 +1,5 @@
+import { useMythicStatus } from '@/lib/mythicStatus';
+import MythicShopNotice from '@/components/MythicShopNotice';
 import { useState, useEffect, useMemo } from 'react';
 import { NavLink } from 'react-router';
 import supabase from '../lib/supabase.ts';
@@ -67,6 +69,7 @@ const faqJsonLd = JSON.stringify({
 });
 
 export default function MythicShop() {
+    const { canShowOffers, paused } = useMythicStatus();
     const { isWishlisted, toggleWishlist } = useWishlist();
     const [mythicSales, setMythicSales] = useState<MythicSaleWithItemRecord[]>(
         [],
@@ -75,13 +78,16 @@ export default function MythicShop() {
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
-        // Example fetch from supabase, adjust as needed
+        if (!canShowOffers) return;
+        let active = true;
+        // Only fetch offers while the live-patch check permits tracking.
         async function fetchMythicSales() {
             setLoading(true);
             const { data, error } = await supabase
                 .from('MythicSale')
                 .select('*, CatalogItem(*)')
                 .eq('IsActive', true);
+            if (!active) return;
             if (error) {
                 setErrorMsg('Failed to load mythic rotations.');
                 setMythicSales([]);
@@ -91,7 +97,10 @@ export default function MythicShop() {
             setLoading(false);
         }
         fetchMythicSales();
-    }, []);
+        return () => {
+            active = false;
+        };
+    }, [canShowOffers]);
 
     const { featured, biweekly, weekly, daily } = useMemo(() => {
         const featured = mythicSales
@@ -160,6 +169,23 @@ export default function MythicShop() {
             </div>
         );
     }
+
+    if (!canShowOffers)
+        return (
+            <>
+                <title>
+                    {paused
+                        ? 'Mythic Shop Update | Rotations.lol'
+                        : 'Mythic Shop Status | Rotations.lol'}
+                </title>
+                <meta
+                    name="description"
+                    content="Follow updates on Mythic Shop personalization and tracking availability."
+                />
+                <link rel="canonical" href="https://rotations.lol/mythic" />
+                <MythicShopNotice />
+            </>
+        );
 
     let content: React.ReactNode;
 

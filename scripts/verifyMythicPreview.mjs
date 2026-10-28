@@ -1,0 +1,54 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+import { mkdirSync } from 'node:fs';
+import { resolve } from 'node:path';
+const base = process.env.PREVIEW_URL || 'http://100.77.232.109:5173';
+const artifacts = process.env.PREVIEW_ARTIFACTS || resolve('../artifacts');
+mkdirSync(artifacts, {recursive:true});
+const browser = await chromium.launch({headless:true,args:['--no-sandbox']});
+try {
+ const context=await browser.newContext({viewport:{width:1440,height:1100}});
+ const page=await context.newPage();
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ let mythicReads=0;let mutations=0;
+ page.on('request',request=>{
+  if(request.url().includes('/rest/v1/MythicSale'))mythicReads++;
+  if(request.url().includes('/rest/v1/') && !['GET','HEAD'].includes(request.method()) && !request.url().includes('/rpc/get_top_wishlisted_items'))mutations++;
+ });
+ await page.goto(base+'/mythic?mythicPreview=upcoming');
+ await page.getByRole('heading',{name:'Biweekly',exact:true}).waitFor();
+ assert.ok(mythicReads>0,'Pre-rollout view should load real Mythic offers');
+ await page.screenshot({path:artifacts+'/upcoming-desktop.png',fullPage:false});
+ mythicReads=0;
+ await page.goto(base+'/mythic?mythicPreview=review');
+ await page.getByRole('heading',{name:'Mythic Shop tracking is temporarily paused',exact:true}).waitFor();
+ assert.equal(mythicReads,0,'Paused page must not request MythicSale');
+ await page.screenshot({path:artifacts+'/review-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ await page.screenshot({path:artifacts+'/review-mobile.png',fullPage:true});
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth),false,'No mobile horizontal overflow');
+ await page.goto(base+'/?mythicPreview=review');
+ await page.getByRole('heading',{name:'Mythic Shop tracking is temporarily paused',exact:true}).waitFor();
+ assert.equal(mythicReads,0,'Paused homepage must not request MythicSale');
+ await page.goto(base+'/leaderboard?mythicPreview=review');
+ await page.waitForTimeout(1000);
+ assert.equal(mythicReads,0,'Paused leaderboard must not request MythicSale');
+ // Exercise the automatic runtime transition, not only the development fixture.
+ await page.setViewportSize({width:1440,height:1100});
+ let live=false;
+ await page.route('**/__mythic-status',route=>route.fulfill({json:{state:live?'review':'upcoming',region:'NA',targetPatch:'26.22',observedVersion:live?'16.22.1':'16.21.1',checkedAt:new Date().toISOString(),mythicEmailsPaused:live}}));
+ await page.clock.install();
+ await page.goto(base+'/mythic');
+ await page.getByRole('heading',{name:'Biweekly',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Dismiss announcement',exact:true}).click();
+ live=true;
+ await page.clock.fastForward(61_000);
+ await page.getByRole('heading',{name:'Mythic Shop tracking is temporarily paused',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Dismiss announcement',exact:true}).waitFor();
+ live=false;await page.clock.fastForward(61_000);
+ await page.getByRole('heading',{name:'Mythic Shop tracking is temporarily paused',exact:true}).waitFor();
+ assert.equal(errors.length,0,errors.join('\n'));
+ assert.equal(mutations,0,'Preview must not issue production mutations');
+ console.log(JSON.stringify({passed:true,checks:['before/after views','no paused Mythic reads on three routes','mobile layout','automatic transition','latched pause','fresh banner after dismissal','no browser errors','no production mutations'],artifacts}));
+ await context.close();
+} finally {await browser.close();}

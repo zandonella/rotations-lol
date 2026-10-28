@@ -1,3 +1,5 @@
+import { useMythicStatus } from '@/lib/mythicStatus';
+import MythicShopNotice from '@/components/MythicShopNotice';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { LuArrowRight, LuBell, LuCheck, LuSparkles } from 'react-icons/lu';
@@ -62,6 +64,7 @@ const faqJsonLd = JSON.stringify({
 });
 
 export default function Home() {
+    const { canShowOffers, paused } = useMythicStatus();
     const { session } = useAuth();
     const { openModal } = useAuthModal();
     const [snapshot, setSnapshot] = useState<HomeSnapshot>({
@@ -74,6 +77,7 @@ export default function Home() {
     const catalogCount = 16000; // Hardcoded catalog count to avoid needing to fetch the entire catalog for the homepage
 
     useEffect(() => {
+        let active = true;
         async function fetchHomeSnapshot() {
             setLoading(true);
             setErrorMsg(null);
@@ -84,12 +88,15 @@ export default function Home() {
                     .select('*, CatalogItem(*, Skinline(*, Universe(*)))')
                     .eq('IsActive', true)
                     .eq('Currency', 'RP'),
-                supabase
-                    .from('MythicSale')
-                    .select('*, CatalogItem(*)')
-                    .eq('IsActive', true),
+                canShowOffers
+                    ? supabase
+                          .from('MythicSale')
+                          .select('*, CatalogItem(*)')
+                          .eq('IsActive', true)
+                    : Promise.resolve({ data: [], error: null }),
             ]);
 
+            if (!active) return;
             if (salesResult.error || mythicResult.error) {
                 setSnapshot({ sales: [], mythic: [] });
                 setErrorMsg(
@@ -107,13 +114,17 @@ export default function Home() {
         }
 
         fetchHomeSnapshot();
-    }, []);
+        return () => {
+            active = false;
+        };
+    }, [canShowOffers]);
 
     const liveData = useMemo(() => {
+        const mythic = canShowOffers ? snapshot.mythic : [];
         const weeklySales = snapshot.sales.filter(
             (sale) => !sale.Limited && sale.CatalogItem.ItemType === 1,
         );
-        const featuredMythic = snapshot.mythic.filter(
+        const featuredMythic = mythic.filter(
             (sale) => sale.CatalogItem.ItemType === 1,
         );
 
@@ -145,12 +156,12 @@ export default function Home() {
             mythicPreview,
             heroPreview,
             liveSaleCount: snapshot.sales.length,
-            liveMythicCount: snapshot.mythic.length,
+            liveMythicCount: mythic.length,
             catalogCount,
             nextSaleEnding: getSoonestEnding(snapshot.sales),
-            nextMythicEnding: getSoonestEnding(snapshot.mythic),
+            nextMythicEnding: getSoonestEnding(mythic),
         };
-    }, [snapshot]);
+    }, [snapshot, canShowOffers]);
 
     return (
         <>
@@ -281,9 +292,19 @@ export default function Home() {
 
                     <BigStat
                         label="Mythic offers"
-                        value={String(liveData.liveMythicCount)}
+                        value={
+                            canShowOffers
+                                ? String(liveData.liveMythicCount)
+                                : paused
+                                  ? 'Paused'
+                                  : 'Checking'
+                        }
                         loading={loading}
-                        detail="Current Mythic Shop offerings, including Prestige and daily rotating content."
+                        detail={
+                            canShowOffers
+                                ? 'Current Mythic Shop offerings, including Prestige and daily rotating content.'
+                                : 'Mythic listings are unavailable while we verify shop status.'
+                        }
                     />
                 </section>
 
@@ -351,15 +372,19 @@ export default function Home() {
                                 timerLabel={liveData.nextSaleEnding}
                                 items={liveData.salesPreview}
                             />
-                            <FeatureShowcase
-                                title="Current Mythic Shop"
-                                subtitle="Mythic skins, Prestige skins, and rotating offers. End times vary by offer."
-                                href="/mythic"
-                                tone="violet"
-                                loading={loading}
-                                timerLabel={liveData.nextMythicEnding}
-                                items={liveData.mythicPreview}
-                            />
+                            {canShowOffers ? (
+                                <FeatureShowcase
+                                    title="Current Mythic Shop"
+                                    subtitle="Mythic skins, Prestige skins, and rotating offers. End times vary by offer."
+                                    href="/mythic"
+                                    tone="violet"
+                                    loading={loading}
+                                    timerLabel={liveData.nextMythicEnding}
+                                    items={liveData.mythicPreview}
+                                />
+                            ) : (
+                                <MythicShopNotice compact />
+                            )}
                         </div>
                     )}
                 </section>

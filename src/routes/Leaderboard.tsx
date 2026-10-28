@@ -1,3 +1,4 @@
+import { useMythicStatus } from '@/lib/mythicStatus';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { Button } from '@/components/ui/button';
@@ -81,12 +82,14 @@ const faqJsonLd = JSON.stringify({
 });
 
 export default function Leaderboard() {
+    const { canShowOffers } = useMythicStatus();
     const { isWishlisted, toggleWishlist } = useWishlist();
     const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
+        let active = true;
         async function fetchLeaderboard() {
             setLoading(true);
 
@@ -120,12 +123,15 @@ export default function Leaderboard() {
                         .from('CatalogSale')
                         .select('*')
                         .eq('IsActive', true),
-                    supabase
-                        .from('MythicSale')
-                        .select('*')
-                        .eq('IsActive', true),
+                    canShowOffers
+                        ? supabase
+                              .from('MythicSale')
+                              .select('*')
+                              .eq('IsActive', true)
+                        : Promise.resolve({ data: [], error: null }),
                 ]);
 
+            if (!active) return;
             if (itemsRes.error || !itemsRes.data) {
                 setErrorMsg('Failed to load the leaderboard.');
                 setLoading(false);
@@ -189,7 +195,10 @@ export default function Leaderboard() {
             setLoading(false);
         }
         fetchLeaderboard();
-    }, []);
+        return () => {
+            active = false;
+        };
+    }, [canShowOffers]);
 
     let content: React.ReactNode;
 
@@ -325,18 +334,18 @@ export default function Leaderboard() {
                             </p>
                             <p>
                                 Unlike ownership or play-rate stats, wishlist
-                                counts measure demand, meaning the skins
-                                players are actively waiting to buy. That makes this list a
-                                good preview of which skins the community will
-                                grab the next time they are discounted, and a
-                                useful watchlist if you are deciding what to
+                                counts measure demand, meaning the skins players
+                                are actively waiting to buy. That makes this
+                                list a good preview of which skins the community
+                                will grab the next time they are discounted, and
+                                a useful watchlist if you are deciding what to
                                 pick up in the next sale.
                             </p>
                             <p>
-                                If a ranked item is in the current sale
-                                rotation or the Mythic Shop, its card shows the
-                                live price and how long the offer lasts, so you
-                                can buy it before the rotation ends.
+                                If a ranked item is in the current sale rotation
+                                or the Mythic Shop, its card shows the live
+                                price and how long the offer lasts, so you can
+                                buy it before the rotation ends.
                             </p>
                         </div>
                     </section>
@@ -346,10 +355,10 @@ export default function Leaderboard() {
                             Want a skin on this list?
                         </h2>
                         <p className="text-muted-foreground text-sm leading-relaxed">
-                            Wishlist the skins you're waiting for and they
-                            count toward the leaderboard. More importantly,
-                            you'll get an email the moment they appear in a
-                            sale or the Mythic Shop.
+                            Wishlist the skins you're waiting for and they count
+                            toward the leaderboard. More importantly, you'll get
+                            an email the moment they appear in a sale or the
+                            Mythic Shop.
                         </p>
                         <Button asChild>
                             <NavLink to="/catalog">Browse the catalog</NavLink>
