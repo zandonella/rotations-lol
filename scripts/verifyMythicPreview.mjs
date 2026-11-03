@@ -35,17 +35,16 @@ try {
  assert.equal(mythicReads,0,'Paused leaderboard must not request MythicSale');
  // Exercise the automatic runtime transition, not only the development fixture.
  await page.setViewportSize({width:1440,height:1100});
- let live=false;
- await page.route('**/__mythic-status',route=>route.fulfill({json:{state:live?'review':'upcoming',region:'NA',targetPatch:'26.22',observedVersion:live?'16.22.1':'16.21.1',checkedAt:new Date().toISOString(),mythicEmailsPaused:live}}));
- await page.clock.install();
+ await page.clock.install({time:new Date('2026-11-04T04:59:50Z')});
+ await page.clock.pauseAt(new Date('2026-11-04T04:59:51Z'));
  await page.goto(base+'/mythic');
  await page.getByRole('heading',{name:'Biweekly',exact:true}).waitFor();
  await page.getByRole('button',{name:'Dismiss announcement',exact:true}).click();
- live=true;
- await page.clock.fastForward(61_000);
+ await page.clock.runFor(10_000);
  await page.getByRole('heading',{name:'Mythic Shop tracking is temporarily paused',exact:true}).waitFor();
  await page.getByRole('button',{name:'Dismiss announcement',exact:true}).waitFor();
- live=false;await page.clock.fastForward(61_000);
+ await page.clock.setFixedTime(new Date('2026-11-03T16:00:00Z'));
+ await page.clock.runFor(1000);
  await page.getByRole('heading',{name:'Mythic Shop tracking is temporarily paused',exact:true}).waitFor();
  assert.equal(errors.length,0,errors.join('\n'));
  assert.equal(mutations,0,'Preview must not issue production mutations');
