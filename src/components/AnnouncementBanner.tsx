@@ -44,11 +44,11 @@ export default function AnnouncementBanner() {
                     </span>{' '}
                     {paused
                         ? 'We’re reviewing Riot’s personalized offers. Mythic listings and emails are on hold; regular sale alerts continue. '
-                        : 'Riot is adjusting rotation timings and plans personalized offers during Patch 26.22, scheduled for November 4. We’ll pause Mythic tracking and emails when the patch is detected live. '}
+                        : 'Riot plans personalized Mythic offers during Patch 26.22. Mythic emails will pause after the November 3 evening refresh, and listings will pause at midnight Eastern on November 4 while we review the changes. '}
                     <Link to="/mythic" className="font-bold underline">
                         View Mythic Shop status
                     </Link>
-                    . Follow{' '}
+                    . Join us on{' '}
                     <a
                         href="https://discord.com/invite/Fpzg57GMDR"
                         target="_blank"

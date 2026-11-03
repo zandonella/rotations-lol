@@ -1,41 +1,23 @@
-# Mythic Shop rollout review — isolated test implementation
+# Mythic review schedule — November 3–4, 2026
 
-Branch: `test/mythic-rollout-guard` in the frontend, API, and email repositories.
-No production service, production environment file, database migration, or remote branch was changed for this implementation.
+The operator approved a scheduled review, replacing the previous Riot-version detection plan:
 
-## Behavior
+- November 3 at 7 PM EST: normal refresh and its email batch.
+- After successful completion of the 7:01 PM ingestion/email batch: persistently hold only Mythic emails. Catalog and Sanctum alerts continue.
+- November 4 at midnight EST (05:00 UTC): hide Mythic listings and show the approved placeholder, including homepage/leaderboard Mythic availability.
 
-- Before Riot's NA realm reports internal version `16.22.1` or later, the frontend shows the upcoming-change announcement and current offers.
-- The shared API endpoint `/v1/status/mythic` checks `https://ddragon.leagueoflegends.com/realms/na.json` at most once per minute. This is a region-specific marker, not the global version list, a PBE version, patch notes, or a calendar trigger.
-- After detecting the target patch, the API persists a `review` latch in `DATA_DIR/mythic-rollout.json`. Outages, restarts, and older responses cannot automatically resume listings or Mythic emails.
-- The Mythic page replaces listings with a review notice. Homepage Mythic previews and leaderboard Mythic availability are also hidden. In-flight page results are discarded after a transition.
-- The email worker filters held Mythic rows before hydration, then rechecks permission during recipient delivery. Mixed emails can still send Catalog/Sanctum items; held rows remain PENDING and are not marked SENT or FAILED.
-- If status cannot be verified, only Mythic email items are held. The frontend shows a generic checking state, not a claim that personalization is live.
-- The existing `DISABLE_MYTHIC_EMAILS=true` manual hold still wins. There is deliberately no automatic resume after review begins.
-- Ingestion is unchanged so subsequent responses remain available for investigation. Public rotation API payloads are unchanged; consumers must check the separate status endpoint.
+`src/lib/mythicSchedule.ts` contains the explicit midnight deadline. The provider updates already-open tabs at the deadline and on focus/wakeup; fresh visits after the deadline immediately render the placeholder. Paused tabs do not automatically resume when their clock moves backward. The site uses the viewer's system clock and no longer depends on a Riot marker or a new API endpoint for this scheduled review. Review stays active until an explicit follow-up changes the hold. The copy does not claim that Riot has already deployed the patch at midnight.
 
-Riot documents the NA realm as a regional version source, but Data Dragon updates are manual and can lag a patch. Detection is therefore not guaranteed at the exact maintenance completion time. API checks are minute-cached, the browser polls every minute, and the sender checks status when an hourly batch runs and again during delivery (15-second local cache). A previously accepted/in-flight email cannot be recalled. Recheck the official live status before a production cutover; a manual Mythic hold remains available if the version marker lags.
+The latest email integration is in `../email-current`, branch `test/mythic-scheduled-stop`, based on the repaired production email sender plus the newer quiet-empty-batch notifications. Do not deploy the older `../email` branch; it predates the recipient repair. No API deployment or database migration is required for this scheduled hold. Ingestion continues to preserve evidence for comparing account offers.
 
-Source: https://developer.riotgames.com/docs/lol#data-dragon
+## Preview
 
-## Local preview
+- Current/default schedule: http://100.77.232.109:5173/mythic
+- Upcoming state: http://100.77.232.109:5173/mythic?mythicPreview=upcoming
+- Paused state: http://100.77.232.109:5173/mythic?mythicPreview=review
 
-Default: http://100.77.232.109:5173/mythic
-Before rollout: http://100.77.232.109:5173/mythic?mythicPreview=upcoming
-After rollout: http://100.77.232.109:5173/mythic?mythicPreview=review
+Overrides exist only in Vite development mode. Production ignores these query parameters. The local preview uses a public Supabase key and blocks writes/auth operations. Never copy its `.env.local` to production; the droplet keeps its own existing environment.
 
-The `mythicPreview` simulations only exist in Vite development mode. They do not affect the API or real email worker. The preview uses a public Supabase key and blocks writes and authentication operations. Only GET/HEAD and the read-only leaderboard RPC are allowed. Private production keys and sender credentials are absent from the worktrees.
+The notice has no eyebrow or icon. Its Discord link reads “Join us on Discord”; its client guidance is “In the meantime, you can still explore your Mythic Shop offers in the League client.”
 
-A separate preview status server listens on 127.0.0.1:4311 and uses its own `.preview-status` directory. Start it from the API worktree with `node scripts/preview-mythic-status.mjs`. Start the frontend with `npm run dev -- --host 100.77.232.109 --port 5173 --strictPort`. The Vite proxy `/__mythic-status` forwards to the local status service.
-
-## Verification
-
-API and email unit suites cover target-version detection, late rollout, persistent latching, failed checks, stale status, manual holds, mixed recipient batches, and bounded database fallback queries. The frontend production build and changed-file lint pass. Browser checks exercise before/after pages, automatic transition in an open tab, a fresh review banner after dismissing the upcoming banner, mobile overflow, and suppression of Mythic reads on the Mythic page, homepage, and leaderboard. Browser verification sends no emails and performs no production mutations.
-
-Screenshots: `research/mythic-rollout-preview` in the parent workspace.
-
-## Future deployment considerations — not executed
-
-The shared API endpoint must be available before activating these frontend/email changes. The email worker's `MYTHIC_STATUS_URL` can explicitly select its origin; otherwise it uses `/v1/status/mythic` at the existing email API origin. Preserve the API DATA_DIR volume containing the latch. Never copy the preview `.env.local` to production. No database migration is needed.
-
-An eventual resume must be an explicit operator decision after verifying account availability. Before releasing held notifications, discard/revalidate expired offers; do not bulk mark all held rows deliverable.
+Verification includes a production build, changed-component lint, real browser checks before/after the exact deadline, an already-open tab, a fresh visit, ignored production query overrides, approved copy, mobile overflow and no runtime errors. Email verification covers 38 unit tests, nine safe-cache cases, eight original-incident cases and a synthetic mixed Catalog/Sanctum/Mythic database delivery with no real emails.

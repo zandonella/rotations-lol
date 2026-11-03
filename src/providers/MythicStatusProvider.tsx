@@ -1,57 +1,46 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { MythicStatusContext, type MythicStatus } from '@/lib/mythicStatus';
+import { MYTHIC_REVIEW_TIME, scheduledMythicState } from '@/lib/mythicSchedule';
 
 export default function MythicStatusProvider({
     children,
 }: {
     children: ReactNode;
 }) {
-    // Simulations are available only in the development build, never production.
+    // Preview overrides are available only in development builds.
     const preview = import.meta.env.DEV
         ? new URLSearchParams(window.location.search).get('mythicPreview')
         : null;
     const simulated =
         preview === 'upcoming' || preview === 'review' ? preview : null;
-    const [state, setState] = useState<MythicStatus>(simulated ?? 'checking');
+    const [state, setState] = useState<MythicStatus>(
+        simulated ?? scheduledMythicState(),
+    );
 
     useEffect(() => {
         if (simulated) return;
-        let active = true;
+        // Once paused, clock changes or background-tab wakeups cannot resume offers.
         let latched = false;
-        let inFlight = false;
-        const check = async () => {
-            if (latched || inFlight) return;
-            inFlight = true;
-            try {
-                const url =
-                    import.meta.env.VITE_MYTHIC_STATUS_URL ||
-                    'https://api.rotations.lol/v1/status/mythic';
-                const response = await fetch(url, {
-                    cache: 'no-store',
-                    signal: AbortSignal.timeout(8000),
-                });
-                if (!response.ok) throw new Error('Status unavailable');
-                const body = await response.json();
-                if (
-                    body.targetPatch !== '26.22' ||
-                    body.region !== 'NA' ||
-                    !['checking', 'upcoming', 'review'].includes(body.state) ||
-                    !Number.isFinite(Date.parse(body.checkedAt))
-                )
-                    throw new Error('Invalid status');
-                latched = body.state === 'review';
-                if (active) setState(body.state);
-            } catch {
-                if (active && !latched) setState('checking');
-            } finally {
-                inFlight = false;
-            }
+        const check = () => {
+            if (latched) return;
+            const next = scheduledMythicState();
+            latched = next === 'review';
+            setState(next);
         };
-        void check();
-        const interval = window.setInterval(() => void check(), 60_000);
+        check();
+        const delay = MYTHIC_REVIEW_TIME - Date.now();
+        const deadline =
+            delay > 0 && delay <= 2_147_483_647
+                ? window.setTimeout(check, delay)
+                : undefined;
+        const interval = window.setInterval(check, 1000);
+        window.addEventListener('focus', check);
+        document.addEventListener('visibilitychange', check);
         return () => {
-            active = false;
+            if (deadline !== undefined) window.clearTimeout(deadline);
             window.clearInterval(interval);
+            window.removeEventListener('focus', check);
+            document.removeEventListener('visibilitychange', check);
         };
     }, [simulated]);
 
