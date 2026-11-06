@@ -1,23 +1,34 @@
-# Mythic review schedule — November 3–4, 2026
+# Mythic Shop display checks
 
-The operator approved a scheduled review, replacing the previous Riot-version detection plan:
+The web app can pause Mythic Shop listings while offer tracking is under review. `src/lib/mythicSchedule.ts` defines the transition time, and the status provider applies it to the Mythic page, home page, and leaderboard.
 
-- November 3 at 7 PM EST: normal refresh and its email batch.
-- After successful completion of the 7:01 PM ingestion/email batch: persistently hold only Mythic emails. Catalog and Sanctum alerts continue.
-- November 4 at midnight EST (05:00 UTC): hide Mythic listings and show the approved placeholder, including homepage/leaderboard Mythic availability.
+## Development previews
 
-`src/lib/mythicSchedule.ts` contains the explicit midnight deadline. The provider updates already-open tabs at the deadline and on focus/wakeup; fresh visits after the deadline immediately render the placeholder. Paused tabs do not automatically resume when their clock moves backward. The site uses the viewer's system clock and no longer depends on a Riot marker or a new API endpoint for this scheduled review. Review stays active until an explicit follow-up changes the hold. The copy does not claim that Riot has already deployed the patch at midnight.
+Start the Vite server with `npm run dev` and open the following paths on its local address.
 
-The latest email integration is in `../email-current`, branch `test/mythic-scheduled-stop`, based on the repaired production email sender plus the newer quiet-empty-batch notifications. Do not deploy the older `../email` branch; it predates the recipient repair. No API deployment or database migration is required for this scheduled hold. Ingestion continues to preserve evidence for comparing account offers.
+| Path | Preview |
+|---|---|
+| `/mythic?mythicPreview=upcoming` | Listings before the scheduled pause. |
+| `/mythic?mythicPreview=review` | The review notice with listings paused. |
+| `/?mythicPreview=review` | The home page during the pause. |
+| `/leaderboard?mythicPreview=review` | The leaderboard during the pause. |
 
-## Preview
+Query overrides work only in development. Production uses the configured schedule and ignores those overrides.
 
-- Current/default schedule: http://100.77.232.109:5173/mythic
-- Upcoming state: http://100.77.232.109:5173/mythic?mythicPreview=upcoming
-- Paused state: http://100.77.232.109:5173/mythic?mythicPreview=review
+## Browser checks
 
-Overrides exist only in Vite development mode. Production ignores these query parameters. The local preview uses a public Supabase key and blocks writes/auth operations. Never copy its `.env.local` to production; the droplet keeps its own existing environment.
+Run the included Playwright script against a local Vite server. Install Playwright and its Chromium browser in the development environment first.
 
-The notice has no eyebrow or icon. Its Discord link reads “Join us on Discord”; its client guidance is “In the meantime, you can still explore your Mythic Shop offers in the League client.”
+```sh
+PREVIEW_URL=http://127.0.0.1:5173 node scripts/verifyMythicPreview.mjs
+```
 
-Verification includes a production build, changed-component lint, real browser checks before/after the exact deadline, an already-open tab, a fresh visit, ignored production query overrides, approved copy, mobile overflow and no runtime errors. Email verification covers 38 unit tests, nine safe-cache cases, eight original-incident cases and a synthetic mixed Catalog/Sanctum/Mythic database delivery with no real emails.
+Set `PREVIEW_ARTIFACTS` to choose the screenshot directory. The script checks both preview states, the automatic transition at the configured deadline, mobile overflow, browser errors, and whether paused pages stop querying Mythic offers. It also checks that the preview issues no database mutations.
+
+The provider updates already-open tabs at the deadline and when they regain focus. A paused tab stays paused if its clock moves backward. Fresh visits use the viewer's system clock.
+
+## Release checks
+
+Build the application and inspect the Mythic page, home page, and leaderboard at desktop and mobile sizes. Confirm that production ignores development overrides and that ordinary skin sales remain available during the Mythic pause.
+
+Wishlist email scheduling belongs to the separate email service. Changes to the web display do not themselves pause or resume delivery.

@@ -1,6 +1,5 @@
-**Mythic Shop update**
-Riot is adjusting rotation timings, so check the live offer end times on Rotations.lol. The current biweekly selection has been extended by a day.
+# Mythic Shop tracking update
 
-Patch **26.22**, scheduled for **November 4**, will introduce personalized Mythic offers. Once we detect the patch live, we’ll temporarily pause Mythic Shop listings and Mythic wishlist emails while we investigate what can still be tracked accurately.
+Mythic Shop listings are temporarily paused while we review personalized offers and determine what can be tracked accurately.
 
-Regular skin-sale tracking and emails will continue. We’ll share updates here!
+You can still explore your Mythic Shop offers in the League client. Regular skin-sale tracking remains available on Rotations.lol. We will share updates on Discord as the review progresses.
